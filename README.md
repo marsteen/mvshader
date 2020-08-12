@@ -30,7 +30,7 @@ Install SDL2 and GLEW development-libraries with apt-get:
 
 ### Run the executable
 
-From the ``build``-folder:
+From the ``build``-folder:  
 ``./mvshader -shader ../fragshaders/02.glsl``
 
 ### Coding style
