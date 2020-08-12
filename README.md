@@ -2,6 +2,12 @@
 
 Experimental tool for testing shaders from www.shadertoy.com
 
+### Prerequisites development software
+
+g++  
+make  
+cmake  
+
 ### Prerequisites Windows / mingw (64 bit)
 
 Install SDL2 and GLEW development-libraries with pacman:  
@@ -10,7 +16,9 @@ Install SDL2 and GLEW development-libraries with pacman:
 
 ### Prerequisites Linux
 
-Install SDL2 and GLEW development-libraries with apt-get
+Install SDL2 and GLEW development-libraries with apt-get:  
+``sudo apt-get install libsdl2-dev``__
+``sudo apt-get libglew-dev``__
 
 ## Building the executable with the command line
 
