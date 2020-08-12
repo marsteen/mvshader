@@ -1,0 +1,49 @@
+CGL_Context::Init w=2560 h=1440
+===== SetupGraphics START
+GL Version=2.1 ATI-10.0.51
+GL Vendor=ATI Technologies Inc.
+GL Renderer=ATI Radeon HD 4850 OpenGL Engine
+===== SetupGraphics END r=1
+Init Shader: No Name
+CGL_Shader::CreateProgram START
+CGL_Shader::LoadShader START type=35633 size=265
+compile ok!
+CGL_Shader::LoadShader OK
+LoadShader vertexShader ok!
+CGL_Shader::LoadShader START type=35632 size=154
+compile ok!
+CGL_Shader::LoadShader OK
+LoadShader pixelShader ok!
+CGL_Shader::CreateProgram OK
+mVertAttrib=1
+mTextAttrib=4294967295
+mColorAttrib=0
+Init Shader: No Name
+CGL_Shader::CreateProgram START
+CGL_Shader::LoadShader START type=35633 size=1342
+compile ok!
+CGL_Shader::LoadShader OK
+LoadShader vertexShader ok!
+CGL_Shader::LoadShader START type=35632 size=592
+compile ok!
+CGL_Shader::LoadShader OK
+LoadShader pixelShader ok!
+CGL_Shader::CreateProgram OK
+mVertAttrib=0
+mTextAttrib=1
+mColorAttrib=4294967295
+Init Shader: No Name
+CGL_Shader::CreateProgram START
+CGL_Shader::LoadShader START type=35633 size=358
+compile ok!
+CGL_Shader::LoadShader OK
+LoadShader vertexShader ok!
+CGL_Shader::LoadShader START type=35632 size=328
+compile ok!
+CGL_Shader::LoadShader OK
+LoadShader pixelShader ok!
+CGL_Shader::CreateProgram OK
+mVertAttrib=0
+mTextAttrib=1
+mColorAttrib=4294967295
+after glUseProgram glError: 0x502 (GL_INVALID_OPERATION​) 
