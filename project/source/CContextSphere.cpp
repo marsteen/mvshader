@@ -71,7 +71,7 @@ void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
     {
         for (int i = 0; i < cmdlineparams->size(); i++)
         {
-            const std::string& arg =  (*cmdlineparams)[i];
+            const std::string& arg = (*cmdlineparams)[i];
             if (arg == "-shader")
             {
                 if (i < cmdlineparams->size()-1)

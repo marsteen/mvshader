@@ -20,13 +20,18 @@ Install SDL2 and GLEW development-libraries with apt-get:
 ``sudo apt-get install libsdl2-dev``__
 ``sudo apt-get libglew-dev``__
 
-## Building the executable with the command line
+### Building the executable with the command line
 
 - change to project folder: ``cd project``
 - create a build folder: ``mkdir build``
 - change to build folder: ``cd build``
 - call cmake: ``cmake ..``
 - make the executable: ``make``
+
+### Run the executable
+
+From the ``build``-folder:
+``./mvshader -shader ../fragshaders/02.glsl``
 
 ### Coding style
 

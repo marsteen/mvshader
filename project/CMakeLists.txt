@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
-project("cmake_sphere")
+project("mvshader")
 
 include_directories(./include  ./source)
 
 #find_package(OpenGL REQUIRED)
 #find_package(GLEW REQUIRED)
 
-add_executable(cmake_sphere
+add_executable(mvshader
     source/mainSdl.cpp
     source/CSDLblurline.cpp
     source/CContextSphere.cpp
@@ -29,12 +29,12 @@ add_executable(cmake_sphere
     lib/shader/shader_sphere_frag.cpp)
     
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_link_libraries(cmake_sphere
+    target_link_libraries(mvshader
       SDL2 
       opengl32
       glew32)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    target_link_libraries(cmake_sphere
+    target_link_libraries(mvshader
       SDL2 
       GL
       GLEW)
