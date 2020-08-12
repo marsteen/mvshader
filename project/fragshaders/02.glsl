@@ -47,7 +47,7 @@ vec4 mainImage(vec2 fragCoord)
 
 void main()
 {
-    vec2 fragCoord = vTextVary * iResolution;
+    vec2 fragCoord = vTextVary * iResolution.xy;
     gl_FragColor = mainImage(fragCoord); 
 }
 

@@ -150,7 +150,7 @@ const char* shader_sphere_frag =
 "\n"
 "void main()\n"
 "{\n"
-"    vec2 fragCoord = vTextVary * iResolution;\n"
+"    vec2 fragCoord = vTextVary * iResolution.xy;\n"
 "    gl_FragColor = mainImage(fragCoord); \n"
 "}\n"
 "\n"

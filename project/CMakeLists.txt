@@ -36,9 +36,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(cmake_sphere
       SDL2 
-      opengl32
-      glew32)
+      GL
+      GLEW)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-
+# *TODO*
+endif()
 
 
