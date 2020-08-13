@@ -27,6 +27,7 @@ static float mouseXabs;
 static float mouseYabs;
 static float mouseZpos = 4.0f;
 static float iTime;
+static float uScale = 1.0f;
 
 float GlobalAspect = 1.0;
 
@@ -47,11 +48,33 @@ void CContextSphere::KeyPress(int key, bool down)
     float w = 1.0f;
     if (down)
     {
+        //cout << "key=" << key << endl;
         switch (key)
         {
             case 'a':
 
                 break;
+                
+            case '1':
+
+                uScale = 1.0f;
+                break;
+
+            case '2':
+
+                uScale = 0.5f;
+                break;
+
+            case '3':
+
+                uScale = 0.25f;
+                break;
+
+            case '4':
+
+                uScale = 0.125f;
+                break;
+                
         }
     }
 }
@@ -189,6 +212,7 @@ void CContextSphere::Draw2D()
     
     mSphereShader->SetUniformVec4("iMouse", vec4);
     mSphereShader->SetUniformFloat("iTime", iTime);
+    mSphereShader->SetUniformFloat("uScale", uScale);
     mSphereShader->SetUniformVec3("iResolution", mWidth, mHeight, 0.0f);
 
     CGL_Basic::DrawTextureQuad(mSphereShader, -1.0, -1.0f, 1.0f, 1.0f);
