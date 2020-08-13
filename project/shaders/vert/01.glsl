@@ -12,6 +12,6 @@ void main()
 {
     vTextVary = aTextAttrib;
     vec4 vert = aVertAttrib;
-    vert.xy *= uScale;
+    vert.xy *= uScale * 0.75;
     gl_Position = vert;
 }

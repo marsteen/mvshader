@@ -28,10 +28,13 @@ Install SDL2 and GLEW development-libraries with apt-get:
 - call cmake: ``cmake ..``
 - make the executable: ``make``
 
-### Run the executable
+### Run the executable (examples)
 
 From the ``build``-folder:  
-``./mvshader -shader ../fragshaders/02.glsl``
+* ``./mvshader``
+* ``./mvshader -fshader ../shaders/frag/01.glsl``
+* ``./mvshader -vshader ../shaders/vert/01.glsl -fshader ../shaders/frag/01.glsl``
+
 
 ### Coding style
 
