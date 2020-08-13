@@ -67,7 +67,8 @@ void CContextSphere::KeyPress(int key, bool down)
 
 void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
 {
-    mVertShaderFile = "../vertshaders/standard_vert.glsl";
+    mVertShaderFile = "../shaders/vert/00.glsl";
+    mFragShaderFile = "../shaders/frag/00.glsl";
     if (cmdlineparams != nullptr)
     {
         for (int i = 0; i < cmdlineparams->size(); i++)
@@ -112,10 +113,7 @@ bool CContextSphere::Init(int w, int h, const std::vector<std::string>* cmdlinep
 
     mSphereShader = new CGL_Shader_Sphere;
 
-    if (mVertShaderFile.size() > 0)
-    {
-        mSphereShader->InitShader(mVertShaderFile, mFragShaderFile);
-    }
+    mSphereShader->InitShader(mVertShaderFile, mFragShaderFile);
 
     //cout << "Width=" << mWidth << " Height=" << mHeight << endl;
 

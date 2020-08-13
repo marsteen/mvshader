@@ -15,7 +15,7 @@
 
 #include <CGL_Shader_Sphere.h>
 
-
+/*
 extern const char* shader_sphere_vert;
 extern const char* shader_sphere_frag;
 
@@ -24,7 +24,7 @@ void CGL_Shader_Sphere::InitShader()
 {
     CGL_Shader::InitShader(shader_sphere_vert, shader_sphere_frag);
 };
-
+*/
 
 void CGL_Shader_Sphere::InitShader(
     const std::string& vertShaderFile,
