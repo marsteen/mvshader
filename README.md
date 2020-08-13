@@ -17,8 +17,8 @@ Install SDL2 and GLEW development-libraries with pacman:
 ### Prerequisites Linux
 
 Install SDL2 and GLEW development-libraries with apt-get:  
-``sudo apt-get install libsdl2-dev``__
-``sudo apt-get libglew-dev``__
+``sudo apt-get install libsdl2-dev``  
+``sudo apt-get libglew-dev``  
 
 ### Building the executable with the command line
 
@@ -36,6 +36,7 @@ From the ``build``-folder:
 ### Coding style
 
 * [Allman style](https://en.wikipedia.org/wiki/Indentation_style#Allman_style)
+* 4 spaces, no tabs
 
 ## Authors
 
