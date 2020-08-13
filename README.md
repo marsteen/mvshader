@@ -33,8 +33,13 @@ Install SDL2 and GLEW development-libraries with apt-get:
 From the ``build``-folder:  
 * ``./mvshader``
 * ``./mvshader -fshader ../shaders/frag/01.glsl``
-* ``./mvshader -vshader ../shaders/vert/01.glsl -fshader ../shaders/frag/01.glsl``
-
+* ``./mvshader -vshader ../shaders/vert/01.glsl -fshader ../shaders/frag/01.glsl``__
+__
+From the ``project`` folder  
+* ./run-example.sh 01  
+* ./run-example.sh 02  
+* ..  
+* ./run-example.sh 25__
 
 ### Coding style
 
