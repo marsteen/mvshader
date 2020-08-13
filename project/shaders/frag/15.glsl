@@ -3,7 +3,9 @@
 // Fragment Shader
 //
 #ifdef GL_ES
-precision highp float;
+//precision highp float;
+precision mediump float;
+//precision lowp float;
 #endif
 
 uniform vec3  iResolution;

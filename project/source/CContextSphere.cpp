@@ -62,17 +62,17 @@ void CContextSphere::KeyPress(int key, bool down)
 
             case '2':
 
-                uScale = 0.5f;
+                uScale = 0.75f;
                 break;
 
             case '3':
 
-                uScale = 0.25f;
+                uScale = 0.5f;
                 break;
 
             case '4':
 
-                uScale = 0.125f;
+                uScale = 0.25f;
                 break;
                 
         }
