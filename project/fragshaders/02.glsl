@@ -1,11 +1,17 @@
+#version 300 es
 //
 // Fragment Shader
 //
 
+#ifdef GL_ES
+precision highp float;
+#endif
+
 uniform vec3  iResolution;
-varying vec2  vTextVary;
+uniform vec4  iMouse;
 uniform float iTime;
-uniform vec2  iMouse;
+in vec2 vTextVary;
+out vec4 outputColor;
 
 float sphere(vec3 ray, vec3 dir, vec3 center, float radius)
 {
@@ -48,7 +54,7 @@ vec4 mainImage(vec2 fragCoord)
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    gl_FragColor = mainImage(fragCoord); 
+    outputColor = mainImage(fragCoord); 
 }
 
 

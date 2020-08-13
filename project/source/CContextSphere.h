@@ -12,7 +12,6 @@
 //
 //***************************************************************************
 
-
 #ifndef CContextSphere_H
 #define CContextSphere_H
 
@@ -39,7 +38,8 @@ class CContextSphere : public CGL_Context
 
         void ParseParams(const std::vector<std::string>* cmdlineparams);
         CGL_Shader_Sphere* mSphereShader;
-        std::string mShaderFile;
+        std::string mVertShaderFile;
+        std::string mFragShaderFile;
 };
 
 #endif

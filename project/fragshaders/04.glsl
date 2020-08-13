@@ -1,11 +1,17 @@
+#version 300 es
 //
 // Fragment Shader
 //
 
+#ifdef GL_ES
+precision highp float;
+#endif
+
 uniform vec3  iResolution;
-uniform vec3  iMouse;
+uniform vec4  iMouse;
 uniform float iTime;
-varying vec2  vTextVary;
+in vec2 vTextVary;
+out vec4 outputColor;
 
 // Tron light cycle - work in progress!
 // @simesgreen
@@ -537,5 +543,5 @@ vec4 mainImage(vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    gl_FragColor = mainImage(fragCoord); 
+    outputColor = mainImage(fragCoord); 
 }

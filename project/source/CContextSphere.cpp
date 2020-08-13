@@ -67,19 +67,30 @@ void CContextSphere::KeyPress(int key, bool down)
 
 void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
 {
+    mVertShaderFile = "../vertshaders/standard_vert.glsl";
     if (cmdlineparams != nullptr)
     {
         for (int i = 0; i < cmdlineparams->size(); i++)
         {
             const std::string& arg = (*cmdlineparams)[i];
-            if (arg == "-shader")
+            if (arg == "-vshader")
             {
                 if (i < cmdlineparams->size()-1)
                 {
-                    mShaderFile = (*cmdlineparams)[i+1];
-                    cout << "shaderfile=" << mShaderFile << endl;
+                    mVertShaderFile = (*cmdlineparams)[i+1];
+                    cout << "vertex shaderfile=" << mVertShaderFile << endl;
                 }
             }
+            else
+            if (arg == "-fshader")
+            {
+                if (i < cmdlineparams->size()-1)
+                {
+                    mFragShaderFile = (*cmdlineparams)[i+1];
+                    cout << "fragment shaderfile=" << mFragShaderFile << endl;
+                }
+            }
+            
         }
     }
 }
@@ -101,14 +112,9 @@ bool CContextSphere::Init(int w, int h, const std::vector<std::string>* cmdlinep
 
     mSphereShader = new CGL_Shader_Sphere;
 
-
-    if (mShaderFile.size() > 0)
+    if (mVertShaderFile.size() > 0)
     {
-        mSphereShader->InitShader(mShaderFile);
-    }
-    else
-    {
-        mSphereShader->InitShader();
+        mSphereShader->InitShader(mVertShaderFile, mFragShaderFile);
     }
 
     //cout << "Width=" << mWidth << " Height=" << mHeight << endl;
@@ -177,11 +183,13 @@ void CContextSphere::Draw2D()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mSphereShader->UseProgram();
-    mSphereShader->SetUniformFloat("uAspect", mAspect);
+//    mSphereShader->SetUniformFloat("uAspect", mAspect);
 
     iTime += 1.0f / 30.0;
 
-    mSphereShader->SetUniformVec3("iMouse", mouseXabs, mouseYabs, mouseZpos);
+    const float vec4[] = { mouseXabs, mouseYabs, mouseZpos, 0.0 };
+    
+    mSphereShader->SetUniformVec4("iMouse", vec4);
     mSphereShader->SetUniformFloat("iTime", iTime);
     mSphereShader->SetUniformVec3("iResolution", mWidth, mHeight, 0.0f);
 

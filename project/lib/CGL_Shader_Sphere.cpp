@@ -26,8 +26,11 @@ void CGL_Shader_Sphere::InitShader()
 };
 
 
-void CGL_Shader_Sphere::InitShader(const std::string& fragmentShaderFile)
+void CGL_Shader_Sphere::InitShader(
+    const std::string& vertShaderFile,
+    const std::string& fragShaderFile)
 {
-    std::string fragmentShader = LoadShaderFile(fragmentShaderFile);
-    CGL_Shader::InitShader(shader_sphere_vert, fragmentShader.c_str());
+    std::string vertShader = LoadShaderFile(vertShaderFile);
+    std::string fragShader = LoadShaderFile(fragShaderFile);
+    CGL_Shader::InitShader(vertShader.c_str(), fragShader.c_str());
 };
