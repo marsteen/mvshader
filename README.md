@@ -36,11 +36,11 @@ From the ``build``-folder:
 * ``./mvshader -vshader ../shaders/vert/01.glsl -fshader ../shaders/frag/01.glsl``__
   
   
-From the ``project`` folder  
+From the ``project`` folder:  
 * ./run-example.sh 01  
 * ./run-example.sh 02  
 * ..  
-* ./run-example.sh 25__
+* ./run-example.sh 25  
 
 ### Coding style
 
