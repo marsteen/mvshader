@@ -2,7 +2,7 @@
 
 Experimental tool for testing shaders from www.shadertoy.com
 
-### Prerequisites development software
+### Prerequisites development tools
 
 g++  
 make  
