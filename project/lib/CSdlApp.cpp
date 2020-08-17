@@ -617,17 +617,17 @@ void CSdlApp::EventLoop()
 
             case SDL_KEYDOWN:
 
-                if (!ParseKeys(event.key.keysym.sym, true))
+                ParseKeys(event.key.keysym.sym, true);
+                break;
+
+            case SDL_KEYUP:
+
+                if (!ParseKeys(event.key.keysym.sym, false))
                 {
                     FinishGame();
                     SDL_Quit();
                     exit(0);
                 }
-                break;
-
-            case SDL_KEYUP:
-
-                ParseKeys(event.key.keysym.sym, false);
                 break;
 
             case SDL_MOUSEMOTION:

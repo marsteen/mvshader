@@ -201,14 +201,7 @@ bool CSDLblurline::ParseKeys(int key, bool down)
     {
         switch (key)
         {
-            case SDLK_ESCAPE:
-
-                r = false; // Programm beenden
-                if (mContext != NULL)
-                {
-                    mContext->Finish();
-                }
-                break;
+            case SDLK_ESCAPE: break;
         }
 
         if ((key >= SDLK_a) && (key <= SDLK_z))
@@ -221,6 +214,21 @@ bool CSDLblurline::ParseKeys(int key, bool down)
             mContext->KeyPress(key - SDLK_0 + '0', down);
         }
     }
+    else
+    {
+        switch (key)
+        {
+            case SDLK_ESCAPE:
+
+                r = false; // Programm beenden
+                if (mContext != NULL)
+                {
+                    mContext->Finish();
+                }
+                break;
+        }
+    }   
+    
 
     return r;
 }
