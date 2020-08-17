@@ -213,6 +213,12 @@ bool CSDLblurline::ParseKeys(int key, bool down)
         {
             mContext->KeyPress(key - SDLK_0 + '0', down);
         }
+        else
+        if (key == SDLK_SPACE)
+        {
+            mContext->KeyPress(' ', down);
+        }
+        
     }
     else
     {

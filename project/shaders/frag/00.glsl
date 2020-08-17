@@ -18,11 +18,11 @@ out vec4 outputColor;
 //
 //*********************************************************
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord)
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
     fragColor = vec4(
-        fragColor.x / iResolution.x,
-        fragColor.y / iResolution.y,
+        fragCoord.x / iResolution.x,
+        fragCoord.y / iResolution.y,
         0.0,
         1.0);
 }

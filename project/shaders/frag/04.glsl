@@ -506,18 +506,20 @@ vec4 mainImage(vec2 fragCoord )
         // shade
         rgb = shade(pos, n, ro, m, edge, t);
 
-#if 0
+#if 1
         // reflection
         vec3 v = normalize(ro - pos);
         float fresnel = 0.1 + 0.4*pow(max(0.0, 1.0 - dot(n, v)), 5.0);
 
-        ro = pos + n*eps; // offset to avoid self-intersection
+        //ro = pos + n*eps; // offset to avoid self-intersection
+        ro = pos; // offset to avoid self-intersection
         rd = reflect(-v, n);
-        pos = trace(ro, rd, hit, m);
+        pos = trace(ro, rd, hit, m, t);
+
 
         if (hit) {
-            vec3 n = sceneNormal(pos);
-            rgb += shade(pos, n, ro, m) * vec3(fresnel);
+            vec3 n = sceneNormal(pos, t);
+            rgb += shade(pos, n, ro, m, edge, t) * vec3(fresnel);
         } else {
             rgb += background(rd) * vec3(fresnel);
         }

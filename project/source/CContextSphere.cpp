@@ -41,6 +41,7 @@ CGL_Context* CGL_Context::CreateContext()
 
 CContextSphere::CContextSphere() : CGL_Context()
 {
+    mAktShaderNr = 0;
 }
 
 
@@ -50,7 +51,7 @@ void CContextSphere::KeyPress(int key, bool down)
 
     if (down)
     {
-        //cout << "key=" << key << endl;
+        cout << "key=" << key << endl;
         switch (key)
         {
             case 'a':
@@ -76,6 +77,19 @@ void CContextSphere::KeyPress(int key, bool down)
 
                 uScale = 0.25f;
                 break;
+                
+            case ' ':
+            {                
+                if (++mAktShaderNr >= mFragShaderFileVec.size())
+                {   
+                    mAktShaderNr = 0;
+                }
+                const std::string& newShaderFile = mFragShaderFileVec[mAktShaderNr];
+                cout << "new shader:" << newShaderFile << endl;
+                mSphereShader->InitShader(mVertShaderFile, newShaderFile);
+            }
+            break;
+                
         }
     }
 }
@@ -93,7 +107,7 @@ void CContextSphere::KeyPress(int key, bool down)
 void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
 {
     mVertShaderFile = "../shaders/vert/00.glsl";
-    mFragShaderFile = "../shaders/frag/00.glsl";
+    
     if (cmdlineparams != nullptr)
     {
         for (int i = 0; i < cmdlineparams->size(); i++)
@@ -112,11 +126,19 @@ void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
             {
                 if (i < cmdlineparams->size()-1)
                 {
-                    mFragShaderFile = (*cmdlineparams)[i+1];
-                    cout << "fragment shaderfile=" << mFragShaderFile << endl;
+                    mFragShaderFileVec.push_back((*cmdlineparams)[i+1]);
+                    cout << "fragment shaderfile=" << (*cmdlineparams)[i+1] << endl;
                 }
             }
         }
+    }
+    if (mFragShaderFileVec.size() == 0)
+    {
+        mFragShaderFileVec.push_back("../shaders/frag/00.glsl");
+    }
+    else
+    {
+       cout << "fragment shaders:" << mFragShaderFileVec.size() << endl;
     }
 }
 
@@ -138,7 +160,7 @@ bool CContextSphere::Init(int w, int h, const std::vector<std::string>* cmdlinep
 
     mSphereShader = new CGL_Shader_Sphere;
 
-    mSphereShader->InitShader(mVertShaderFile, mFragShaderFile);
+    mSphereShader->InitShader(mVertShaderFile, mFragShaderFileVec[0]);
 
     //cout << "Width=" << mWidth << " Height=" << mHeight << endl;
 

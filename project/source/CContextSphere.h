@@ -40,7 +40,8 @@ protected:
 
     CGL_Shader_Sphere* mSphereShader;
     std::string mVertShaderFile;
-    std::string mFragShaderFile;
+    std::vector<std::string> mFragShaderFileVec;
+    int mAktShaderNr;
 };
 
 #endif

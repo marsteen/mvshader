@@ -155,21 +155,21 @@ bool CGL_Shader::SetUniformVec2(const char* UniName, const float* v) const
     bool r;
     GLint val = glGetUniformLocation(mProgram, UniName);
 
-    checkGlError("glGetUniformLocation");
+    //checkGlError("glGetUniformLocation");
 
 
     if (val == -1)
     {
         // Fehler
-        gdstr << "Uniform not found:" << UniName;
-        gderr();
+        //gdstr << "Uniform not found:" << UniName;
+        //gderr();
         r = false;
     }
     else
     {
         r = true;
         glUniform2f(val, v[0], v[1]);
-        checkGlError("glUniform2f");
+        //checkGlError("glUniform2f");
     }
     return r;
 }
@@ -188,21 +188,21 @@ bool CGL_Shader::SetUniformVec3(const char* UniName, const float* v) const
     bool r;
     GLint val = glGetUniformLocation(mProgram, UniName);
 
-    checkGlError("glGetUniformLocation", UniName);
+    //checkGlError("glGetUniformLocation", UniName);
 
 
     if (val == -1)
     {
         // Fehler
-        gdstr << "Uniform not found:" << UniName;
-        gderr();
+        //gdstr << "Uniform not found:" << UniName;
+        //gderr();
         r = false;
     }
     else
     {
         r = true;
         glUniform3f(val, v[0], v[1], v[2]);
-        checkGlError("glUniform2f", UniName);
+        //checkGlError("glUniform2f", UniName);
     }
     return r;
 }
@@ -221,21 +221,21 @@ bool CGL_Shader::SetUniformVec4(const char* UniName, const float* v) const
     bool r;
     GLint val = glGetUniformLocation(mProgram, UniName);
 
-    checkGlError("glGetUniformLocation", UniName);
+    //checkGlError("glGetUniformLocation", UniName);
 
 
     if (val == -1)
     {
         // Fehler
-        gdstr << "Uniform not found:" << UniName;
-        gderr();
+        //gdstr << "Uniform not found:" << UniName;
+        //gderr();
         r = false;
     }
     else
     {
         r = true;
         glUniform4f(val, v[0], v[1], v[2], v[3]);
-        checkGlError("SetUniformVec4", UniName);
+        //checkGlError("SetUniformVec4", UniName);
     }
     return r;
 }
@@ -254,13 +254,13 @@ bool CGL_Shader::SetUniformInt(const char* UniName, int i) const
     bool r;
     GLint val = glGetUniformLocation(mProgram, UniName);
 
-    checkGlError("glGetUniformLocation", UniName);
+    //checkGlError("glGetUniformLocation", UniName);
 
     if (val == -1)
     {
         // Fehler
-        gdstr << "Uniform not found:" << UniName;
-        gderr();
+        // gdstr << "Uniform not found:" << UniName;
+        // gderr();
 
         r = false;
     }
@@ -268,7 +268,7 @@ bool CGL_Shader::SetUniformInt(const char* UniName, int i) const
     {
         r = true;
         glUniform1i(val, i);
-        checkGlError("SetUniformInt", UniName);
+        //checkGlError("SetUniformInt", UniName);
     }
     return r;
 }
@@ -287,13 +287,13 @@ bool CGL_Shader::SetUniformFloat(const char* UniName, float f) const
     bool r;
     GLint val = glGetUniformLocation(mProgram, UniName);
 
-    checkGlError("glGetUniformLocation", UniName);
+    //checkGlError("glGetUniformLocation", UniName);
 
     if (val == -1)
     {
         // Fehler
-        gdstr << "Uniform not found:" << UniName;
-        gderr();
+        // gdstr << "Uniform not found:" << UniName;
+        // gderr();
 
         r = false;
     }
@@ -301,7 +301,7 @@ bool CGL_Shader::SetUniformFloat(const char* UniName, float f) const
     {
         r = true;
         glUniform1f(val, f);
-        checkGlError("SetUniformInt", UniName);
+        // checkGlError("SetUniformInt", UniName);
     }
     return r;
 }
@@ -356,12 +356,12 @@ bool CGL_Shader::SetUniformMatrix(const char* UniName, const float* mat) const
     bool r;
     GLint val = glGetUniformLocation(mProgram, UniName);
 
-    checkGlError("glGetUniformLocation", UniName);
+    // checkGlError("glGetUniformLocation", UniName);
 
     if (val == -1)
     {
-        gdstr << "Uniform not found:" << UniName;
-        gderr();
+        // gdstr << "Uniform not found:" << UniName;
+        // gderr();
         // Fehler
         r = false;
     }
@@ -369,7 +369,7 @@ bool CGL_Shader::SetUniformMatrix(const char* UniName, const float* mat) const
     {
         r = true;
         glUniformMatrix4fv(val, 1, GL_FALSE, mat);
-        checkGlError("glUniformMatrix4fv", UniName);
+        // checkGlError("glUniformMatrix4fv", UniName);
     }
     return r;
 }
@@ -389,20 +389,6 @@ void CGL_Shader::UseProgram() const
     checkGlError("glUseProgram");
 }
 
-
-//---------------------------------------------------------------------------
-//
-// Klasse:  CGL_Shader
-// Methode: DeleteProgram
-//
-//
-//---------------------------------------------------------------------------
-
-void CGL_Shader::DeleteProgram()
-{
-    glDeleteProgram(mProgram);
-    checkGlError("glDeleteProgram");
-}
 
 
 //---------------------------------------------------------------------------
@@ -458,8 +444,8 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
                 if (buf)
                 {
                     glGetShaderInfoLog(shader, infoLen, NULL, buf);
-                    gdstr << "CGL_Shader::LoadShader: " << ShaderSource;
-                    gderr();
+                    //gdstr << "CGL_Shader::LoadShader: " << ShaderSource;
+                    //gderr();
 
                     gdstr << "Could not compile shader: " << shaderType << " " << buf;
                     gderr();
@@ -483,6 +469,7 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
 
     return shader;
 }
+
 
 
 //---------------------------------------------------------------------------
@@ -585,7 +572,7 @@ bool CGL_Shader::InitShader(const char* VertexShader, const char* FragmentShader
     gdstr << "Init Shader: " << mName;
     gdlog();
 
-
+    glDeleteProgram(mProgram);
     mProgram = CreateProgram(VertexShader, FragmentShader);
     if (!mProgram)
     {
