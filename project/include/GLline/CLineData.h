@@ -9,33 +9,33 @@
 
 class CLineData
 {
-    public:
+public:
 
-        CLineData()
-        {
-            mInit = false;
-        }
+    CLineData()
+    {
+        mInit = false;
+    }
 
 
-        void Draw(
-            CGL_Shader_Blurline* shader,
-            float x1, float y1,
-            float x2, float y2,
-            float LineWidth,
-            const float* color);
+    void Draw(
+        CGL_Shader_Blurline* shader,
+        float x1, float y1,
+        float x2, float y2,
+        float LineWidth,
+        const float* color);
 
-    protected:
+protected:
 
-        void DrawLineData(CGL_Shader_Blurline* shader);
+    void DrawLineData(CGL_Shader_Blurline* shader);
 
-        bool mInit;
-        SVertArray2D mAr[4];
+    bool mInit;
+    SVertArray2D mAr[4];
 
-        CVector2<float> mP1;
-        CVector2<float> mP2;
+    CVector2<float> mP1;
+    CVector2<float> mP2;
 
-        float mLineAngle;
-        const float* mColor;
+    float mLineAngle;
+    const float* mColor;
 };
 
 #endif

@@ -5,12 +5,12 @@
 
 class CGL_Shader_Sphere : public CGL_Shader
 {
-    public:
+public:
 
-        //void InitShader();
-        void InitShader(
-            const std::string& vertShaderFile,
-            const std::string& fragShaderFile);
+    //void InitShader();
+    void InitShader(
+        const std::string& vertShaderFile,
+        const std::string& fragShaderFile);
 };
 
 #endif

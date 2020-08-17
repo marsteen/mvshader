@@ -16,8 +16,7 @@
 #ifndef EFILETYPES_H
 #define EFILETYPES_H
 
-enum EFileTypes
-{
+enum EFileTypes {
     EFILETYPE_UNKNOWN,
     EFILETYPE_JPG,
     EFILETYPE_TIF,

@@ -22,64 +22,64 @@
 
 class CMatrixStack
 {
-    public:
+public:
 
-        void MatPushMatrix()
-        {
-            mStack.push_back(mMatrix);
-        }
-
-
-        void MatPopMatrix()
-        {
-            mMatrix = mStack.back();
-            mStack.pop_back();
-        }
+    void MatPushMatrix()
+    {
+        mStack.push_back(mMatrix);
+    }
 
 
-        void MatTranslate(float tx, float ty, float tz)
-        {
-            mMatrix.Translate(tx, ty, tz);
-        }
+    void MatPopMatrix()
+    {
+        mMatrix = mStack.back();
+        mStack.pop_back();
+    }
 
 
-        void RotateZ(float angle)
-        {
-            mMatrix.RotateZ(angle);
-        }
+    void MatTranslate(float tx, float ty, float tz)
+    {
+        mMatrix.Translate(tx, ty, tz);
+    }
 
 
-        void MatScale(float sx, float sy, float sz)
-        {
-            mMatrix.Scale(sx, sy, sz);
-        }
+    void RotateZ(float angle)
+    {
+        mMatrix.RotateZ(angle);
+    }
 
 
-        void Transform(CVector2<float>* v)
-        {
-            CVector2<float> dv;
-
-            mMatrix.MatTransformVertex(v, &dv);
-            *v = dv;
-        }
+    void MatScale(float sx, float sy, float sz)
+    {
+        mMatrix.Scale(sx, sy, sz);
+    }
 
 
-        void MatLoadIdentity()
-        {
-            mMatrix.MatSetIdentity();
-        }
+    void Transform(CVector2<float>* v)
+    {
+        CVector2<float> dv;
+
+        mMatrix.MatTransformVertex(v, &dv);
+        *v = dv;
+    }
 
 
-        const float* Mat() const
-        {
-            return mMatrix.Mat();
-        }
+    void MatLoadIdentity()
+    {
+        mMatrix.MatSetIdentity();
+    }
 
 
-    protected:
+    const float* Mat() const
+    {
+        return mMatrix.Mat();
+    }
 
-        std::vector<CMatrix<float> > mStack;
-        CMatrix<float> mMatrix;
+
+protected:
+
+    std::vector<CMatrix<float> > mStack;
+    CMatrix<float> mMatrix;
 };
 
 #endif

@@ -22,5 +22,5 @@ extern const char* shader_color_vert;
 
 void CGL_Shader_Color::InitShader()
 {
-  CGL_Shader::InitShader(shader_color_vert, shader_color_frag);
-};
+    CGL_Shader::InitShader(shader_color_vert, shader_color_frag);
+}

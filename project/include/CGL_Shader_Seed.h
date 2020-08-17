@@ -5,14 +5,14 @@
 
 class CGL_Shader_Noise : public CGL_Shader
 {
-    public:
+public:
 
-        void InitShader();
-        void SetObjSeed(float w) const;
+    void InitShader();
+    void SetObjSeed(float w) const;
 
-    protected:
+protected:
 
-        unsigned int uObjSeed;
+    unsigned int uObjSeed;
 };
 
 #endif

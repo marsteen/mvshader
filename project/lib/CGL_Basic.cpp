@@ -64,6 +64,7 @@ void CGL_Basic::DrawQuad(const CGL_Shader* glcon, float x1, float y1, float x2, 
     checkGlError("DrawQuad");
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -110,6 +111,7 @@ void CGL_Basic::DrawQuad(const CGL_Shader* glcon, float x1, float y1, float x2, 
     //checkGlError("DrawQuad");
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -117,7 +119,7 @@ void CGL_Basic::DrawQuad(const CGL_Shader* glcon, float x1, float y1, float x2, 
 //
 // ---------------------------------------------------------------------------
 
-void CGL_Basic::DrawQuadTexCoords(const CGL_Shader* glcon, float vx1, float vy1, float vx2, float vy2,  const float* textcoords)
+void CGL_Basic::DrawQuadTexCoords(const CGL_Shader* glcon, float vx1, float vy1, float vx2, float vy2, const float* textcoords)
 {
     SVertArray ar;
     CVector3<float> v;
@@ -138,8 +140,8 @@ void CGL_Basic::DrawQuadTexCoords(const CGL_Shader* glcon, float vx1, float vy1,
     v.Set(vx1, vy2, 0);
     ar.AddVert(v);
 
-    glVertexAttribPointer(glcon->VertAttrib(), 3,  GL_FLOAT, GL_FALSE, 0, ar.mVert->v());
-    glVertexAttribPointer(glcon->TextAttrib(), 2,  GL_FLOAT, GL_FALSE, 0, textcoords);
+    glVertexAttribPointer(glcon->VertAttrib(), 3, GL_FLOAT, GL_FALSE, 0, ar.mVert->v());
+    glVertexAttribPointer(glcon->TextAttrib(), 2, GL_FLOAT, GL_FALSE, 0, textcoords);
 
     glEnableVertexAttribArray(glcon->VertAttrib());
     glEnableVertexAttribArray(glcon->TextAttrib());
@@ -153,13 +155,11 @@ void CGL_Basic::DrawQuadTexCoords(const CGL_Shader* glcon, float vx1, float vy1,
     //checkGlError("DrawQuad");
 }
 
+
 void CGL_Basic::DrawQuadTexCoords(const CGL_Shader* glcon, const SVertArray2D& ar)
 {
-
-
-
-    glVertexAttribPointer(glcon->VertAttrib(), 2,  GL_FLOAT, GL_FALSE, 0, ar.mVert->v());
-    glVertexAttribPointer(glcon->TextAttrib(), 2,  GL_FLOAT, GL_FALSE, 0, ar.mText->v());
+    glVertexAttribPointer(glcon->VertAttrib(), 2, GL_FLOAT, GL_FALSE, 0, ar.mVert->v());
+    glVertexAttribPointer(glcon->TextAttrib(), 2, GL_FLOAT, GL_FALSE, 0, ar.mText->v());
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 
@@ -175,9 +175,8 @@ void CGL_Basic::DrawQuadTexCoords(const CGL_Shader* glcon, const SVertArray2D& a
 //
 // ---------------------------------------------------------------------------
 
-void CGL_Basic::CreateQuadTexCoords(float vx1, float vy1, float vx2, float vy2,  const float* textcoords, SVertArray2D& ar)
+void CGL_Basic::CreateQuadTexCoords(float vx1, float vy1, float vx2, float vy2, const float* textcoords, SVertArray2D& ar)
 {
-
     CVector2<float> v;
     CVector2<float> t;
 
@@ -209,8 +208,6 @@ void CGL_Basic::CreateQuadTexCoords(float vx1, float vy1, float vx2, float vy2, 
 }
 
 
-
-
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -225,6 +222,7 @@ void CGL_Basic::DrawQuad(const CGL_Shader* glcon, const CRectT<float>& vr, const
 {
     DrawQuad(glcon, vr.left, vr.top, vr.right, vr.bottom, Colors);
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -268,8 +266,8 @@ void CGL_Basic::DrawPolygon(const CGL_Shader* glcon, const CPolygon* Polygon, fl
 
         if (sFirst)
         {
-        //gdstr << "px=" << px << " py=" << py;
-        //gdlog();
+            //gdstr << "px=" << px << " py=" << py;
+            //gdlog();
         }
 
         v.Set(px, py, 0);
@@ -287,13 +285,14 @@ void CGL_Basic::DrawPolygon(const CGL_Shader* glcon, const CPolygon* Polygon, fl
         ar.AddVert(v);
         ar.AddText(t);
     }
+
     /*
-    TexOffset += 0.002;
-    if (TexOffset >= 1.0)
-    {
-    TexOffset -= 1.0;
-  }
-  */
+     * TexOffset += 0.002;
+     * if (TexOffset >= 1.0)
+     * {
+     * TexOffset -= 1.0;
+     * }
+     */
 
 
     glVertexAttribPointer(glcon->VertAttrib(), 3, GL_FLOAT, GL_FALSE, 0, ar.mVert->v());
@@ -313,6 +312,7 @@ void CGL_Basic::DrawPolygon(const CGL_Shader* glcon, const CPolygon* Polygon, fl
     checkGlError("DrawPolygon");
     sFirst = false;
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -343,11 +343,6 @@ void CGL_Basic::DrawLine(const CGL_Shader* glcon, float x1, float y1, float x2, 
 }
 
 
-
-
-
-
-
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -355,7 +350,7 @@ void CGL_Basic::DrawLine(const CGL_Shader* glcon, float x1, float y1, float x2, 
 //
 // ---------------------------------------------------------------------------
 
-void CGL_Basic::DrawLines(const CGL_Shader* glcon, const std::vector<   CVector2<float> >& LineVec, bool Closed)
+void CGL_Basic::DrawLines(const CGL_Shader* glcon, const std::vector<CVector2<float> >& LineVec, bool Closed)
 {
     SVertArray2D ar;
     CVector2<float> v;
@@ -363,7 +358,7 @@ void CGL_Basic::DrawLines(const CGL_Shader* glcon, const std::vector<   CVector2
     ar.MakeVerts(LineVec.size());
     for (int i = 0; i < LineVec.size(); i++)
     {
-      ar.AddVert(LineVec[i]);
+        ar.AddVert(LineVec[i]);
     }
 
     int Mode = (Closed) ? GL_LINE_LOOP : GL_LINE_STRIP;
@@ -376,6 +371,7 @@ void CGL_Basic::DrawLines(const CGL_Shader* glcon, const std::vector<   CVector2
     checkGlError("DrawLine");
 }
 
+
 // -------------------- -------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -383,7 +379,7 @@ void CGL_Basic::DrawLines(const CGL_Shader* glcon, const std::vector<   CVector2
 //
 // ---------------------------------------------------------------------------
 
-static const SVertArray2D* CreateLines(const CGL_Shader* glcon, const std::vector<  CVector2<float> >& LineVec)
+static const SVertArray2D* CreateLines(const CGL_Shader* glcon, const std::vector<CVector2<float> >& LineVec)
 {
     SVertArray2D* ar;
     CVector2<float> v;
@@ -397,6 +393,7 @@ static const SVertArray2D* CreateLines(const CGL_Shader* glcon, const std::vecto
     return ar;
 }
 
+
 // -------------------- -------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -404,7 +401,7 @@ static const SVertArray2D* CreateLines(const CGL_Shader* glcon, const std::vecto
 //
 // ---------------------------------------------------------------------------
 
-static void DrawLines(const CGL_Shader* glcon, const SVertArray2D* ar, bool Closed=false)
+static void DrawLines(const CGL_Shader* glcon, const SVertArray2D* ar, bool Closed = false)
 {
     int Mode = (Closed) ? GL_LINE_LOOP : GL_LINE_STRIP;
 
@@ -415,11 +412,6 @@ static void DrawLines(const CGL_Shader* glcon, const SVertArray2D* ar, bool Clos
 
     checkGlError("DrawLine");
 }
-
-
-
-
-
 
 
 // ---------------------------------------------------------------------------
@@ -457,7 +449,6 @@ void CGL_Basic::DrawFrame(const CGL_Shader* glcon, const CRectT<float>& rc)
 
     checkGlError("DrawFrame");
 }
-
 
 
 // ---------------------------------------------------------------------------
@@ -512,6 +503,7 @@ void CGL_Basic::DrawTextureQuad(const CGL_Shader* glcon, float x1, float y1, flo
     //checkGlError("DrawTextureQuad");
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -564,6 +556,7 @@ void CGL_Basic::DrawTextureQuadUpsideDown(const CGL_Shader* glcon, float x1, flo
     //checkGlError("DrawTextureQuad");
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -595,7 +588,6 @@ void CGL_Basic::DrawTextureQuad(const CGL_Shader* glcon, const std::vector<CVect
 
     glDisableVertexAttribArray(glcon->VertAttrib());
     glDisableVertexAttribArray(glcon->TextAttrib());
-
 }
 
 
@@ -644,7 +636,6 @@ void CGL_Basic::DrawTrifan(const CGL_Shader* glcon, const std::vector<CVector2<f
     glDisableVertexAttribArray(glcon->TextAttrib());
 
     //checkGlError("DrawTextureQuad");
-
 }
 
 
@@ -668,6 +659,7 @@ void CGL_Basic::CreateRingTriStrip(float InnerRadius, float OuterRadius, int Seg
     //glBegin(GL_TRIANGLE_STRIP);
 
     int VertCount = (Segments + 1) * 2;
+
     ar.mCount = VertCount;
     ar.MakeVerts(VertCount);
     ar.MakeTexts(VertCount);
@@ -697,7 +689,6 @@ void CGL_Basic::CreateRingTriStrip(float InnerRadius, float OuterRadius, int Seg
 }
 
 
-
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -714,6 +705,7 @@ void CGL_Basic::CreateTrifan(const std::vector<CVector2<float> >& verts, SVertAr
 {
     //SVertArray2D* ar = new SVertArray2D;
     CVector2<float> t;
+
     t.Set(1.0, 1.0);
 
     ar.mCount = verts.size();
@@ -735,42 +727,42 @@ void CGL_Basic::CreateTrifan(const std::vector<CVector2<float> >& verts, SVertAr
 
 
 /*
-
-// WORKS! 270 Grad fuer alle winkel
-static float CalcVectorAngle(
-    const CVector2<float>& v20,
-    const CVector2<float>& v2a,
-    const CVector2<float>& v2b)
-{
-    CVector2<float> v2diff1  = v20 - v2a;
-    CVector2<float> v2diff2  = v2a - v2b;
-    float r = v2diff2.GetAngleSkalarRad(&v2diff1);
-    return r + DEG_TO_RAD(180.0f);
-}
-
-*/
+ *
+ * // WORKS! 270 Grad fuer alle winkel
+ * static float CalcVectorAngle(
+ *  const CVector2<float>& v20,
+ *  const CVector2<float>& v2a,
+ *  const CVector2<float>& v2b)
+ * {
+ *  CVector2<float> v2diff1  = v20 - v2a;
+ *  CVector2<float> v2diff2  = v2a - v2b;
+ *  float r = v2diff2.GetAngleSkalarRad(&v2diff1);
+ *  return r + DEG_TO_RAD(180.0f);
+ * }
+ *
+ */
 
 
 /*
-// WORKS! 270 Grad fuer alle winkel
-static float CalcVectorAngle(
-    const CVector2<float>& v20,
-    const CVector2<float>& v2a,
-    const CVector2<float>& v2b)
-{
-    CVector2<float> v2diff1  = v20 - v2a;
-    CVector2<float> v2diff2  = v2a - v2b;
-    float r = v2diff2.GetAngleRadAtan2(&v2diff1) + DEG_TO_RAD(180.0f);
-
-    if (r < 0.0)                r += DEG_TO_RAD(360.0);
-    if (r > DEG_TO_RAD(360.0))  r -= DEG_TO_RAD(360.0);
-    return r;
-}
-*/
-
+ * // WORKS! 270 Grad fuer alle winkel
+ * static float CalcVectorAngle(
+ *  const CVector2<float>& v20,
+ *  const CVector2<float>& v2a,
+ *  const CVector2<float>& v2b)
+ * {
+ *  CVector2<float> v2diff1  = v20 - v2a;
+ *  CVector2<float> v2diff2  = v2a - v2b;
+ *  float r = v2diff2.GetAngleRadAtan2(&v2diff1) + DEG_TO_RAD(180.0f);
+ *
+ *  if (r < 0.0)                r += DEG_TO_RAD(360.0);
+ *  if (r > DEG_TO_RAD(360.0))  r -= DEG_TO_RAD(360.0);
+ *  return r;
+ * }
+ */
 static void ShowAngle(const char* txt, float va)
 {
     static int b;
+
     if (b < 10)
     {
         cout << txt << "=" << RAD_TO_DEG(va) << endl;
@@ -778,24 +770,32 @@ static void ShowAngle(const char* txt, float va)
     }
 }
 
-#define RAD_90  (M_PI/2.0)
-#define RAD_180 (M_PI)
-#define RAD_360 (M_PI*2)
+
+#define RAD_90		(M_PI/2.0)
+#define RAD_180		(M_PI)
+#define RAD_360		(M_PI*2)
 
 
 static void AlignAngle(float& va)
 {
-    if (va < 0.0)     va += RAD_360;
-    if (va > RAD_360) va -= RAD_360;
+    if (va < 0.0)
+    {
+        va += RAD_360;
+    }
+    if (va > RAD_360)
+    {
+        va -= RAD_360;
+    }
 }
 
 
-#define ATAN2_STACK_SIZE 3
+#define ATAN2_STACK_SIZE    3
 inline float GetAtan2(const CVector2<float>& v)
 {
     static int b = 0;
     static CVector2<float> vstack[ATAN2_STACK_SIZE];
-    static float           tstack[ATAN2_STACK_SIZE];
+    static float tstack[ATAN2_STACK_SIZE];
+
     for (int i = ATAN2_STACK_SIZE-1; i >= 0; i--)
     {
         if (v == vstack[i])
@@ -817,7 +817,6 @@ inline float GetAtan2(const CVector2<float>& v)
     vstack[ATAN2_STACK_SIZE-1] = v;
     tstack[ATAN2_STACK_SIZE-1] = atan2(v.y, v.x);
     return tstack[ATAN2_STACK_SIZE-1];
-
 }
 
 
@@ -826,6 +825,7 @@ static inline float CalcLineAngle(
     const CVector2<float>& v2b)
 {
     CVector2<float> v2diff = v2a - v2b;
+
     return atan2(v2diff.y, v2diff.x);
 }
 
@@ -844,19 +844,25 @@ static float CalcVectorAngle(
     //AlignAngle(la1);
     //AlignAngle(la2);
 
-    float va  = la2 - la1;
+    float va = la2 - la1;
 
     //if (va < 0.0)               va += DEG_TO_RAD(360.0f);
     //if (va > DEG_TO_RAD(180.0)) va -= DEG_TO_RAD(360.0f);
 
-    if (va < 0.0)     va += RAD_360;
-    if (va > RAD_180) va -= RAD_360;
+    if (va < 0.0)
+    {
+        va += RAD_360;
+    }
+    if (va > RAD_180)
+    {
+        va -= RAD_360;
+    }
 
     float r = la1 - RAD_90 + (va * 0.5f);
 
     // vac: korrekturwert, damit die Linie immer dieselbe Dicke hat
     float vac1 = cos(va * 0.5f);
-    
+
     if (useCorrection)
     {
         if (fabs(vac1) > 0.2f) // hoechstens 5 fach
@@ -872,10 +878,6 @@ static float CalcVectorAngle(
 
     return r;
 }
-
-
-
-
 
 
 // ---------------------------------------------------------------------------
@@ -898,7 +900,7 @@ void CGL_Basic::CalcQuadLine2(
     float vac;
     float LineAngle = CalcVectorAngle(v20, v2a, v2b, vac, useCorrection);
     float xoff = linewidth / 2;
-    
+
     if (useCorrection)
     {
         xoff *= vac;
@@ -913,6 +915,7 @@ void CGL_Basic::CalcQuadLine2(
     v2c1.RotationXY(&v2a, sinAlpha, cosAlpha);
     v2c2.RotationXY(&v2a, sinAlpha, cosAlpha);
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -945,7 +948,6 @@ void CGL_Basic::CalcQuadLine(
 }
 
 
-
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CGL_Basic
@@ -967,6 +969,7 @@ void CGL_Basic::DrawTrifan(const CGL_Shader* glcon, const SVertArray2D& ar)
     //glDisableVertexAttribArray(glcon->VertAttrib());
     //glDisableVertexAttribArray(glcon->TextAttrib());
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -990,8 +993,8 @@ void CGL_Basic::DrawTristrip(const CGL_Shader* glcon, const SVertArray2D& ar)
 
     glDisableVertexAttribArray(glcon->VertAttrib());
     glDisableVertexAttribArray(glcon->TextAttrib());
-
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -1017,6 +1020,7 @@ void CGL_Basic::DrawTrifanColors(const CGL_Shader* glcon, const SVertArray2D* ar
     glDisableVertexAttribArray(glcon->TextAttrib());
     glDisableVertexAttribArray(glcon->ColorAttrib());
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -1088,7 +1092,6 @@ void CGL_Basic::DrawTextureQuadRotated(const CGL_Shader* glcon, float x1, float 
 
 void CGL_Basic::DrawTextureQuad(const CGL_Shader* glcon, const CRectT<float>& vr, const CRectT<float>& tr)
 {
-
     SVertArray ar;
     CVector3<float> v;
     CVector2<float> t;
@@ -1135,7 +1138,5 @@ void CGL_Basic::DrawTextureQuad(const CGL_Shader* glcon, const CRectT<float>& vr
 
     glDisable(GL_BLEND);
 
- // checkGlError("DrawTextureQuad");
-
+    // checkGlError("DrawTextureQuad");
 }
-

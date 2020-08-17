@@ -6,26 +6,26 @@
 
 class CSDLblurline : public CSdlApp
 {
-    public:
+public:
 
-        CSDLblurline();
+    CSDLblurline();
 
-        void GameLoop();
-        virtual void InitGame();
+    void GameLoop();
+    virtual void InitGame();
 
-    protected:
+protected:
 
-        bool ParseKeys(int key, bool down);
-        void SetResolution(int w, int h);
-        void SetUpDrawing(float StereoOffset);
-        void ParseMouseRel(int xrel, int yrel);
-        void ParseMouseAbs(int xrel, int yrel);
-        void ParseArgVec();
-        void MouseWheel(bool up);
-        void Zoom(float z);
-        void Timer();
+    bool ParseKeys(int key, bool down);
+    void SetResolution(int w, int h);
+    void SetUpDrawing(float StereoOffset);
+    void ParseMouseRel(int xrel, int yrel);
+    void ParseMouseAbs(int xrel, int yrel);
+    void ParseArgVec();
+    void MouseWheel(bool up);
+    void Zoom(float z);
+    void Timer();
 
-        CGL_Context* mContext;
+    CGL_Context* mContext;
 };
 
 

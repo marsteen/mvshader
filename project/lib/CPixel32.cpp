@@ -27,8 +27,9 @@
 
 bool CPixel32::operator==(const CPixel32& p2) const
 {
-	return *((int*) rgba) == *((int*) p2.rgba);
+    return *((int*)rgba) == *((int*)p2.rgba);
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -43,9 +44,9 @@ bool CPixel32::operator==(const CPixel32& p2) const
 
 bool CPixel32::operator!=(const CPixel32& p2) const
 {
-	return *((int*) rgba) != *((int*) p2.rgba);
-
+    return *((int*)rgba) != *((int*)p2.rgba);
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -60,11 +61,12 @@ bool CPixel32::operator!=(const CPixel32& p2) const
 
 void CPixel32::SwapRedBlue()
 {
-	unsigned char swap = rgba[0];
+    unsigned char swap = rgba[0];
 
-	rgba[0] = rgba[2];
-	rgba[2] = swap;
+    rgba[0] = rgba[2];
+    rgba[2] = swap;
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -79,11 +81,12 @@ void CPixel32::SwapRedBlue()
 
 void CPixel32::Set(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-	rgba[0] = r;
-	rgba[1] = g;
-	rgba[2] = b;
-	rgba[3] = a;
+    rgba[0] = r;
+    rgba[1] = g;
+    rgba[2] = b;
+    rgba[3] = a;
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -98,8 +101,9 @@ void CPixel32::Set(unsigned char r, unsigned char g, unsigned char b, unsigned c
 
 int CPixel32::Brightness()
 {
-	return (int) rgba[0] + rgba[1] + rgba[2];
+    return (int)rgba[0] + rgba[1] + rgba[2];
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -114,6 +118,5 @@ int CPixel32::Brightness()
 
 int CPixel32::GetInt()
 {
-	return *((int*) rgba);
+    return *((int*)rgba);
 }
-

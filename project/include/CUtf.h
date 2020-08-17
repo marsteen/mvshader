@@ -20,10 +20,10 @@
 
 class CUtf
 {
-    public:
+public:
 
-        static void XmlToUtf8(const char* XmlStr, std::string* Utf8Str);
-        static std::string XmlToUtf8(const std::string& XmlStr);
+    static void XmlToUtf8(const char* XmlStr, std::string* Utf8Str);
+    static std::string XmlToUtf8(const std::string& XmlStr);
 };
 
 #endif

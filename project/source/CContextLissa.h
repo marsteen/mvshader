@@ -26,30 +26,30 @@
 
 class CContextLissa : public CGL_Context
 {
-    public:
+public:
 
-        CContextLissa();
-
-
-        void Draw2D();
-        bool Init(int w, int h);
-        void MouseMove(int x, int y, bool lb, bool rb);
-        void KeyPress(int key, bool down);
+    CContextLissa();
 
 
-    protected:
+    void Draw2D();
+    bool Init(int w, int h);
+    void MouseMove(int x, int y, bool lb, bool rb);
+    void KeyPress(int key, bool down);
 
-        void CalcLissa(TLinePoints& LissaPoints, float horInit, float verInit, float verSpeed, float horSpeed);
 
-        CGL_Shader_Color* mColorShader;
-        CGL_Shader_Blurline* mBlurlineShader;
-        CGL_Shader_Texture* mTextureShader;
-        CGL_Shader_Noise* mNoiseShader;
+protected:
 
-        int mSpeed;
-        int mResolution;
-        float mVerSpeed;
-        float mHorSpeed;
+    void CalcLissa(TLinePoints& LissaPoints, float horInit, float verInit, float verSpeed, float horSpeed);
+
+    CGL_Shader_Color* mColorShader;
+    CGL_Shader_Blurline* mBlurlineShader;
+    CGL_Shader_Texture* mTextureShader;
+    CGL_Shader_Noise* mNoiseShader;
+
+    int mSpeed;
+    int mResolution;
+    float mVerSpeed;
+    float mHorSpeed;
 };
 
 #endif

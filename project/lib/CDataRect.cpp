@@ -31,21 +31,22 @@ using namespace std;
 
 void CDataRect::Yflip()
 {
-  unsigned char* PixelData = (unsigned char*) mData;
-  int LineWidth = mWidth * (mBits / 8); // Breite des Bildes in Byte
-  unsigned char* LineBuffer = new unsigned char[LineWidth];
+    unsigned char* PixelData = (unsigned char*)mData;
+    int LineWidth = mWidth * (mBits / 8); // Breite des Bildes in Byte
+    unsigned char* LineBuffer = new unsigned char[LineWidth];
 
-  for (int y = (mHeight / 2) - 1; y >= 0; y--)
-  {
-    int off1 = y * LineWidth;
-    int off2 = ((mHeight-1) - y) * LineWidth;
+    for (int y = (mHeight / 2) - 1; y >= 0; y--)
+    {
+        int off1 = y * LineWidth;
+        int off2 = ((mHeight-1) - y) * LineWidth;
 
-    memcpy(LineBuffer, PixelData + off2, LineWidth);
-    memcpy(PixelData + off2, PixelData + off1, LineWidth);
-    memcpy(PixelData + off1, LineBuffer, LineWidth);
-  }
-  delete[] LineBuffer;
+        memcpy(LineBuffer, PixelData + off2, LineWidth);
+        memcpy(PixelData + off2, PixelData + off1, LineWidth);
+        memcpy(PixelData + off1, LineBuffer, LineWidth);
+    }
+    delete[] LineBuffer;
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -56,28 +57,28 @@ void CDataRect::Yflip()
 
 void CDataRect::Enhance(int twidth, int theight, bool CenterX, bool CenterY)
 {
-	CDataRect dstRect;
-	CBlockOperations Block;
+    CDataRect dstRect;
+    CBlockOperations Block;
 
-	dstRect.mWidth  = twidth;
-	dstRect.mHeight = theight;
-	dstRect.mBits   = mBits;
-	dstRect.mData   = (CPixel*) new char[dstRect.DataSize()];
-
-
-
-	memset(dstRect.mData, 0, dstRect.DataSize());
+    dstRect.mWidth = twidth;
+    dstRect.mHeight = theight;
+    dstRect.mBits = mBits;
+    dstRect.mData = (CPixel*)new char[dstRect.DataSize()];
 
 
-	int offx = (CenterX)  ? (twidth  - mWidth) / 2 : 0;
-	int offy = (CenterY)  ? (theight - mHeight) / 2 : 0;
 
-	Block.CopyBlock2(&dstRect, this, offx, offy, mWidth, mHeight, mBits / 8);
+    memset(dstRect.mData, 0, dstRect.DataSize());
 
-	DeleteData();
-	CopyDataFrom(&dstRect);
 
+    int offx = (CenterX)  ? (twidth  - mWidth) / 2 : 0;
+    int offy = (CenterY)  ? (theight - mHeight) / 2 : 0;
+
+    Block.CopyBlock2(&dstRect, this, offx, offy, mWidth, mHeight, mBits / 8);
+
+    DeleteData();
+    CopyDataFrom(&dstRect);
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -88,31 +89,31 @@ void CDataRect::Enhance(int twidth, int theight, bool CenterX, bool CenterY)
 
 unsigned char* CDataRect::Convert8BitTo24() const
 {
-	/*
-	CPixel24* Buffer24 = NULL;
-	if (mBits == 8)
-	{
-		const unsigned char* Buffer8Ptr = (const unsigned char*) mData;
-		Buffer24 = new CPixel24[mWidth * mHeight];
-		CPixel24* Buffer24Ptr = Buffer24;
-		for (int y = 0; y < mHeight; y++)
-		{
-			for (int x = 0; x < mWidth; x++)
-			{
-				Buffer24Ptr->rgb[0] = *Buffer8Ptr;
-				Buffer24Ptr->rgb[1] = 0;
-				Buffer24Ptr->rgb[2] = 0;
-				Buffer24Ptr++;
-				Buffer8Ptr++;
-			}
-		}
-	}
-
-	return (unsigned char*) Buffer24;
-*/
-	return NULL;
-
+    /*
+     * CPixel24* Buffer24 = NULL;
+     * if (mBits == 8)
+     * {
+     *  const unsigned char* Buffer8Ptr = (const unsigned char*) mData;
+     *  Buffer24 = new CPixel24[mWidth * mHeight];
+     *  CPixel24* Buffer24Ptr = Buffer24;
+     *  for (int y = 0; y < mHeight; y++)
+     *  {
+     *      for (int x = 0; x < mWidth; x++)
+     *      {
+     *          Buffer24Ptr->rgb[0] = *Buffer8Ptr;
+     *          Buffer24Ptr->rgb[1] = 0;
+     *          Buffer24Ptr->rgb[2] = 0;
+     *          Buffer24Ptr++;
+     *          Buffer8Ptr++;
+     *      }
+     *  }
+     * }
+     *
+     * return (unsigned char*) Buffer24;
+     */
+    return NULL;
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -125,25 +126,26 @@ unsigned char* CDataRect::Convert8BitTo24() const
 //
 //---------------------------------------------------------------------------
 
-template <typename Tpixel>
+template<typename Tpixel>
 static bool TestSegmentT(const Tpixel* PixelData, int Width, int Height)
 {
-	const Tpixel* PixelPtr = PixelData;
-	const Tpixel  Pixel0   = PixelData[0];
+    const Tpixel* PixelPtr = PixelData;
+    const Tpixel Pixel0 = PixelData[0];
 
-	for (int y = 0; y < Height; y++)
-	{
-		for (int x = 0; x < Width; x++)
-		{
-			if (PixelPtr[x] != Pixel0)
-			{
-				return false;
-			}
-		}
-		PixelPtr += Width;
-	}
-	return true;
+    for (int y = 0; y < Height; y++)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            if (PixelPtr[x] != Pixel0)
+            {
+                return false;
+            }
+        }
+        PixelPtr += Width;
+    }
+    return true;
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -158,38 +160,36 @@ static bool TestSegmentT(const Tpixel* PixelData, int Width, int Height)
 
 bool CDataRect::TestDataEqual() const
 {
-	bool r = false;
+    bool r = false;
 
-	switch (mBits)
-	{
-		case 8:
-		{
-			const CPixel8* DataPtr = (const  CPixel8*) mData;
-			r = TestSegmentT(DataPtr, mWidth, mHeight);
-		}
-		break;
+    switch (mBits)
+    {
+        case 8:
+        {
+            const CPixel8* DataPtr = (const CPixel8*)mData;
+            r = TestSegmentT(DataPtr, mWidth, mHeight);
+        }
+        break;
 
-		case 24:
-		{
-			const  CPixel24* DataPtr = (const  CPixel24*) mData;
-			r = TestSegmentT(DataPtr, mWidth, mHeight);
-		}
-		break;
+        case 24:
+        {
+            const CPixel24* DataPtr = (const CPixel24*)mData;
+            r = TestSegmentT(DataPtr, mWidth, mHeight);
+        }
+        break;
 
-		case 32:
-		{
-			const CPixel32* DataPtr = (const CPixel32*) mData;
-			r = TestSegmentT(DataPtr, mWidth, mHeight);
+        case 32:
+        {
+            const CPixel32* DataPtr = (const CPixel32*)mData;
+            r = TestSegmentT(DataPtr, mWidth, mHeight);
+        }
+        break;
 
-		}
-		break;
+        default:
 
-		default:
-
-			break;
-
-	}
-	return r;
+            break;
+    }
+    return r;
 }
 
 
@@ -206,26 +206,26 @@ bool CDataRect::TestDataEqual() const
 
 bool CDataRect::TestZero()
 {
-	if (mData != NULL)
-	{
-		int LineSize = mWidth * (mBits/8);
-		char* NullLine = new char[LineSize];
-		const char* LinePtr = (const char*) mData;
-		char  Char0 = LinePtr[0];
+    if (mData != NULL)
+    {
+        int LineSize = mWidth * (mBits/8);
+        char* NullLine = new char[LineSize];
+        const char* LinePtr = (const char*)mData;
+        char Char0 = LinePtr[0];
 
-		memset(NullLine, Char0, LineSize);
+        memset(NullLine, Char0, LineSize);
 
-		for (int y = 0; y < mHeight; y++)
-		{
-			if (memcmp(LinePtr, NullLine,  LineSize) != 0)
-			{
-				return false;
-			}
-			LinePtr += LineSize;
-		}
-		delete[] NullLine;
-	}
-	return true;
+        for (int y = 0; y < mHeight; y++)
+        {
+            if (memcmp(LinePtr, NullLine, LineSize) != 0)
+            {
+                return false;
+            }
+            LinePtr += LineSize;
+        }
+        delete[] NullLine;
+    }
+    return true;
 }
 
 
@@ -240,17 +240,17 @@ bool CDataRect::TestZero()
 
 void CDataRect::Show() const
 {
-	cout << "B=" << mBits << " W=" << mWidth  << " H=" << mHeight << " D=" << (ptrdiff_t) mData << " Size=" << DataSize() << endl;
+    cout << "B=" << mBits << " W=" << mWidth  << " H=" << mHeight << " D=" << (ptrdiff_t)mData << " Size=" << DataSize() << endl;
 }
+
 
 std::string CDataRect::Print() const
 {
-	stringstream mstr;
-	mstr << "B=" << mBits << " W=" << mWidth  << " H=" << mHeight << " D=" << (ptrdiff_t) mData << " Size=" << DataSize();
-	return mstr.str();
-	
-}
+    stringstream mstr;
 
+    mstr << "B=" << mBits << " W=" << mWidth  << " H=" << mHeight << " D=" << (ptrdiff_t)mData << " Size=" << DataSize();
+    return mstr.str();
+}
 
 
 //---------------------------------------------------------------------------
@@ -265,34 +265,35 @@ std::string CDataRect::Print() const
 
 void CDataRect::Convert32to24()
 {
-	/*
-	if (mBits == 32)
-	{
-		if (mData != NULL)
-		{
-
-
-			const CPixel32* DataPtr32 = (const CPixel32*) mData;
-			CPixel24* Data24    = new CPixel24[mWidth * mHeight];
-			CPixel24* DataPtr24 = Data24;
-
-			for (int y = 0; y < mHeight; y++)
-			{
-				for (int x = 0; x < mWidth; x++)
-				{
-					*DataPtr24 = *DataPtr32;
-					DataPtr24++;
-					DataPtr32++;
-				}
-			}
-
-			delete[] mData;
-			mData = Data24;
-			mBits = 24;
-		}
-	}
-	*/
+    /*
+     * if (mBits == 32)
+     * {
+     *  if (mData != NULL)
+     *  {
+     *
+     *
+     *      const CPixel32* DataPtr32 = (const CPixel32*) mData;
+     *      CPixel24* Data24    = new CPixel24[mWidth * mHeight];
+     *      CPixel24* DataPtr24 = Data24;
+     *
+     *      for (int y = 0; y < mHeight; y++)
+     *      {
+     *          for (int x = 0; x < mWidth; x++)
+     *          {
+     * DataPtr24 = *DataPtr32;
+     *              DataPtr24++;
+     *              DataPtr32++;
+     *          }
+     *      }
+     *
+     *      delete[] mData;
+     *      mData = Data24;
+     *      mBits = 24;
+     *  }
+     * }
+     */
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -303,44 +304,44 @@ void CDataRect::Convert32to24()
 
 void CDataRect::SwapRedBlue()
 {
-	switch (mBits)
-	{
-		case 24:		
-		{		
-			CPixel24* PixelPtr = (CPixel24*) mData;
+    switch (mBits)
+    {
+        case 24:
+        {
+            CPixel24* PixelPtr = (CPixel24*)mData;
 
-			for (int y = 0; y < mHeight; y++)
-			{
-				for (int x = 0; x < mWidth;  x++)
-				{
-					char s = PixelPtr->rgb[0];
-					PixelPtr->rgb[0] = PixelPtr->rgb[2];
-					PixelPtr->rgb[2] = s;
-					PixelPtr++;
-				}
-			}
-		}
-		break;
-		
-		case 32:
-		{		
-			CPixel32* PixelPtr = (CPixel32*) mData;
+            for (int y = 0; y < mHeight; y++)
+            {
+                for (int x = 0; x < mWidth; x++)
+                {
+                    char s = PixelPtr->rgb[0];
+                    PixelPtr->rgb[0] = PixelPtr->rgb[2];
+                    PixelPtr->rgb[2] = s;
+                    PixelPtr++;
+                }
+            }
+        }
+        break;
 
-			for (int y = 0; y < mHeight; y++)
-			{
-				for (int x = 0; x < mWidth;  x++)
-				{
-					char s = PixelPtr->rgba[0];
-					PixelPtr->rgba[0] = PixelPtr->rgba[2];
-					PixelPtr->rgba[2] = s;
-					PixelPtr++;
-				}
-			}
-		}
-		break;
-		
-	}
+        case 32:
+        {
+            CPixel32* PixelPtr = (CPixel32*)mData;
+
+            for (int y = 0; y < mHeight; y++)
+            {
+                for (int x = 0; x < mWidth; x++)
+                {
+                    char s = PixelPtr->rgba[0];
+                    PixelPtr->rgba[0] = PixelPtr->rgba[2];
+                    PixelPtr->rgba[2] = s;
+                    PixelPtr++;
+                }
+            }
+        }
+        break;
+    }
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -351,39 +352,37 @@ void CDataRect::SwapRedBlue()
 
 void CDataRect::EnhanceCenter(int twidth, int theight, int* ex, int* ey)
 {
-	CDataRect dstRect;
-	CBlockOperations Block;
+    CDataRect dstRect;
+    CBlockOperations Block;
 
-	if (ex != NULL)
-	{
-		*ex = twidth - dstRect.mWidth;
+    if (ex != NULL)
+    {
+        *ex = twidth - dstRect.mWidth;
+    }
 
-	}
-
-	if (ey != NULL)
-	{
-		*ey = theight - dstRect.mHeight;
-	}
-
-
-	dstRect.mWidth  = twidth;
-	dstRect.mHeight = theight;
-	dstRect.mBits   = mBits;
-	dstRect.mData   = (CPixel*) new char[dstRect.mWidth * dstRect.mHeight * (mBits / 8)];
+    if (ey != NULL)
+    {
+        *ey = theight - dstRect.mHeight;
+    }
 
 
+    dstRect.mWidth = twidth;
+    dstRect.mHeight = theight;
+    dstRect.mBits = mBits;
+    dstRect.mData = (CPixel*)new char[dstRect.mWidth * dstRect.mHeight * (mBits / 8)];
 
-	memset(dstRect.mData, 0, dstRect.DataSize());
 
 
-	int offx = (twidth  - mWidth) / 2;
-	int offy = (theight - mHeight) / 2;
+    memset(dstRect.mData, 0, dstRect.DataSize());
 
-	Block.CopyBlock2(&dstRect, this, offx, offy, mWidth, mHeight, mBits / 8);
 
-	DeleteData();
-	CopyDataFrom(&dstRect);
+    int offx = (twidth  - mWidth) / 2;
+    int offy = (theight - mHeight) / 2;
 
+    Block.CopyBlock2(&dstRect, this, offx, offy, mWidth, mHeight, mBits / 8);
+
+    DeleteData();
+    CopyDataFrom(&dstRect);
 }
 
 
@@ -399,59 +398,58 @@ void CDataRect::EnhanceCenter(int twidth, int theight, int* ex, int* ey)
 
 void CDataRect::EnhanceBlock(int BlockW, int BlockH, int* ex, int* ey, bool CenterX, bool CenterY)
 {
-	int wrest = mWidth % BlockW;
-	int hrest = mHeight % BlockH;
+    int wrest = mWidth % BlockW;
+    int hrest = mHeight % BlockH;
 
-	if ((wrest != 0) || (hrest != 0))
-	{
-		int TargetW;
-		int TargetH;
+    if ((wrest != 0) || (hrest != 0))
+    {
+        int TargetW;
+        int TargetH;
 
-		if (wrest != 0)
-		{
-			TargetW = ((mWidth / BlockW) + 1) * BlockW;
-		}
-		else
-		{
-			TargetW = mWidth;
-		}
+        if (wrest != 0)
+        {
+            TargetW = ((mWidth / BlockW) + 1) * BlockW;
+        }
+        else
+        {
+            TargetW = mWidth;
+        }
 
-		if (hrest != 0)
-		{
-			TargetH = ((mHeight / BlockH) + 1) * BlockH;
-		}
-		else
-		{
-			TargetH = mHeight;
-		}
+        if (hrest != 0)
+        {
+            TargetH = ((mHeight / BlockH) + 1) * BlockH;
+        }
+        else
+        {
+            TargetH = mHeight;
+        }
 
-		if (ex != NULL)
-		{
-			*ex = TargetW - mWidth;
-		}
+        if (ex != NULL)
+        {
+            *ex = TargetW - mWidth;
+        }
 
-		if (ey != NULL)
-		{
-			*ey = TargetH - mHeight;
-		}
+        if (ey != NULL)
+        {
+            *ey = TargetH - mHeight;
+        }
 
-		Enhance(TargetW, TargetH, false, false);
+        Enhance(TargetW, TargetH, false, false);
+    }
+    else
+    {
+        if (ex != NULL)
+        {
+            *ex = 0;
+        }
 
-
-	}
-	else
-	{
-		if (ex != NULL)
-		{
-			*ex = 0;
-		}
-
-		if (ey != NULL)
-		{
-			*ey = 0;
-		}
-	}
+        if (ey != NULL)
+        {
+            *ey = 0;
+        }
+    }
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -465,60 +463,58 @@ void CDataRect::EnhanceBlock(int BlockW, int BlockH, int* ex, int* ey, bool Cent
 
 void CDataRect::Convert24to32()
 {
-	/*
-	if (mBits == 24)
-	{
-		const CPixel24* DataPtr24 = (const CPixel24*) mData;
-		CPixel32* Data32    = new CPixel32[mWidth * mHeight];
-		CPixel32* DataPtr32 = Data32;
-
-		for (int y = 0; y < mHeight; y++)
-		{
-			for (int x = 0; x < mWidth; x++)
-			{
-				*DataPtr32 = *DataPtr24;
-				DataPtr32->rgba[3] = 0xFF;
-				DataPtr24++;
-				DataPtr32++;
-			}
-		}
-
-		delete[] mData;
-		mData = Data32;
-		mBits = 32;
-	}
-	*/
+    /*
+     * if (mBits == 24)
+     * {
+     *  const CPixel24* DataPtr24 = (const CPixel24*) mData;
+     *  CPixel32* Data32    = new CPixel32[mWidth * mHeight];
+     *  CPixel32* DataPtr32 = Data32;
+     *
+     *  for (int y = 0; y < mHeight; y++)
+     *  {
+     *      for (int x = 0; x < mWidth; x++)
+     *      {
+     * DataPtr32 = *DataPtr24;
+     *          DataPtr32->rgba[3] = 0xFF;
+     *          DataPtr24++;
+     *          DataPtr32++;
+     *      }
+     *  }
+     *
+     *  delete[] mData;
+     *  mData = Data32;
+     *  mBits = 32;
+     * }
+     */
 }
-
-
 
 
 void CDataRect::Convert24to8()
 {
-	if (mBits == 24)
-	{
-		
-		const unsigned char* DataPtr24 = (const unsigned char*) mData;
-		unsigned char* NewData8  = new unsigned char[mWidth * mHeight];
-		unsigned char* DataPtr8  = NewData8;
-		
+    if (mBits == 24)
+    {
+        const unsigned char* DataPtr24 = (const unsigned char*)mData;
+        unsigned char* NewData8 = new unsigned char[mWidth * mHeight];
+        unsigned char* DataPtr8 = NewData8;
 
-		for (int y = 0; y < mHeight; y++)
-		{
-			for (int x = 0; x < mWidth; x++)
-			{
-        *DataPtr8 = (DataPtr24[0] + DataPtr24[1] + DataPtr24[2]) / 3;					
-				
-				DataPtr8  += 1;
-				DataPtr24 += 3;
-			}
-		}
 
-		delete[] mData;
-		mData = (CPixel*) NewData8;
-		mBits = 8;
-	}	
+        for (int y = 0; y < mHeight; y++)
+        {
+            for (int x = 0; x < mWidth; x++)
+            {
+                *DataPtr8 = (DataPtr24[0] + DataPtr24[1] + DataPtr24[2]) / 3;
+
+                DataPtr8 += 1;
+                DataPtr24 += 3;
+            }
+        }
+
+        delete[] mData;
+        mData = (CPixel*)NewData8;
+        mBits = 8;
+    }
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -534,32 +530,33 @@ void CDataRect::Convert24to8()
 
 bool CDataRect::AlphaTo32()
 {
-	bool r = false;
-	if (mBits == 8)
-	{
-		unsigned char* PixelDataPtr = (unsigned char*) mData;
+    bool r = false;
 
-		int Size = mWidth * mHeight;
+    if (mBits == 8)
+    {
+        unsigned char* PixelDataPtr = (unsigned char*)mData;
 
-		unsigned char* C32Data = new unsigned char[Size * 4];
-		unsigned char* C32DataPtr = C32Data;
+        int Size = mWidth * mHeight;
 
-		for (int i = 0; i < Size; i++)
-		{
-			C32DataPtr[0] = *PixelDataPtr;
-			C32DataPtr[1] = *PixelDataPtr;
-			C32DataPtr[2] = *PixelDataPtr;
-			C32DataPtr[3] = *PixelDataPtr;
+        unsigned char* C32Data = new unsigned char[Size * 4];
+        unsigned char* C32DataPtr = C32Data;
 
-			PixelDataPtr += 1;
-			C32DataPtr   += 4;
-		}
-		delete[] mData;
-		mData = (CPixel32*) C32Data;
-		mBits = 32;
-		r = true;
-	}
-	return r;
+        for (int i = 0; i < Size; i++)
+        {
+            C32DataPtr[0] = *PixelDataPtr;
+            C32DataPtr[1] = *PixelDataPtr;
+            C32DataPtr[2] = *PixelDataPtr;
+            C32DataPtr[3] = *PixelDataPtr;
+
+            PixelDataPtr += 1;
+            C32DataPtr += 4;
+        }
+        delete[] mData;
+        mData = (CPixel32*)C32Data;
+        mBits = 32;
+        r = true;
+    }
+    return r;
 }
 
 
@@ -578,29 +575,30 @@ bool CDataRect::AlphaTo32()
 
 bool CDataRect::AlphaTo32(unsigned char r, unsigned char g, unsigned char b)
 {
-	bool d = false;
-	if (mBits == 8)
-	{
-		unsigned char* PixelDataPtr = (unsigned char*) mData;
+    bool d = false;
 
-		int Size = mWidth * mHeight;
+    if (mBits == 8)
+    {
+        unsigned char* PixelDataPtr = (unsigned char*)mData;
 
-		unsigned char* C32Data = new unsigned char[Size * 4];
-		unsigned char* C32DataPtr = C32Data;
+        int Size = mWidth * mHeight;
 
-		for (int i = 0; i < Size; i++)
-		{
-			C32DataPtr[0] = r;
-			C32DataPtr[1] = g;
-			C32DataPtr[2] = b;
-			C32DataPtr[3] = *PixelDataPtr;
+        unsigned char* C32Data = new unsigned char[Size * 4];
+        unsigned char* C32DataPtr = C32Data;
 
-			PixelDataPtr += 1;
-			C32DataPtr   += 4;
-		}
-		mData = (CPixel32*) C32Data;
-		mBits = 32;
-		d = true;
-	}
-	return d;
+        for (int i = 0; i < Size; i++)
+        {
+            C32DataPtr[0] = r;
+            C32DataPtr[1] = g;
+            C32DataPtr[2] = b;
+            C32DataPtr[3] = *PixelDataPtr;
+
+            PixelDataPtr += 1;
+            C32DataPtr += 4;
+        }
+        mData = (CPixel32*)C32Data;
+        mBits = 32;
+        d = true;
+    }
+    return d;
 }

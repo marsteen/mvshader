@@ -41,38 +41,41 @@ extern void checkGlError(const char* func);
 
 void CGL_Texture::DeleteTexture()
 {
-	if (mTexHandle != 0)
-	{
-		glDeleteTextures(1, &mTexHandle);
-		mTexHandle = 0;
-	}
+    if (mTexHandle != 0)
+    {
+        glDeleteTextures(1, &mTexHandle);
+        mTexHandle = 0;
+    }
 }
+
 
 #if 0
 
 void CGL_Texture::SetTextureData24Bit(int width, int height, const void* data)
 {
-  	int	internalFormat  = GL_RGB;
-		int	format          = GL_RGB; 			
-    int type            = GL_UNSIGNED_BYTE;
+    int internalFormat = GL_RGB;
+    int format = GL_RGB;
+    int type = GL_UNSIGNED_BYTE;
 
-  
+
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-		
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		checkGlError("glTexParameteri (GL_TEXTURE_MIN_FILTER)");
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); //
-		checkGlError("glTexParameteri (GL_TEXTURE_WRAP_T)");
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    checkGlError("glTexParameteri (GL_TEXTURE_MIN_FILTER)");
 
 
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, type, data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);        //
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);        //
+    checkGlError("glTexParameteri (GL_TEXTURE_WRAP_T)");
+
+
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, type, data);
 }
+
+
 #endif
 
 //---------------------------------------------------------------------------
@@ -88,85 +91,80 @@ void CGL_Texture::SetTextureData24Bit(int width, int height, const void* data)
 
 bool CGL_Texture::CreateTexture(const CDataRect* glib)
 {
-	//glEnable(GL_TEXTURE_2D); // Veraltet
-  //checkGlError("glEnable(GL_TEXTURE_2D)");
-  
-  int internalFormat;
-  int format;
-	int type;
-	
-  bool r = true;
+    //glEnable(GL_TEXTURE_2D); // Veraltet
+    //checkGlError("glEnable(GL_TEXTURE_2D)");
 
-	glGenTextures(1, &mTexHandle);				// Create One Texture
-  checkGlError("glGenTextures");
+    int internalFormat;
+    int format;
+    int type;
 
+    bool r = true;
 
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	
-  checkGlError("glBindTexture");
-	
-	switch (glib->mBits)
-	{
-		case 16:
-			
-			internalFormat  = GL_R16F; //GL_R16;
-			format          = GL_RED;
-			type            = GL_UNSIGNED_SHORT;
-			break;	
-		
-		
-		case 24: 
-			
-			internalFormat  = GL_RGB;
-			format          = GL_RGB; 			
-			type            = GL_UNSIGNED_BYTE;
-		  break;
-			
-		case 32: 
-			
-			internalFormat  = GL_RGBA;
-			format          = GL_RGBA;
-			type            = GL_UNSIGNED_BYTE;
-			break;
-		
-		default:
-		
-		
-		  //gdstr << "Invalid texture format:" << glib->mBits;
-		  //gderr();
-			
-			r = false;
-			break;
-	}
-
-	if (r)
-	{
-		//       GL_LINEAR
-		// oder  GL_NEAREST
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-		
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		checkGlError("glTexParameteri (GL_TEXTURE_MIN_FILTER)");
+    glGenTextures(1, &mTexHandle);              // Create One Texture
+    checkGlError("glGenTextures");
 
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); //
-		checkGlError("glTexParameteri (GL_TEXTURE_WRAP_T)");
+    //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    checkGlError("glBindTexture");
+
+    switch (glib->mBits)
+    {
+        case 16:
+
+            internalFormat = GL_R16F;  //GL_R16;
+            format = GL_RED;
+            type = GL_UNSIGNED_SHORT;
+            break;
 
 
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, glib->mWidth, glib->mHeight, 0, format, type, glib->mData);
-		checkGlError("glTexImage2D");
-		CopyDataFrom(glib);
-	}
-	
-	
-	return r;
+        case 24:
 
+            internalFormat = GL_RGB;
+            format = GL_RGB;
+            type = GL_UNSIGNED_BYTE;
+            break;
+
+        case 32:
+
+            internalFormat = GL_RGBA;
+            format = GL_RGBA;
+            type = GL_UNSIGNED_BYTE;
+            break;
+
+        default:
+
+
+            //gdstr << "Invalid texture format:" << glib->mBits;
+            //gderr();
+
+            r = false;
+            break;
+    }
+
+    if (r)
+    {
+        //       GL_LINEAR
+        // oder  GL_NEAREST
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        checkGlError("glTexParameteri (GL_TEXTURE_MIN_FILTER)");
+
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);    //
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);    //
+        checkGlError("glTexParameteri (GL_TEXTURE_WRAP_T)");
+
+
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, glib->mWidth, glib->mHeight, 0, format, type, glib->mData);
+        checkGlError("glTexImage2D");
+        CopyDataFrom(glib);
+    }
+
+
+    return r;
 }
-
-
-
-

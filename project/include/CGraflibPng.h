@@ -32,24 +32,24 @@
 
 class CGraflibPng : public CGraflib
 {
-    public:
+public:
 
 
 
-        bool Read(const char* Filename, SFileReadInfo* fri = NULL);
-        int Write(const char* Filename, bool bCompFlag, CFileIO* fio = NULL);
+    bool Read(const char* Filename, SFileReadInfo* fri = NULL);
+    int Write(const char* Filename, bool bCompFlag, CFileIO* fio = NULL);
 
-        bool OpenReadLine(const char* Filename) { return false; }
-        void ReadLine(void* LineBuffer) { }
-        void CloseReadLine() { }
+    bool OpenReadLine(const char* Filename) { return false; }
+    void ReadLine(void* LineBuffer) { }
+    void CloseReadLine() { }
 
-        bool OpenWriteLine(const char* Filename) { return false; }
-        void WriteLine(const void* LineBuffer) { }
-        void CloseWriteLine() { }
+    bool OpenWriteLine(const char* Filename) { return false; }
+    void WriteLine(const void* LineBuffer) { }
+    void CloseWriteLine() { }
 
-    protected:
+protected:
 
-        void TestPalette(const void* vpinfo);
+    void TestPalette(const void* vpinfo);
 };
 
 #endif

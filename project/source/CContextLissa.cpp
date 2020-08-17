@@ -34,7 +34,7 @@ using namespace NGlobalLog;
 float GlobalAspect = 1.0;
 //static CGL_Freetype* Freetype;
 static CPlayObject* block;
-static CPlayObject  racket;
+static CPlayObject racket;
 static CPointObject Ball;
 static CFrameBuffer* FrameBuffer;
 static float LineWidth = 0.015f;
@@ -45,16 +45,16 @@ extern void checkGlError(const char* func);
 
 CGL_Context* CGL_Context::CreateContext()
 {
-  return new CContextLissa;
+    return new CContextLissa;
 }
 
 
 CContextLissa::CContextLissa() : CGL_Context()
 {
-     mVerSpeed = 1.0f;
-     mHorSpeed = 2.0f;
-     mResolution = 10;
-     mSpeed = 1;
+    mVerSpeed = 1.0f;
+    mHorSpeed = 2.0f;
+    mResolution = 10;
+    mSpeed = 1;
 }
 
 
@@ -92,11 +92,11 @@ void CContextLissa::CalcLissa(TLinePoints& LissaPoints, float horInit, float ver
 void CContextLissa::KeyPress(int key, bool down)
 {
     float w = 1.0f;
+
     if (down)
     {
         switch (key)
         {
-
             case 'r':
 
                 mHorSpeed = 1.0f;
@@ -107,7 +107,10 @@ void CContextLissa::KeyPress(int key, bool down)
 
             case 'a':
 
-                if (mHorSpeed > 1.0f) mHorSpeed -= w;
+                if (mHorSpeed > 1.0f)
+                {
+                    mHorSpeed -= w;
+                }
                 break;
 
             case 'd':
@@ -117,7 +120,10 @@ void CContextLissa::KeyPress(int key, bool down)
 
             case 's':
 
-                if (mVerSpeed > 1.0f) mVerSpeed -= w;
+                if (mVerSpeed > 1.0f)
+                {
+                    mVerSpeed -= w;
+                }
                 break;
 
             case 'w':
@@ -127,7 +133,10 @@ void CContextLissa::KeyPress(int key, bool down)
 
             case 'n':
 
-                if (mResolution > 1) mResolution -= 1;
+                if (mResolution > 1)
+                {
+                    mResolution -= 1;
+                }
                 break;
 
             case 'm':
@@ -152,7 +161,10 @@ void CContextLissa::KeyPress(int key, bool down)
 
             case 'u':
 
-                if (mSpeed > 1) mSpeed -= 1;
+                if (mSpeed > 1)
+                {
+                    mSpeed -= 1;
+                }
                 break;
 
             case 'i':
@@ -160,20 +172,51 @@ void CContextLissa::KeyPress(int key, bool down)
                 mSpeed++;
                 break;
 
-            case '1': mHorSpeed = 2; mVerSpeed = 1;  break;
-            case '2': mHorSpeed = 3; mVerSpeed = 2;  break;
-            case '3': mHorSpeed = 3; mVerSpeed = 4;  break;
-            case '4': mHorSpeed = 3; mVerSpeed = 5;  break;
-            case '5': mHorSpeed = 3; mVerSpeed = 7;  break;
-            case '6': mHorSpeed = 4; mVerSpeed = 7;  break;
-            case '7': mHorSpeed = 5; mVerSpeed = 7;  break;
-            case '8': mHorSpeed = 7; mVerSpeed = 8;  break;
+            case '1':
+                mHorSpeed = 2;
+                mVerSpeed = 1;
+                break;
 
+            case '2':
+                mHorSpeed = 3;
+                mVerSpeed = 2;
+                break;
+
+            case '3':
+                mHorSpeed = 3;
+                mVerSpeed = 4;
+                break;
+
+            case '4':
+                mHorSpeed = 3;
+                mVerSpeed = 5;
+                break;
+
+            case '5':
+                mHorSpeed = 3;
+                mVerSpeed = 7;
+                break;
+
+            case '6':
+                mHorSpeed = 4;
+                mVerSpeed = 7;
+                break;
+
+            case '7':
+                mHorSpeed = 5;
+                mVerSpeed = 7;
+                break;
+
+            case '8':
+                mHorSpeed = 7;
+                mVerSpeed = 8;
+                break;
         }
     }
 
     cout << "HS=" << mHorSpeed << " VS=" << mVerSpeed << " RES=" << mResolution << " SPD=" << mSpeed << endl;
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -207,6 +250,7 @@ bool CContextLissa::Init(int w, int h)
     return true;
 }
 
+
 //---------------------------------------------------------------------------
 //
 //
@@ -220,12 +264,13 @@ void CContextLissa::MouseMove(int xrel, int yrel, bool lb, bool rb)
 {
     if (fabs(xrel) < 100)
     {
-        racket.mSpeed  = float(xrel) / 500.0f;
+        racket.mSpeed = float(xrel) / 500.0f;
         racket.mPos.x += racket.mSpeed;
     }
 }
 
-#define LINE_W 0.04f
+
+#define LINE_W    0.04f
 
 
 
@@ -234,10 +279,10 @@ static void DrawTestQuad(CGL_Shader_Blurline* shader)
     static const float ColorGreen[] = { 0.0f, 1.0f, 0.0f, 1.0f }; //
     std::vector<CVector2<float> > vec;
 
-    CVector2<float> li_ob(-0.5f,  0.5f);
-    CVector2<float> re_ob( 0.5f,  0.5f);
-    CVector2<float> li_un(-0.5f,  -0.5f);
-    CVector2<float> re_un( 0.5f,  -0.5f);
+    CVector2<float> li_ob(-0.5f, 0.5f);
+    CVector2<float> re_ob(0.5f, 0.5f);
+    CVector2<float> li_un(-0.5f, -0.5f);
+    CVector2<float> re_un(0.5f, -0.5f);
 
 #define LEFT_TO_RIGHT
 
@@ -254,8 +299,6 @@ static void DrawTestQuad(CGL_Shader_Blurline* shader)
 #endif
 
     CLineStrip::Draw4(shader, vec, 0.05f, ColorGreen);
-
-
 }
 
 
@@ -277,10 +320,10 @@ void CContextLissa::Draw2D()
     static float verInit;
 
     //cout << "Draw2D() START" << endl;
-    static const float ColorWhite[]  = { 1.0f, 1.0f, 1.0f, 1.0f }; //
-    static const float ColorGrey50[] = { 0.5f, 0.5f, 0.5f, 1.0f }; //
-    static const float ColorBlue[]   = { 0.5f, 0.5f, 0.5f, 1.0f }; //
-    static const float ColorGrey[]   =
+    static const float ColorWhite[] = { 1.0f, 1.0f, 1.0f, 1.0f };   //
+    static const float ColorGrey50[] = { 0.5f, 0.5f, 0.5f, 1.0f };  //
+    static const float ColorBlue[] = { 0.5f, 0.5f, 0.5f, 1.0f };    //
+    static const float ColorGrey[] =
     {
         0.0f, 0.1f, 0.2f, 1.0f, // links unten
         0.0f, 0.1f, 0.2f, 1.0f, // rechts unten
@@ -295,7 +338,7 @@ void CContextLissa::Draw2D()
 
     mColorShader->UseProgram();
     mColorShader->SetUniformFloat("uAspect", mAspect);
-    CGL_Basic::DrawQuad(mColorShader, -1.0, -1.0f,  1.0f, 1.0f, ColorGrey);
+    CGL_Basic::DrawQuad(mColorShader, -1.0, -1.0f, 1.0f, 1.0f, ColorGrey);
 
     mBlurlineShader->UseProgram();
     mBlurlineShader->SetUniformFloat("uAspect", mAspect);
@@ -318,28 +361,30 @@ void CContextLissa::Draw2D()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
     TLinePoints LissaPoints;
+
     CalcLissa(LissaPoints, horInit, verInit, mHorSpeed, mVerSpeed);
     CLineStrip::Draw4(mBlurlineShader, LissaPoints, LineWidth, ColorWhite);
     horInit += 0.02 * mSpeed;
     verInit += 0.02 * mSpeed;
 
-    if (horInit > M_PI*2) horInit -= M_PI*2;
-    if (verInit > M_PI*2) verInit -= M_PI*2;
+    if (horInit > M_PI*2)
+    {
+        horInit -= M_PI*2;
+    }
+    if (verInit > M_PI*2)
+    {
+        verInit -= M_PI*2;
+    }
 
     //DrawTestQuad(mBlurlineShader);
 
     /*
-    LineData[0].Draw(mBlurlineShader, -1.0f, -1.0f,  1.0f,-1.0f, LINE_W, ColorGreen);
-    LineData[1].Draw(mBlurlineShader,  1.0f, -1.0f,  1.0f, 1.0f, LINE_W, ColorGreen);
-    LineData[2].Draw(mBlurlineShader,  1.0f,  1.0f, -1.0f, 1.0f, LINE_W, ColorGreen);
-    LineData[3].Draw(mBlurlineShader, -1.0f,  1.0f, -1.0f,-1.0f, LINE_W, ColorGreen);
-    */
+     * LineData[0].Draw(mBlurlineShader, -1.0f, -1.0f,  1.0f,-1.0f, LINE_W, ColorGreen);
+     * LineData[1].Draw(mBlurlineShader,  1.0f, -1.0f,  1.0f, 1.0f, LINE_W, ColorGreen);
+     * LineData[2].Draw(mBlurlineShader,  1.0f,  1.0f, -1.0f, 1.0f, LINE_W, ColorGreen);
+     * LineData[3].Draw(mBlurlineShader, -1.0f,  1.0f, -1.0f,-1.0f, LINE_W, ColorGreen);
+     */
 
     glUseProgram(0);
     //cout << "Draw2D() END" << endl;
 }
-
-
-
-
-

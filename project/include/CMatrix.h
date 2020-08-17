@@ -22,44 +22,44 @@
 template<typename T>
 class CMatrix
 {
-    public:
+public:
 
-        CMatrix()
-        {
-            MatSetIdentity();
-        }
-
-
-        void MatSetIdentity();
-
-        void Translate(T tx, T ty, T tz);
-        void Scale(T sx, T sy, T sz);
-        void RotateZ(T angle);
-        void MatTransformVertex(const CVector2<T>* sv, CVector2<T>* dv) const;
-        void MatTransformVertex(const CVector3<T>* sv, CVector3<T>* dv) const;
+    CMatrix()
+    {
+        MatSetIdentity();
+    }
 
 
-        void Print(char* buff) const;
+    void MatSetIdentity();
 
-        const T* Mat() const
-        {
-            return mMat;
-        }
-
-
-    protected:
-
-        void Multiply(const CMatrix<T>& m2);
-        void CopyFrom(const CMatrix<T>& m2);
+    void Translate(T tx, T ty, T tz);
+    void Scale(T sx, T sy, T sz);
+    void RotateZ(T angle);
+    void MatTransformVertex(const CVector2<T>* sv, CVector2<T>* dv) const;
+    void MatTransformVertex(const CVector3<T>* sv, CVector3<T>* dv) const;
 
 
-        T GetElem(int x, int y) const;
-        T GetElem2(int x, int y) const;
-        void SetElem(T value, int x, int y);
-        void AddElem(T value, int x, int y);
-        void MultElem(T value, int x, int y);
+    void Print(char* buff) const;
 
-        T mMat[16];
+    const T* Mat() const
+    {
+        return mMat;
+    }
+
+
+protected:
+
+    void Multiply(const CMatrix<T>& m2);
+    void CopyFrom(const CMatrix<T>& m2);
+
+
+    T GetElem(int x, int y) const;
+    T GetElem2(int x, int y) const;
+    void SetElem(T value, int x, int y);
+    void AddElem(T value, int x, int y);
+    void MultElem(T value, int x, int y);
+
+    T mMat[16];
 };
 
 #include "CMatrix.hpp"

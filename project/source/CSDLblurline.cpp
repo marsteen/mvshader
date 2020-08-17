@@ -32,7 +32,6 @@ CSDLblurline::CSDLblurline()
 }
 
 
-
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CSDLblurline
@@ -47,6 +46,7 @@ void CSDLblurline::ParseArgVec()
     CSdlApp::ParseArgVec();
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CSDLblurline
@@ -60,6 +60,7 @@ void CSDLblurline::ParseMouseRel(int xrel, int yrel)
 {
     mContext->MouseMove(xrel, yrel, mLeftMouseButton, mRightMouseButton);
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -93,8 +94,8 @@ void CSDLblurline::SetUpDrawing(float StereoOffset)
     //
     // 2D Operationen
     //
-
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -109,9 +110,10 @@ void CSDLblurline::Timer()
 {
     if (mContext != nullptr)
     {
-       mContext->Timer();
+        mContext->Timer();
     }
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -125,8 +127,8 @@ void CSDLblurline::Timer()
 void CSDLblurline::MouseWheel(bool up)
 {
     mContext->MouseWheel(up);
-
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -139,8 +141,6 @@ void CSDLblurline::MouseWheel(bool up)
 
 void CSDLblurline::GameLoop()
 {
-
-
     if (mInitFlag)
     {
         glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -166,6 +166,7 @@ void CSDLblurline::GameLoop()
     }
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CSDLblurline
@@ -177,9 +178,9 @@ void CSDLblurline::GameLoop()
 
 void CSDLblurline::InitGame()
 {
-  glewInit();
-  mContext = CGL_Context::CreateContext();
-  mContext->Init(mXres, mYres, &mCmdArgVec);
+    glewInit();
+    mContext = CGL_Context::CreateContext();
+    mContext->Init(mXres, mYres, &mCmdArgVec);
 
     //SDL_WM_SetCaption(GlobalWindowName, GlobalWindowName);
 }
@@ -195,6 +196,7 @@ void CSDLblurline::InitGame()
 bool CSDLblurline::ParseKeys(int key, bool down)
 {
     bool r = true;
+
     if (down)
     {
         switch (key)
@@ -207,8 +209,6 @@ bool CSDLblurline::ParseKeys(int key, bool down)
                     mContext->Finish();
                 }
                 break;
-
-
         }
 
         if ((key >= SDLK_a) && (key <= SDLK_z))
@@ -220,11 +220,11 @@ bool CSDLblurline::ParseKeys(int key, bool down)
         {
             mContext->KeyPress(key - SDLK_0 + '0', down);
         }
-
     }
 
     return r;
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -237,9 +237,8 @@ bool CSDLblurline::ParseKeys(int key, bool down)
 
 void CSDLblurline::SetResolution(int w, int h)
 {
-  if (!mInitFlag)
-  {
-    mInitFlag = true;
-  }
+    if (!mInitFlag)
+    {
+        mInitFlag = true;
+    }
 }
-

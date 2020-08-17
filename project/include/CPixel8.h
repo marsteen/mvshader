@@ -21,27 +21,27 @@
 
 class CPixel8 : public CPixel
 {
-    public:
+public:
 
-        void operator=(const CPixel8& p2)
-        {
-            a = p2.a;
-        }
-
-
-        bool operator==(const CPixel8& p2) const
-        {
-            return a == p2.a;
-        }
+    void operator=(const CPixel8& p2)
+    {
+        a = p2.a;
+    }
 
 
-        bool operator!=(const CPixel8& p2) const
-        {
-            return a != p2.a;
-        }
+    bool operator==(const CPixel8& p2) const
+    {
+        return a == p2.a;
+    }
 
 
-        unsigned char a;
+    bool operator!=(const CPixel8& p2) const
+    {
+        return a != p2.a;
+    }
+
+
+    unsigned char a;
 };
 
 #endif

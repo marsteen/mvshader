@@ -9,12 +9,12 @@ typedef std::vector<CVector2<float> > TLinePoints;
 
 class CLineStrip
 {
-    public:
+public:
 
-        static void Draw(CGL_Shader_Blurline* shader, const TLinePoints& points, float lw, const float* color);
-        static void Draw2(CGL_Shader_Blurline* shader, const TLinePoints& points, float lw, const float* color);
-        static void Draw3(CGL_Shader_Blurline* shader, const TLinePoints& points, float lw, const float* color);
-        static void Draw4(CGL_Shader_Blurline* shader, const TLinePoints& points, float lw, const float* color);
+    static void Draw(CGL_Shader_Blurline* shader, const TLinePoints& points, float lw, const float* color);
+    static void Draw2(CGL_Shader_Blurline* shader, const TLinePoints& points, float lw, const float* color);
+    static void Draw3(CGL_Shader_Blurline* shader, const TLinePoints& points, float lw, const float* color);
+    static void Draw4(CGL_Shader_Blurline* shader, const TLinePoints& points, float lw, const float* color);
 };
 
 #endif

@@ -6,35 +6,35 @@
 
 class CPlayObject : public CLineData
 {
-    public:
+public:
 
-        CPlayObject()
-        {
-            mPos.x = 0.0f;
-            mPos.y = 0.0f;
-            mVisible = true;
-        }
-
-
-        int Intersect(const CPointObject* ball) const;
-
-        void Draw(CGL_Shader_Blurline* shader,
-            float x1, float y1,
-            float x2, float y2,
-            float LineWidth,
-            const float* color);
-
-        void AddPos(float xrel, float yrel);
-
-        bool mVisible;
-        CVector2<float> mPos;
-        float mSpeed;
-
-    protected:
+    CPlayObject()
+    {
+        mPos.x = 0.0f;
+        mPos.y = 0.0f;
+        mVisible = true;
+    }
 
 
+    int Intersect(const CPointObject* ball) const;
 
-        CRectT<float> mRect;
+    void Draw(CGL_Shader_Blurline* shader,
+        float x1, float y1,
+        float x2, float y2,
+        float LineWidth,
+        const float* color);
+
+    void AddPos(float xrel, float yrel);
+
+    bool mVisible;
+    CVector2<float> mPos;
+    float mSpeed;
+
+protected:
+
+
+
+    CRectT<float> mRect;
 };
 
 #endif

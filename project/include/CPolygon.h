@@ -32,97 +32,97 @@ struct SPolyPoint : public CVector2<float>
 
 class CPolygon
 {
-    public:
+public:
 
-        CPolygon()
-        {
-            mTotalLength = 0.0;
-        }
-
-
-        ~CPolygon()
-        {
-            Clear();
-        }
+    CPolygon()
+    {
+        mTotalLength = 0.0;
+    }
 
 
-        void CalcLength();
-
-        int Size() const
-        {
-            return mPoints.size();
-        }
+    ~CPolygon()
+    {
+        Clear();
+    }
 
 
-        float ix(int i) const
-        {
-            return mPoints[i].x;
-        }
+    void CalcLength();
+
+    int Size() const
+    {
+        return mPoints.size();
+    }
 
 
-        float iy(int i) const
-        {
-            return mPoints[i].y;
-        }
+    float ix(int i) const
+    {
+        return mPoints[i].x;
+    }
 
 
-        float it(int i) const
-        {
-            return mPoints[i].t;
-        }
+    float iy(int i) const
+    {
+        return mPoints[i].y;
+    }
 
 
-        float CenterX() const
-        {
-            return mCenter.x;
-        }
+    float it(int i) const
+    {
+        return mPoints[i].t;
+    }
 
 
-        float CenterY() const
-        {
-            return mCenter.y;
-        }
+    float CenterX() const
+    {
+        return mCenter.x;
+    }
 
 
-        void AddPoint(CVector2<float>& v)
-        {
-            SPolyPoint pt;
-
-            pt.Set(v.x, v.y);
-            mPoints.push_back(pt);
-        }
+    float CenterY() const
+    {
+        return mCenter.y;
+    }
 
 
-        void AddPoint(float x, float y)
-        {
-            SPolyPoint pt;
+    void AddPoint(CVector2<float>& v)
+    {
+        SPolyPoint pt;
 
-            pt.Set(x, y);
-            mPoints.push_back(pt);
-        }
-
-
-        void AddPoint(SPolyPoint& pt)
-        {
-            mPoints.push_back(pt);
-        }
+        pt.Set(v.x, v.y);
+        mPoints.push_back(pt);
+    }
 
 
-        void Clear()
-        {
-            mPoints.clear();
-            mTotalLength = 0.0;
-        }
+    void AddPoint(float x, float y)
+    {
+        SPolyPoint pt;
+
+        pt.Set(x, y);
+        mPoints.push_back(pt);
+    }
 
 
-        std::vector<SPolyPoint> mPoints;
-        CVector2<float> mCenter;     // Zentrum aller Punkte
+    void AddPoint(SPolyPoint& pt)
+    {
+        mPoints.push_back(pt);
+    }
 
-        float mTotalLength;
 
-    protected:
+    void Clear()
+    {
+        mPoints.clear();
+        mTotalLength = 0.0;
+    }
 
-        void CalcCenter();
+
+    std::vector<SPolyPoint> mPoints;
+    CVector2<float> mCenter;         // Zentrum aller Punkte
+
+    float mTotalLength;
+
+protected:
+
+    void CalcCenter();
 };
 
 #endif

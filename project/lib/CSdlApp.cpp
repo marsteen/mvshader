@@ -37,12 +37,12 @@ using namespace std;
 
 CSdlApp::CSdlApp()
 {
-    mFullscreen        = false;
+    mFullscreen = false;
     //mMouseFaktor       = 10.0;
-    mInitFlag          = false;
-    mSdlWindow         = NULL;
-    mLeftMouseButton   = false;
-    mRightMouseButton  = false;
+    mInitFlag = false;
+    mSdlWindow = NULL;
+    mLeftMouseButton = false;
+    mRightMouseButton = false;
     mMiddleMouseButton = false;
 }
 
@@ -68,7 +68,6 @@ void GlobalShowOpenGLError(const char* Titel)
 
         switch (GlError)
         {
-
             case GL_INVALID_ENUM:
 
                 ErrText = "OpenGL Error: GL_INVALID_ENUM";
@@ -101,11 +100,11 @@ void GlobalShowOpenGLError(const char* Titel)
                 break;
 
 /*
-            case GL_TABLE_TOO_LARGE:
-
-                ErrText = "OpenGL Error: GL_TABLE_TOO_LARGE";
-                break;
-*/
+ *          case GL_TABLE_TOO_LARGE:
+ *
+ *              ErrText = "OpenGL Error: GL_TABLE_TOO_LARGE";
+ *              break;
+ */
         }
         if (Titel != NULL)
         {
@@ -117,11 +116,10 @@ void GlobalShowOpenGLError(const char* Titel)
         }
 
 /*
-        GlobalDebug("**********************************************************", DBG_INIT);
-    GlobalDebug(ErrString.c_str(), DBG_INIT);
-    GlobalDebug("**********************************************************", DBG_INIT);
-*/
-
+ *      GlobalDebug("**********************************************************", DBG_INIT);
+ *  GlobalDebug(ErrString.c_str(), DBG_INIT);
+ *  GlobalDebug("**********************************************************", DBG_INIT);
+ */
     }
 }
 
@@ -147,7 +145,6 @@ void CSdlApp::ShowOpenGLError(const char* Titel)
 
         switch (GlError)
         {
-
             case GL_INVALID_ENUM:
 
                 ErrText = "OpenGL Error: GL_INVALID_ENUM";
@@ -180,11 +177,11 @@ void CSdlApp::ShowOpenGLError(const char* Titel)
                 break;
 
 /*
-            case GL_TABLE_TOO_LARGE:
-
-                ErrText = "OpenGL Error: GL_TABLE_TOO_LARGE";
-                break;
-*/
+ *          case GL_TABLE_TOO_LARGE:
+ *
+ *              ErrText = "OpenGL Error: GL_TABLE_TOO_LARGE";
+ *              break;
+ */
         }
         if (Titel != NULL)
         {
@@ -194,17 +191,14 @@ void CSdlApp::ShowOpenGLError(const char* Titel)
         {
             ErrString = ErrText;
         }
-/*
-        GlobalDebug("**********************************************************", DBG_INIT);
-    GlobalDebug(ErrString.c_str(), DBG_INIT);
-    GlobalDebug("**********************************************************", DBG_INIT);
-*/
 
+/*
+ *      GlobalDebug("**********************************************************", DBG_INIT);
+ *  GlobalDebug(ErrString.c_str(), DBG_INIT);
+ *  GlobalDebug("**********************************************************", DBG_INIT);
+ */
     }
 }
-
-
-
 
 
 // ---------------------------------------------------------------------------
@@ -217,7 +211,6 @@ void CSdlApp::ShowOpenGLError(const char* Titel)
 
 void CSdlApp::ParseArgVec()
 {
-
     cout << "args=" << mCmdArgVec.size() << endl;
     for (int i = 0; i < mCmdArgVec.size(); i++)
     {
@@ -268,7 +261,6 @@ void CSdlApp::ParseArgs(int argc, char* argv[])
 
 void CSdlApp::ParseWinArgs(const char* Commandline)
 {
-
     mFullscreen = true;
     NStringTool::Split(Commandline, &mCmdArgVec, ' ');
 
@@ -277,10 +269,8 @@ void CSdlApp::ParseWinArgs(const char* Commandline)
         mCmdArgVec.push_back(Commandline);
     }
 
-  //GlobalDebugT("Commandline=", Commandline, DBG_INIT);
-  //GlobalDebugT("args=", SplitResult.size(), DBG_INIT);
-
-
+    //GlobalDebugT("Commandline=", Commandline, DBG_INIT);
+    //GlobalDebugT("args=", SplitResult.size(), DBG_INIT);
 
 
 
@@ -293,12 +283,13 @@ void CSdlApp::ParseWinArgs(const char* Commandline)
 
 
     cout << "fullscreen=" << mFullscreen << endl;
+
     /*
-    for (int i = 0; i < SplitResult.size(); i++)
-    {
-        ParseArg(SplitResult[i]);
-    }
-    */
+     * for (int i = 0; i < SplitResult.size(); i++)
+     * {
+     *  ParseArg(SplitResult[i]);
+     * }
+     */
 }
 
 
@@ -313,8 +304,8 @@ void CSdlApp::ParseWinArgs(const char* Commandline)
 
 void CSdlApp::GameLoop()
 {
-
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -327,11 +318,13 @@ void CSdlApp::GameLoop()
 
 static Uint32 sTimerCallback(Uint32 interval, void* param)
 {
-  CSdlApp* SdlApp = (CSdlApp*) param;
-  SdlApp->Timer();
+    CSdlApp* SdlApp = (CSdlApp*)param;
 
-  return interval;
+    SdlApp->Timer();
+
+    return interval;
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -344,9 +337,8 @@ static Uint32 sTimerCallback(Uint32 interval, void* param)
 
 void CSdlApp::Timer()
 {
-
-
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -359,8 +351,8 @@ void CSdlApp::Timer()
 
 void CSdlApp::SetResolution(int w, int h)
 {
-
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -373,8 +365,8 @@ void CSdlApp::SetResolution(int w, int h)
 
 void CSdlApp::InitGame()
 {
-
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -403,6 +395,7 @@ void CSdlApp::FinishGame()
 bool CSdlApp::Init()
 {
     bool r = true;
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         //GlobalDebug("***** SDL konnte nicht initialisiert werden", DBG_INIT);
@@ -411,7 +404,6 @@ bool CSdlApp::Init()
     SDL_ShowCursor(false); // Mousecursor verstecken
     return r;
 }
-
 
 
 // ---------------------------------------------------------------------------
@@ -425,23 +417,21 @@ bool CSdlApp::Init()
 
 void CSdlApp::SetViewport(int w, int h)
 {
-    mWindowWidth  = w;
+    mWindowWidth = w;
     mWindowHeight = h;
 
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
     //glViewport(0, 0, mWindowWidth, mWindowHeight);
-    mAspect = ((float) mWindowWidth) / mWindowHeight;
+    mAspect = ((float)mWindowWidth) / mWindowHeight;
 
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f );
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_DEPTH_TEST);
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 }
-
-
 
 
 // ---------------------------------------------------------------------------
@@ -516,6 +506,7 @@ bool CSdlApp::InitScreen()
     return r;
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CSdlApp
@@ -527,8 +518,9 @@ bool CSdlApp::InitScreen()
 
 void CSdlApp::DisableKeyRepeat()
 {
-  //SDL_EnableKeyRepeat(0, 0);
+    //SDL_EnableKeyRepeat(0, 0);
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -544,6 +536,7 @@ bool CSdlApp::ParseKeys(int key, bool down)
     return true;
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CSdlApp
@@ -555,21 +548,22 @@ bool CSdlApp::ParseKeys(int key, bool down)
 
 void CSdlApp::MainLoop()
 {
-  while (1)
-  {
-    Uint32 StartTime = SDL_GetTicks();
-    EventLoop();
-    GameLoop();
-
-    Uint32 EndTime = SDL_GetTicks();
-    int DelayTime = 20 - (EndTime - StartTime);
-    if (DelayTime > 0)
+    while (1)
     {
-      //cout << "DelayTime=" << DelayTime << endl;
-      SDL_Delay(DelayTime);
+        Uint32 StartTime = SDL_GetTicks();
+        EventLoop();
+        GameLoop();
+
+        Uint32 EndTime = SDL_GetTicks();
+        int DelayTime = 20 - (EndTime - StartTime);
+        if (DelayTime > 0)
+        {
+            //cout << "DelayTime=" << DelayTime << endl;
+            SDL_Delay(DelayTime);
+        }
     }
-  }
 }
+
 
 // ---------------------------------------------------------------------------
 //
@@ -584,6 +578,7 @@ void CSdlApp::ParseMouseRel(int xrel, int yrel)
 {
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CSdlApp
@@ -597,6 +592,7 @@ void CSdlApp::ParseMouseAbs(int xrel, int yrel)
 {
 }
 
+
 // ---------------------------------------------------------------------------
 //
 // KLASSE        : CSdlApp
@@ -608,32 +604,31 @@ void CSdlApp::ParseMouseAbs(int xrel, int yrel)
 
 void CSdlApp::EventLoop()
 {
-  SDL_Event event;
+    SDL_Event event;
 
-
-  while (SDL_PollEvent(&event))
-  {
-    switch(event.type)
+    while (SDL_PollEvent(&event))
     {
-      case SDL_USEREVENT:
+        switch (event.type)
+        {
+            case SDL_USEREVENT:
 
-        //HandleUserEvents(&event);
-        break;
+                //HandleUserEvents(&event);
+                break;
 
-      case SDL_KEYDOWN:
+            case SDL_KEYDOWN:
 
-            if (!ParseKeys(event.key.keysym.sym, true))
-            {
-                  FinishGame();
+                if (!ParseKeys(event.key.keysym.sym, true))
+                {
+                    FinishGame();
                     SDL_Quit();
                     exit(0);
-        }
-        break;
+                }
+                break;
 
-      case SDL_KEYUP:
+            case SDL_KEYUP:
 
-        ParseKeys(event.key.keysym.sym, false);
-        break;
+                ParseKeys(event.key.keysym.sym, false);
+                break;
 
             case SDL_MOUSEMOTION:
             {
@@ -653,64 +648,61 @@ void CSdlApp::EventLoop()
                 break;
 
 
-      case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONDOWN:
 
-              if (event.button.button == SDL_BUTTON_LEFT)
+                if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     mLeftMouseButton = true;
                     LeftMouseButtonAction(true);
                 }
                 else
-              if (event.button.button == SDL_BUTTON_RIGHT)
+                if (event.button.button == SDL_BUTTON_RIGHT)
                 {
                     mRightMouseButton = true;
                     RightMouseButtonAction(true);
-              }
+                }
                 else
-              if (event.button.button == SDL_BUTTON_MIDDLE)
+                if (event.button.button == SDL_BUTTON_MIDDLE)
                 {
                     mMiddleMouseButton = true;
                     MiddleMouseButtonAction(true);
-              }
+                }
 
-          // Handle mouse clicks here.
-        break;
+                // Handle mouse clicks here.
+                break;
 
-      case SDL_MOUSEBUTTONUP:
+            case SDL_MOUSEBUTTONUP:
 
-              if (event.button.button == SDL_BUTTON_LEFT)
+                if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     mLeftMouseButton = false;
                     LeftMouseButtonAction(false);
-              }
+                }
                 else
-              if (event.button.button == SDL_BUTTON_RIGHT)
-              {
+                if (event.button.button == SDL_BUTTON_RIGHT)
+                {
                     mRightMouseButton = false;
                     RightMouseButtonAction(false);
                 }
                 else
-              if (event.button.button == SDL_BUTTON_MIDDLE)
+                if (event.button.button == SDL_BUTTON_MIDDLE)
                 {
                     mMiddleMouseButton = false;
                     MiddleMouseButtonAction(false);
-              }
+                }
                 break;
 
-      case SDL_QUIT:
+            case SDL_QUIT:
 
-          FinishGame();
-          SDL_Quit();
-          exit(0);
-          //done = true;
-          break;
+                FinishGame();
+                SDL_Quit();
+                exit(0);
+                //done = true;
+                break;
 
-      default:
+            default:
 
-        break;
-    }   // End switch
-  }   // End while
+                break;
+        }   // End switch
+    }       // End while
 }
-
-
-

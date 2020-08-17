@@ -24,13 +24,13 @@
 //
 //---------------------------------------------------------------------------
 
-static EGraflibError  StaticErrCode = EGRAFLIB_ERROR_NONE;
-static std::string    StaticErrFunc;
-static std::string    StaticErrMsg;
+static EGraflibError StaticErrCode = EGRAFLIB_ERROR_NONE;
+static std::string StaticErrFunc;
+static std::string StaticErrMsg;
 
 void CGraflib::SetError(EGraflibError er, const char* ef, const char* msg)
 {
-	StaticErrCode = er;
-	StaticErrFunc = ef;
-	StaticErrMsg  = msg;
+    StaticErrCode = er;
+    StaticErrFunc = ef;
+    StaticErrMsg = msg;
 }

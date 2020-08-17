@@ -22,24 +22,25 @@
 
 class CContextSphere : public CGL_Context
 {
-    public:
+public:
 
-        CContextSphere();
+    CContextSphere();
 
-        void Draw2D();
-        bool Init(int w, int h, const std::vector<std::string>* cmdlineparams=nullptr);
-        void MouseMove(int x, int y, bool lb, bool rb);
-        void MouseMoveAbs(int x, int y, bool lb, bool rb);
-        void KeyPress(int key, bool down);
-        void MouseWheel(bool up);
-        void Timer();
+    void Draw2D();
+    bool Init(int w, int h, const std::vector<std::string>* cmdlineparams = nullptr);
+    void MouseMove(int x, int y, bool lb, bool rb);
+    void MouseMoveAbs(int x, int y, bool lb, bool rb);
+    void KeyPress(int key, bool down);
+    void MouseWheel(bool up);
+    void Timer();
 
-    protected:
+protected:
 
-        void ParseParams(const std::vector<std::string>* cmdlineparams);
-        CGL_Shader_Sphere* mSphereShader;
-        std::string mVertShaderFile;
-        std::string mFragShaderFile;
+    void ParseParams(const std::vector<std::string>* cmdlineparams);
+
+    CGL_Shader_Sphere* mSphereShader;
+    std::string mVertShaderFile;
+    std::string mFragShaderFile;
 };
 
 #endif

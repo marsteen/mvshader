@@ -13,13 +13,13 @@
 //***************************************************************************
 
 #
-#define GLOBAL_DEBUG_LEVEL 1
+#define GLOBAL_DEBUG_LEVEL    1
 
 // Globales Debug-Object fuer Stream-Ausgabe
 
 extern "C"
 {
-	bool GlobalDebugEnabled = true;
+bool GlobalDebugEnabled = true;
 };
 
 #include <iostream>
@@ -34,64 +34,63 @@ using namespace std;
 
 
 static void StaticLogStr()
-{	
-	ofstream ofile;
-	
-	
-	if (DebugInit)
-	{	
-	  ofile.open("debug.txt", ios::app);
-	}
-	else
-	{
-    ofile.open("debug.txt");
-  	DebugInit = true;
-	}
-	
-	ofile << gdstr.str() << endl;
-	ofile.close();
+{
+    ofstream ofile;
+
+
+    if (DebugInit)
+    {
+        ofile.open("debug.txt", ios::app);
+    }
+    else
+    {
+        ofile.open("debug.txt");
+        DebugInit = true;
+    }
+
+    ofile << gdstr.str() << endl;
+    ofile.close();
 }
 
 
 static void StaticErrStr()
 {
-  ofstream ofile;
-	if (DebugInit)
-	{	
-	  ofile.open("debug.txt", ios::app);
-	}
-	else
-	{
-    ofile.open("debug.txt");
-  	DebugInit = true;
-	}
-	ofile << "*****" << gdstr.str() << endl;
-	ofile.close();	
-}
+    ofstream ofile;
 
+    if (DebugInit)
+    {
+        ofile.open("debug.txt", ios::app);
+    }
+    else
+    {
+        ofile.open("debug.txt");
+        DebugInit = true;
+    }
+    ofile << "*****" << gdstr.str() << endl;
+    ofile.close();
+}
 
 
 namespace NGlobalLog
 {
-	void gdlog()
-	{		
-	  if (GlobalDebugEnabled)
-	  {
-			StaticLogStr();
-		}
-		gdstr.str(""); 
-		gdstr.clear();
-		
-	}
-	
-	void gderr()
-	{
-	  if (GlobalDebugEnabled)
-	  {	
-			StaticErrStr();
-		}
-		gdstr.str(""); 
-		gdstr.clear();
-	
-	}
-};
+void gdlog()
+{
+    if (GlobalDebugEnabled)
+    {
+        StaticLogStr();
+    }
+    gdstr.str("");
+    gdstr.clear();
+}
+
+
+void gderr()
+{
+    if (GlobalDebugEnabled)
+    {
+        StaticErrStr();
+    }
+    gdstr.str("");
+    gdstr.clear();
+}
+}

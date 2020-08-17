@@ -19,17 +19,17 @@
 template<typename T>
 class CRandom
 {
-    public:
+public:
 
-        static T Get01();
-        static T Get(T Low, T High);
-        static int GetInt(int Low, int High);
+    static T Get01();
+    static T Get(T Low, T High);
+    static int GetInt(int Low, int High);
 
-        // Liefert 1 oder -1
-        static int Sign()
-        {
-            return (GetInt(0, 1) == 0) ? 1 : -1;
-        }
+    // Liefert 1 oder -1
+    static int Sign()
+    {
+        return (GetInt(0, 1) == 0) ? 1 : -1;
+    }
 };
 
 #include "CRandom.hpp"

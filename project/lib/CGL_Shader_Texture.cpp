@@ -23,19 +23,18 @@ using namespace std;
 
 void CGL_Shader_Texture::InitShader()
 {
-	cout  << "CGL_Shader_Texture::InitShader START" << endl;
-	mName = "Texture Shader";
-	
+    cout << "CGL_Shader_Texture::InitShader START" << endl;
+    mName = "Texture Shader";
+
     CGL_Shader::InitShader(shader_texture_vert, shader_texture_frag);
-	uTexture = GetUniformLocation("uTexture");
-	
-	
-	cout  << "CGL_Shader_Texture::InitShader OK" << endl;
-};
+    uTexture = GetUniformLocation("uTexture");
+
+
+    cout << "CGL_Shader_Texture::InitShader OK" << endl;
+}
 
 
 void CGL_Shader_Texture::UseTexture() const
 {
-	glUniform1i(uTexture, 0);
+    glUniform1i(uTexture, 0);
 }
-	

@@ -16,8 +16,7 @@
 #ifndef EUniformLocation_H
 #define EUniformLocation_H
 
-enum EUniformLocation
-{
+enum EUniformLocation {
     UNILOC_SHADER_MODE,
     UNILOC_COLOR,
     UNILOC_USE_TEXTURE,

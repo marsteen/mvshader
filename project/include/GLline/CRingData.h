@@ -7,28 +7,28 @@
 
 class CRingData
 {
-    public:
+public:
 
-        CRingData()
-        {
-            mInit = false;
-        }
+    CRingData()
+    {
+        mInit = false;
+    }
 
 
-        CVector2<float> mP1;
-        void Draw(CGL_Shader_Blurline* shader,
-            float x1, float y1,
-            float ri, float ro,
-            int Segments,
-            const float* color);
+    CVector2<float> mP1;
+    void Draw(CGL_Shader_Blurline* shader,
+        float x1, float y1,
+        float ri, float ro,
+        int Segments,
+        const float* color);
 
-    protected:
+protected:
 
-        void DrawRingData(CGL_Shader_Blurline* shader);
+    void DrawRingData(CGL_Shader_Blurline* shader);
 
-        bool mInit;
-        SVertArray2D mAr[2];
-        const float* mColor;
+    bool mInit;
+    SVertArray2D mAr[2];
+    const float* mColor;
 };
 
 #endif

@@ -21,8 +21,7 @@
 #ifndef ESHADER_MODE_H
 #define ESHADER_MODE_H
 
-enum
-{
+enum {
     /* 00 */
     ESHADER_MODE_MAPS,                  // Nur Textur
     /* 01 */ ESHADER_MODE_SHADOW,       // Schatten

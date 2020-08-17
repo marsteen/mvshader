@@ -43,9 +43,11 @@ CContextSphere::CContextSphere() : CGL_Context()
 {
 }
 
+
 void CContextSphere::KeyPress(int key, bool down)
 {
     float w = 1.0f;
+
     if (down)
     {
         //cout << "key=" << key << endl;
@@ -54,7 +56,7 @@ void CContextSphere::KeyPress(int key, bool down)
             case 'a':
 
                 break;
-                
+
             case '1':
 
                 uScale = 1.0f;
@@ -74,10 +76,10 @@ void CContextSphere::KeyPress(int key, bool down)
 
                 uScale = 0.25f;
                 break;
-                
         }
     }
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -114,10 +116,10 @@ void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
                     cout << "fragment shaderfile=" << mFragShaderFile << endl;
                 }
             }
-            
         }
     }
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -143,6 +145,7 @@ bool CContextSphere::Init(int w, int h, const std::vector<std::string>* cmdlinep
     return true;
 }
 
+
 //---------------------------------------------------------------------------
 //
 //
@@ -154,9 +157,9 @@ bool CContextSphere::Init(int w, int h, const std::vector<std::string>* cmdlinep
 
 void CContextSphere::MouseMove(int xrel, int yrel, bool lb, bool rb)
 {
-
     //cout << "xrel=" << xrel << " yrel=" << yrel << endl;
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -175,17 +178,43 @@ void CContextSphere::MouseMoveAbs(int xabs, int yabs, bool lb, bool rb)
     mouseYabs = mHeight - yabs;
 }
 
+
+//---------------------------------------------------------------------------
+//
+//
+// Klasse:  CContextSphere
+// Methode  MouseWheel
+//
+//
+//---------------------------------------------------------------------------
+
 void CContextSphere::MouseWheel(bool up)
 {
-    if (up) mouseZpos *= 1.1f;
-    else    mouseZpos /= 1.1f;
-
+    if (up)
+    {
+        mouseZpos *= 1.1f;
+    }
+    else
+    {
+        mouseZpos /= 1.1f;
+    }
 }
+
+
+//---------------------------------------------------------------------------
+//
+//
+// Klasse:  CContextSphere
+// Methode  Timer
+//
+//
+//---------------------------------------------------------------------------
 
 void CContextSphere::Timer()
 {
     iTime += 0.01f;
 }
+
 
 //---------------------------------------------------------------------------
 //
@@ -198,7 +227,6 @@ void CContextSphere::Timer()
 
 void CContextSphere::Draw2D()
 {
-
     const float red[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -209,7 +237,7 @@ void CContextSphere::Draw2D()
     iTime += 1.0f / 30.0;
 
     const float vec4[] = { mouseXabs, mouseYabs, mouseZpos, 0.0 };
-    
+
     mSphereShader->SetUniformVec4("iMouse", vec4);
     mSphereShader->SetUniformFloat("iTime", iTime);
     mSphereShader->SetUniformFloat("uScale", uScale);
@@ -221,8 +249,3 @@ void CContextSphere::Draw2D()
     glUseProgram(0);
     //cout << "Draw2D() END" << endl;
 }
-
-
-
-
-
