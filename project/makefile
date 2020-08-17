@@ -15,7 +15,7 @@ C++       = g++
 .SUFFIXES : .c .cpp .o
 #
 thismakefile := $(lastword $(MAKEFILE_LIST))
-TARGET     = sphere
+TARGET     = mvshader
 TARGET_EXE = $(TARGET)
 
 #
