@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project("mvshader")
 
-include_directories(./include  ./source)
+include_directories(./source/include  ./source)
 
 
 message("System: ${CMAKE_SYSTEM_NAME}")
@@ -51,22 +51,22 @@ add_executable(mvshader
     source/mainSdl.cpp
     source/CSDLblurline.cpp
     source/CContextSphere.cpp
-    lib/CSdlApp.cpp
-    lib/NStringTool.cpp
-    lib/CFileIO.cpp
-    lib/NGlobalLog-Desktop.cpp
-    lib/CGL_Context.cpp
-    lib/CGL_Shader.cpp
-    lib/CGL_Shader_Sphere.cpp
-    lib/CGL_Basic.cpp
-    lib/CGL_Texture.cpp
-    lib/CFrameBuffer.cpp
-    lib/CDataRect.cpp
-    lib/CPixel24.cpp
-    lib/CPixel32.cpp
-    lib/CBlockOperations.cpp
-    lib/shader/shader_sphere_vert.cpp
-    lib/shader/shader_sphere_frag.cpp)
+    source/lib/CSdlApp.cpp
+    source/lib/NStringTool.cpp
+    source/lib/CFileIO.cpp
+    source/lib/NGlobalLog-Desktop.cpp
+    source/lib/CGL_Context.cpp
+    source/lib/CGL_Shader.cpp
+    source/lib/CGL_Shader_Sphere.cpp
+    source/lib/CGL_Basic.cpp
+    source/lib/CGL_Texture.cpp
+    source/lib/CFrameBuffer.cpp
+    source/lib/CDataRect.cpp
+    source/lib/CPixel24.cpp
+    source/lib/CPixel32.cpp
+    source/lib/CBlockOperations.cpp
+    source/lib/shader/shader_sphere_vert.cpp
+    source/lib/shader/shader_sphere_frag.cpp)
 
 
 if (CMAKE_SYSTEM_NAME STREQUAL "MSYS")
