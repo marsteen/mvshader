@@ -3,8 +3,40 @@ project("mvshader")
 
 include_directories(./include  ./source)
 
-#find_package(OpenGL REQUIRED)
-#find_package(GLEW REQUIRED)
+
+message("System: ${CMAKE_SYSTEM_NAME}")
+
+#
+# GLEW
+#
+find_package(GLEW REQUIRED)
+if (GLEW_FOUND)
+    message("found GLEW")
+    include_directories($(GLEW_INCLUDE_DIRS))
+    link_libraries(${GLEW_LIBRARIES})
+endif()
+
+#
+# SDL2
+#
+find_package(SDL2 REQUIRED)
+if (SDL2_FOUND)
+    message("found SDL2")
+    include_directories($(SDL2_INCLUDE_DIRS))
+    link_libraries(${SDL2_LIBRARIES})
+endif()
+
+#
+# OPENGL
+#
+#find_package(OPENGL REQUIRED)
+find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+if (OPENGL_FOUND)
+    message("found OPENGL")
+    include_directories($(OPENGL_INCLUDE_DIRS))
+    link_libraries(${OPENGL_LIBRARIES})
+endif()
+
 
 add_executable(mvshader
     source/mainSdl.cpp
@@ -27,19 +59,27 @@ add_executable(mvshader
     lib/CBlockOperations.cpp
     lib/shader/shader_sphere_vert.cpp
     lib/shader/shader_sphere_frag.cpp)
-    
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+
+if (CMAKE_SYSTEM_NAME STREQUAL "MSYS")
+    #
+    # Windows
+    #
     target_link_libraries(mvshader
-      SDL2 
-      opengl32
-      glew32)
+        opengl32)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    #
+    # Linux
+    #
     target_link_libraries(mvshader
-      SDL2 
-      GL
-      GLEW)
+        SDL2 
+        GL
+        GLEW)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-# *TODO*
+    #
+    # Mac OS
+    #
+    # *TODO*
 endif()
 
 
