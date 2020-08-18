@@ -6,6 +6,25 @@ include_directories(./include  ./source)
 
 message("System: ${CMAKE_SYSTEM_NAME}")
 
+#find_package(PkgConfig REQUIRED QUIET)
+#pkg_search_module(
+#    OpenGL
+#    REQUIRED
+#      OpenGL
+#    IMPORTED_TARGET
+#    )
+
+
+#
+# OPENGL
+#
+#find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+#if (OPENGL_FOUND)
+#    message("found OPENGL")
+#    include_directories($(OPENGL_INCLUDE_DIRS))
+#    link_libraries(${OPENGL_LIBRARIES})
+#endif()
+
 #
 # GLEW
 #
@@ -26,16 +45,6 @@ if (SDL2_FOUND)
     link_libraries(${SDL2_LIBRARIES})
 endif()
 
-#
-# OPENGL
-#
-#find_package(OPENGL REQUIRED)
-find_package(OpenGL REQUIRED COMPONENTS OpenGL)
-if (OPENGL_FOUND)
-    message("found OPENGL")
-    include_directories($(OPENGL_INCLUDE_DIRS))
-    link_libraries(${OPENGL_LIBRARIES})
-endif()
 
 
 add_executable(mvshader
@@ -53,7 +62,6 @@ add_executable(mvshader
     lib/CGL_Texture.cpp
     lib/CFrameBuffer.cpp
     lib/CDataRect.cpp
-    lib/NUtf.cpp
     lib/CPixel24.cpp
     lib/CPixel32.cpp
     lib/CBlockOperations.cpp
