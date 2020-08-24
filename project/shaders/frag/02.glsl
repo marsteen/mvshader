@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -30,7 +30,7 @@ vec3 background(float t, vec3 rd)
 	float sun = max(0.0, dot(rd, light));
 	float sky = max(0.0, dot(rd, vec3(0.0, 1.0, 0.0)));
 	float ground = max(0.0, -dot(rd, vec3(0.0, 1.0, 0.0)));
-	return 
+	return
 		(pow(sun, 256.0)+0.2*pow(sun, 2.0))*vec3(2.0, 1.6, 1.0) +
 		pow(ground, 0.5)*vec3(0.4, 0.3, 0.2) +
 		pow(sky, 1.0)*vec3(0.5, 0.6, 0.7);
@@ -54,7 +54,7 @@ vec4 mainImage(vec2 fragCoord)
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    outputColor = mainImage(fragCoord); 
+    outputColor = mainImage(fragCoord);
 }
 
 

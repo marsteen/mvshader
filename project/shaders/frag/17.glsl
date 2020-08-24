@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -34,7 +34,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 	float v1, v2, v3;
 	v1 = v2 = v3 = 0.0;
-	
+
 	float s = 0.0;
 	for (int i = 0; i < 90; i++)
 	{
@@ -47,12 +47,12 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 		v3 += length(p.xy*10.) * .0003;
 		s  += .035;
 	}
-	
+
 	float len = length(uv);
 	v1 *= smoothstep(.7, .0, len);
 	v2 *= smoothstep(.5, .0, len);
 	v3 *= smoothstep(.9, .0, len);
-	
+
 	vec3 col = vec3( v3 * (1.5 + sin(iTime * .2) * .4),
 					(v1 + v3) * .3,
 					 v2) + smoothstep(0.2, .0, len) * .85 + smoothstep(.0, .6, v3) * .3;
@@ -68,7 +68,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

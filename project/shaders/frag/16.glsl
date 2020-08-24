@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -32,7 +32,7 @@ out vec4 outputColor;
 /*
 	Believable animated volumetric dust storm in 7 samples,
 	blending each layer in based on geometry distance allows to
-	render it without visible seams. 3d Triangle noise is 
+	render it without visible seams. 3d Triangle noise is
 	used for the dust volume.
 
 	Also included is procedural bump mapping and glow based on
@@ -40,17 +40,17 @@ out vec4 outputColor;
 
 
 	Further explanation of the dust generation (per Dave's request):
-		
+
 	The basic idea is to have layers of gradient shaded volumetric
 	animated noise. The problem is when geometry is intersected
 	before the ray reaches the far plane. A way to smoothly blend
 	the low sampled noise is needed.  So I am blending (smoothstep)
-	each dust layer based on current ray distance and the solid 
-	interesction distance. I am also scaling the noise taps	as a 
+	each dust layer based on current ray distance and the solid
+	interesction distance. I am also scaling the noise taps	as a
 	function of the current distance so that the distant dust doesn't
 	appear too noisy and as a function of current height to get some
 	"ground hugging" effect.
-	
+
 */
 
 mat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,s,-s,c);}
@@ -88,19 +88,19 @@ float vine(vec3 p, in float c, in float h)
 float map(vec3 p)
 {
     p.y += height(p.zx);
-    
+
     vec3 bp = p;
     vec2 hs = nmzHash22(floor(p.zx/4.));
     p.zx = mod(p.zx,4.)-2.;
-    
+
     float d = p.y+0.5;
     p.y -= hs.x*0.4-0.15;
     p.zx += hs*1.3;
     d = smin(d, length(p)-hs.x*0.4);
-    
+
     d = smin(d, vine(bp+vec3(1.8,0.,0),15.,.8) );
     d = smin(d, vine(bp.zyx+vec3(0.,0,17.),20.,0.75) );
-    
+
     return d*1.1;
 }
 
@@ -121,7 +121,7 @@ float march(in vec3 ro, in vec3 rd)
 
 float tri(in float x){return abs(fract(x)-.5);}
 vec3 tri3(in vec3 p){return vec3( tri(p.z+tri(p.y*1.)), tri(p.z+tri(p.x*1.)), tri(p.y+tri(p.x*1.)));}
-                                 
+
 mat2 m2 = mat2(0.970,  0.242, -0.242,  0.970);
 
 float triNoise3d(in vec3 p, in float spd)
@@ -138,7 +138,7 @@ float triNoise3d(in vec3 p, in float spd)
 		z *= 1.5;
 		p *= 1.2;
         //p.xz*= m2;
-        
+
         rz+= (tri(p.z+tri(p.x+tri(p.y))))/z;
         bp += 0.14;
 	}
@@ -169,10 +169,10 @@ vec3 fog(in vec3 col, in vec3 ro, in vec3 rd, in float mt)
 }
 
 vec3 normal(in vec3 p)
-{  
-    vec2 e = vec2(-1., 1.)*0.005;   
-	return normalize(e.yxx*map(p + e.yxx) + e.xxy*map(p + e.xxy) + 
-					 e.xyx*map(p + e.xyx) + e.yyy*map(p + e.yyy) );   
+{
+    vec2 e = vec2(-1., 1.)*0.005;
+	return normalize(e.yxx*map(p + e.yxx) + e.xxy*map(p + e.xxy) +
+					 e.xyx*map(p + e.xyx) + e.yyy*map(p + e.yyy) );
 }
 
 float bnoise(in vec3 p)
@@ -208,23 +208,23 @@ float shadow(in vec3 ro, in vec3 rd, in float mint, in float tmax)
 
 float curv(in vec3 p, in float w)
 {
-    vec2 e = vec2(-1., 1.)*w;   
-    
+    vec2 e = vec2(-1., 1.)*w;
+
     float t1 = map(p + e.yxx), t2 = map(p + e.xxy);
     float t3 = map(p + e.xyx), t4 = map(p + e.yyy);
-    
+
     return .125/(e.x*e.x) *(t1 + t2 + t3 + t4 - 4. * map(p));
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{	
+{
 	vec2 p = fragCoord.xy/iResolution.xy-0.5;
     vec2 q = fragCoord.xy/iResolution.xy;
 	p.x*=iResolution.x/iResolution.y;
     vec2 mo = iMouse.xy / iResolution.xy-.5;
     mo = (mo==vec2(-.5))?mo=vec2(-0.1,0.07):mo;
 	mo.x *= iResolution.x/iResolution.y;
-	
+
 	vec3 ro = vec3(smoothstep(0.,1.,tri(time*.45)*2.)*0.1, smoothstep(0.,1.,tri(time*0.9)*2.)*0.07, -time*0.6);
     ro.y -= height(ro.zx)+0.05;
     mo.x += smoothstep(0.6,1.,sin(time*.6)*0.5+0.5)-1.5;
@@ -232,16 +232,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 rightdir = normalize(vec3(cos(mo.x+1.5708),0.,sin(mo.x+1.5708)));
     vec3 updir = normalize(cross(rightdir,eyedir));
 	vec3 rd=normalize((p.x*rightdir+p.y*updir)*1.+eyedir);
-	
+
     vec3 ligt = normalize( vec3(.5, .05, -.2) );
     vec3 ligt2 = normalize( vec3(.5, -.1, -.2) );
-    
+
 	float rz = march(ro,rd);
-	
+
     vec3 fogb = mix(vec3(.7,.8,.8	)*0.3, vec3(1.,1.,.77)*.95, pow(dot(rd,ligt2)+1.2, 2.5)*.25);
     fogb *= clamp(rd.y*.5+.6, 0., 1.);
     vec3 col = fogb;
-    
+
     if ( rz < FAR )
     {
         vec3 pos = ro+rz*rd;
@@ -259,17 +259,17 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         col *= (sin(bnoise(pos)*900.)*0.2+0.8);
         col = col*brdf + col*spe*.5 + fre*vec3(.7,1.,0.2)*.3*crv;
     }
-    
+
     //ordinary distance fog first
     col = mix(col, fogb, smoothstep(FAR-7.,FAR,rz));
-    
+
     //then volumetric fog
     col = fog(col, ro, rd, rz);
-    
+
     //post
     col = pow(col,vec3(0.8));
     col *= 1.-smoothstep(0.1,2.,length(p));
-    
+
 	fragColor = vec4( col, 1.0 );
 }
 
@@ -282,7 +282,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -67,7 +67,7 @@ vec2 sdSegment( vec3 a, vec3 b, vec3 p )
 	vec3 pa = p - a;
 	vec3 ba = b - a;
 	float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
-	
+
 	return vec2( length( pa - ba*h ), h );
 }
 
@@ -94,9 +94,9 @@ float udRoundBox( vec3 p, vec3 b, float r )
 }
 
 float det( vec2 a, vec2 b ) { return a.x*b.y-b.x*a.y; }
-vec3 getClosest( vec2 b0, vec2 b1, vec2 b2 ) 
+vec3 getClosest( vec2 b0, vec2 b1, vec2 b2 )
 {
-	
+
   float a =     det(b0,b2);
   float b = 2.0*det(b1,b0);
   float d = 2.0*det(b2,b1);
@@ -155,8 +155,8 @@ vec4 map( vec3 p )
     d1 = opS( d1, sdCylinder( (p-vec3(0.0,1.0,0.4)).zxy, vec2(0.2,1.0) ) );
     d1 = opU( d1, sdCylinder( (p-vec3(0.0,-0.32,0.0)), vec2(0.93,0.7) ) );
     d1 = opU( d1, sdCone(     (p-vec3(2.2,1.7,1.0))*vec3(1.0,-1.0,-1.0), vec3( normalize(vec2(0.8,0.4)), 0.5 ) ) );
-    
-    // neck and fingers    
+
+    // neck and fingers
     vec3 d3;
     d3 =          vec3( udRoundBox( p-vec3(0.0,1.55,0.30), vec3(0.35,0.1,0.3)-0.03, 0.12 ), 1.0, 5.0 );
     d3 = opS( d3, vec3( udRoundBox( p-vec3(0.0,1.55,0.35), vec3(0.35,0.1,0.5)-0.04, 0.10 ), 0.0, 5.0) );
@@ -180,7 +180,7 @@ vec4 map( vec3 p )
     vec3 d4;
     d4 =          vec3( sdSphere( q-vec3( 0.88,0.15,0.0), 0.19 ), 0.0, 15.0 );
     d4 = opU( d4, vec3( sdBezier( vec3(0.9,0.15,0.0), vec3(2.0,-0.5,0.0), vec3(2.2,2.0,1.0), q, 0.13 ), 16.0) );
-    
+
     vec4             res = vec4( d1,  1.0, 0.0, 0.0 );
     if( d2.x<res.x ) res = vec4( d2.x,2.0, d2.yz );
     if( d3.x<res.x ) res = vec4( d3.x,3.0, d3.yz );
@@ -212,9 +212,9 @@ vec4 intersect( in vec3 ro, in vec3 rd )
     if( t>maxd ) res = vec4(-1.0);
     return res;
 #else
-    
+
     vec4 res = vec4(-1.0);
-    
+
     float t = 0.0;
     for( int i=0; i<64; i++ )
     {
@@ -225,7 +225,7 @@ vec4 intersect( in vec3 ro, in vec3 rd )
     }
 
     return res;
-    
+
 #endif
 }
 
@@ -240,14 +240,14 @@ vec3 calcNormal( in vec3 pos )
 	return normalize( vec3( map(pos+eps.xyy).x - map(pos-eps.xyy).x,
                             map(pos+eps.yxy).x - map(pos-eps.yxy).x,
                             map(pos+eps.yyx).x - map(pos-eps.yyx).x ) );
-#else   
-    vec2 e = vec2(-1.0,1.0) * 0.005;   
-	return normalize( e.yxx*map( pos + e.yxx ).x + 
-					  e.xxy*map( pos + e.xxy ).x + 
-					  e.xyx*map( pos + e.xyx ).x + 
-					  e.yyy*map( pos + e.yyy ).x );    
+#else
+    vec2 e = vec2(-1.0,1.0) * 0.005;
+	return normalize( e.yxx*map( pos + e.yxx ).x +
+					  e.xxy*map( pos + e.xxy ).x +
+					  e.xyx*map( pos + e.xyx ).x +
+					  e.yyy*map( pos + e.yyy ).x );
 #endif
-    
+
 }
 
 float softshadow( in vec3 ro, in vec3 rd, float mint, float k )
@@ -283,7 +283,7 @@ vec3 lig = normalize(vec3(0.8,0.6,0.3));
 void generateRay( out vec3 resRo, out vec3 resRd, in vec3 po, in vec3 ta, in vec2 pi )
 {
 	vec2 p = (-iResolution.xy + 2.0*pi)/iResolution.y;
-        
+
     // camera matrix
     vec3 ww = normalize( ta - po );
     vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
@@ -301,11 +301,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	vec2 q = fragCoord.xy / iResolution.xy;
     vec2 p = -1.0 + 2.0 * q;
     p.x *= iResolution.x/iResolution.y;
-	
+
     float sep = iResolution.x * smoothstep( 0.5, 0.8, cos(1.57+0.25*6.2831*iTime));
     if( iMouse.z>0.0 ) sep = iMouse.x;
-    float doCartoon = step( sep, fragCoord.x ); 
-    
+    float doCartoon = step( sep, fragCoord.x );
+
     //-----------------------------------------------------
     // camera
     //-----------------------------------------------------
@@ -317,12 +317,12 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 ro2, rd2; generateRay( ro2, rd2, po, ta, fragCoord.xy+vec2(2.0,0.0) );
     vec3 ro3, rd3; generateRay( ro3, rd3, po, ta, fragCoord.xy+vec2(0.0,2.0) );
 
-    
+
     //-----------------------------------------------------
 	// sky
     //-----------------------------------------------------
-    
-    float gra = smoothstep(-0.3,0.6,rd.y);                    
+
+    float gra = smoothstep(-0.3,0.6,rd.y);
 
     vec3 sky = vec3(0.4,0.7,1.0)*0.2;
     float h = (1000.0-ro.y)/rd.y;
@@ -368,7 +368,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 		{
 			mate = vec3(0.7,0.68,0.4);
             vec3 qos = vec3( abs(pos.x), pos.yz );
-            
+
             mate *= clamp( 100.0 * sdBox(qos-vec3(0.18+0.05*sign(pos.x),1.55+0.05,0.5),vec3(0.04,0.04,0.5) ), 0.0, 1.0 );
 
             float teeth = min( sdBox(qos-vec3(0.0,1.08,0.5),vec3(1.0,0.01,0.3) ),
@@ -377,7 +377,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
             teeth = min( teeth, sdBox( vec3(mod(qos.x+0.09,0.18),qos.yz) -vec3(0.0,1.0,0.5),vec3(0.01,0.3,0.3) ) );
 
             mate *= clamp( 100.0 * teeth, 0.0, 1.0 );
-            
+
 		}
 		else if( tmat.y<3.5 )
 		{
@@ -387,7 +387,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
         vec3 brdf1 = vec3( 0.0 );
         vec3 brdf2 = vec3( 0.0 );
-        
+
 		float dif = max(dot(nor,lig),0.0);
 		float sha = 0.0; if( dif>0.01 ) sha=softshadow( pos+0.01*nor, lig, 0.0005, 32.0 );
 
@@ -398,7 +398,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         float bac = max(0.3 + 0.7*dot(nor,-lig),0.0);
         float fre = pow( clamp( 1.0 + dot(nor,rd), 0.0, 1.0 ), 3.0 );
         float spe = max( 0.0, pow( clamp( dot(lig,reflect(rd,nor)), 0.0, 1.0), 1.0 ) );
-		
+
         brdf1 += 3.0*dif*vec3(1.00,1.00,1.00)*pow(vec3(sha),vec3(1.0,1.2,1.5));
 		brdf1 += 2.0*amb*vec3(0.30,0.30,0.30)*occ;
 		brdf1 += 2.0*bac*vec3(0.40,0.30,0.25)*occ;
@@ -406,17 +406,17 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         brdf1 += 1.0*fre*vec3(1.00,1.00,1.00)*2.0*(0.5+0.5*dif*sha)*occ;
 		brdf1 += 2.0*(spe+1.0*pow(spe,8.0))*vec3(1.0)*occ*sha;
         }
-        
+
         {
 		// lighting 2
         float amb = 0.5;
         float fre = pow( clamp( 1.0 + dot(nor,rd), 0.0, 1.0 ), 5.0 );
-		
+
         brdf2 += 1.5*vec3(1.00,1.00,1.00)*sha;
 		brdf2 += 1.5*vec3(0.50,0.50,0.50);
         brdf2 += 0.7*smoothstep(0.1,0.15,fre*sha);
         }
-        
+
         vec3 brdf = mix( brdf1, brdf2, doCartoon );
 		// surface-light interacion
 		col = mate.xyz* brdf;
@@ -430,10 +430,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     // gamma
 	col = pow( clamp(col,0.0,1.0), vec3(0.4545) );
-    
+
 	// vigneting
     col *= 0.4 + 0.6*pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.1 );
-    
+
     // separator
     col *= smoothstep( 1.0, 2.0, abs(fragCoord.x-sep) );
 
@@ -449,7 +449,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

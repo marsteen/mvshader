@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -28,7 +28,7 @@ out vec4 outputColor;
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

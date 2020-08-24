@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -87,7 +87,7 @@ vec3 tr2(vec3 o,vec3 r)
     // Start ray at upper Y bounds
     if(o.y > maxh)
         o += r * (maxh - o.y) / r.y;
-    
+
     vec2 oc = vec2(floor(o.x), floor(o.z)), c;
     vec2 dn = normalize(vec2(-1, 1));
     vec3 ta, tb, tc;
@@ -105,28 +105,28 @@ vec3 tr2(vec3 o,vec3 r)
     // Ray slopes
     vec2 dd = vec2(1) / r.xz;
     float dnt = 1.0 / dot(r.xz, dn);
-    
+
     float s = max(sign(dnt), 0.);
     c = ((oc + max(sign(r.xz), 0.)) - o.xz) * dd;
 
     vec3 rs = sign(r);
 
     for(int i = 0; i < 450; ++i)
-    {  
+    {
         t1 = min(c.x, c.y);
 
         // Test ray against diagonal plane
         float dt = dot(oc - o.xz, dn) * dnt;
         if(dt > t0 && dt < t1)
             t1 = dt;
- 
+
 #if !SINGLE_SAMPLE
         // Sample the heightfield for all three vertices.
         vec2 of = (dot(o.xz + r.xz * (t0 + t1) * .5 - oc, dn) > 0.) ? vec2(0, 1) : vec2(1, 0);
         tb = vec3(oc.x + of.x, height(oc + of), oc.y + of.y);
         ta = vec3(oc.x, height(oc + vec2(0, 0)), oc.y);
         tc = vec3(oc.x + 1., height(oc + vec2(1, 1)), oc.y + 1.);
-#endif        
+#endif
 
         // Test ray against triangle plane
         vec3 hn = cross(ta - tb, tc - tb);
@@ -141,7 +141,7 @@ vec3 tr2(vec3 o,vec3 r)
 
 #if SINGLE_SAMPLE
         vec2 offset;
-        
+
         // Get an "axis selector", which has 1.0 for the near (intersected) axis
         // and 0.0 for the far one
         vec2 ss = step(c, c.yx);
@@ -191,14 +191,14 @@ vec3 tr2(vec3 o,vec3 r)
         // Get an "axis selector", which has 1.0 for the near (intersected) axis
         // and 0.0 for the far one
         vec2 ss = step(c, c.yx);
-        
+
         if(dt < t0 || dt >= c.x || dt >= c.y)
         {
             // Step the grid coordinates along to the next cell
             oc.xy += rs.xz * ss;
             c.xy += dd.xy * rs.xz * ss;
         }
-        
+
 #endif
         t0 = t1;
 
@@ -227,7 +227,7 @@ float chequer(vec2 p)
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = fragCoord / iResolution.xy;
-    
+
     vec2 t = uv * 2. - 1. + 1e-3;
     t.x *= iResolution.x / iResolution.y;
 
@@ -247,7 +247,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     if(fract(rp.z) < fract(rp.x))
 		col *= .7;
-    
+
     // Light direction
     vec3 ld = normalize(vec3(1.5, 1, -2));
 
@@ -262,7 +262,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     // Directional light falloff
     col *= pow(.5 + .5 * dot(n, ld), 1.);
-    
+
     // Fog
     col = mix(vec3(.65, .65, 1), col, exp2(-distance(rp, o) / 1024.));
 
@@ -282,7 +282,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -31,7 +31,7 @@ out vec4 outputColor;
 // = cos(x)·sin(½w)/(½w)
 //
 // Can approximate smoothstep(2π,0,w) ≈ sin(w/2)/(w/2),
-// which you can also see as attenuating cos(x) when it 
+// which you can also see as attenuating cos(x) when it
 // oscilates more than once per pixel. More info:
 //
 // https://iquilezles.org/www/articles/bandlimiting/bandlimiting.htm
@@ -50,7 +50,7 @@ vec3 fcos( in vec3 x )
     return cos(x) * sin(0.5*w)/(0.5*w);       // exact
 	#else
     return cos(x) * smoothstep(6.2832,0.0,w); // approx
-	#endif    
+	#endif
 }
 
 // pick raw cosine, or band-limited cosine
@@ -81,7 +81,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord )
     // separation
     float th = (iMouse.z>0.001) ? (2.0*iMouse.x-iResolution.x)/iResolution.y : 1.8*sin(iTime);
     mode = (q.x<th);
-    
+
     // deformation
     vec2 p = 2.0*q/dot(q,q);
 
@@ -93,13 +93,13 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord )
 
     // vignetting
     col *= 1.5 - 0.2*length(q);
-    
+
     // separation
     col *= smoothstep(0.005,0.010,abs(q.x-th));
-    
+
     // palette
     if( q.y<-0.9 ) col = getColor( fragCoord.x/iResolution.x );
-    
+
     fragColor = vec4( col, 1.0 );
 }
 
@@ -108,5 +108,5 @@ void main()
 {
     //vec4 ocolor;
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }

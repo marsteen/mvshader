@@ -16,7 +16,12 @@
 #ifndef CSDLAPP_H
 #define CSDLAPP_H
 
+#ifdef __APPLE__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
+
 #include <iostream>
 #include <vector>
 #include <string>

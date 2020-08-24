@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -26,10 +26,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	vec2 uv = -1.0 + 2.0*fragCoord.xy / iResolution.xy;
 	uv.x *=  iResolution.x / iResolution.y;
 
-    // background	 
+    // background
 	vec3 color = vec3(0.8 + 0.2*uv.y);
 
-    // bubbles	
+    // bubbles
 	for( int i=0; i<40; i++ )
 	{
         // bubble seeds
@@ -43,14 +43,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 		float dis = length( uv - pos );
 		vec3  col = mix( vec3(0.94,0.3,0.0), vec3(0.1,0.4,0.8), 0.5+0.5*sin(float(i)*1.2+1.9));
 		//    col+= 8.0*smoothstep( rad*0.95, rad, dis );
-		
+
         // render
 		float f = length(uv-pos)/rad;
 		f = sqrt(clamp(1.0-f*f,0.0,1.0));
 		color -= col.zyx *(1.0-smoothstep( rad*0.95, rad, dis )) * f;
 	}
 
-    // vigneting	
+    // vigneting
 	color *= sqrt(1.5-0.5*length(uv));
 
 	fragColor = vec4(color,1.0);
@@ -64,7 +64,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

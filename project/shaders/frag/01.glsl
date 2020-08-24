@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -33,17 +33,17 @@ float sphere(vec3 pos) {
 	for (int i = 0; i < Iterations ; i++) {
 		r = length(z);
 		if (r>Bailout) break;
-		
+
 		// Convert to Polar Coordinates
 		float theta = acos(z.z/r);
 		float phi = atan(z.y,z.x);
 		dr =  pow( r, Power-1.0)*Power*dr + 1.0;
-		
+
 		// Scale and Rotate the Point
 		float zr = pow( r,Power);
 		theta = theta*Power;
 		phi = phi*Power;
-		
+
 		// Convert Back to Cartesian Coordinates
 		z = zr*vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
 		z+=pos;
@@ -54,14 +54,14 @@ float sphere(vec3 pos) {
 // Compute/March the Ray
 float raymarch(vec3 camerapos, vec3 raydir) {
 	float distorigin=0.0;
-    
+
     for(int i=0; i<MAX_MARCHES; i++) {
     	vec3 raypos = camerapos + raydir*distorigin;
         float distsurface = sphere(raypos);
         distorigin += distsurface;
         if(distorigin>MAX_DISTANCE || distsurface<COLLISION_DISTANCE) break;
     }
-    
+
     return distorigin;
 }
 
@@ -69,12 +69,12 @@ float raymarch(vec3 camerapos, vec3 raydir) {
 vec3 normal(vec3 raypos) {
 	float dis = sphere(raypos);
     vec2 e = vec2(.01, 0);
-    
+
     vec3 normal = dis - vec3(
         sphere(raypos-e.xyy),
         sphere(raypos-e.yxy),
         sphere(raypos-e.yyx));
-    
+
     return normalize(normal);
 }
 
@@ -143,7 +143,7 @@ vec4 mainImage(vec2 fragCoord )
 	float spheredistance = raymarch(camerapos, raydir);
     vec3 march = camerapos + raydir * spheredistance;
     vec3 diffuse = shade(march);
-	
+
 	// Finish the Image and Apply Tone Map
     col = vec3(acesFilm(diffuse));
 
@@ -155,7 +155,7 @@ vec4 mainImage(vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    outputColor = mainImage(fragCoord); 
+    outputColor = mainImage(fragCoord);
 }
 
 

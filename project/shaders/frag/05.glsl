@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -29,12 +29,12 @@ const int TILE_MAX = 5;
 //const float PI = 4. * atan(1.);
 const float PI = 3.141592654;
 
-// Smooth HSV to RGB conversion 
+// Smooth HSV to RGB conversion
 // https://www.shadertoy.com/view/MsS3Wc
 vec3 hsv2rgb_smooth(float hue, float saturation, float value) {
     vec3 rgb = clamp(abs(mod(hue*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0);
 
-	rgb = rgb*rgb*(3.0-2.0*rgb);  // Cubic smoothing	
+	rgb = rgb*rgb*(3.0-2.0*rgb);  // Cubic smoothing
 
 	return value * mix(vec3(1.0), rgb, saturation);
 }
@@ -46,23 +46,23 @@ vec2 curve(float t, float a, float b, float d) {
     );
 }
 
-vec4 mainImage(vec2 fragCoord) 
+vec4 mainImage(vec2 fragCoord)
 {
     const int numTiles = TILE_MAX - TILE_MIN + 1;
-    
+
     float minRes = min(iResolution.x, iResolution.y);
     float scale = float(numTiles) / minRes;
 
     ivec2 tileCoord = ivec2(round((fragCoord - iResolution.xy / 2.) * scale));
 
 	vec2 uv = 2. * fragCoord * scale - 2. * vec2(tileCoord) - iResolution.xy * scale;
-    
+
     // Flip tiles with positive a Y coordinate for symmetry.
     if (tileCoord.y > 0) {
         uv.y = -uv.y;
     }
-    
-    
+
+
 
 	float d = (iMouse.w > 0. ? iMouse.y / iResolution.y : iTime / PERIOD) * 2. * PI;
     float hueOffset = (iMouse.w > 0. ? 4. * iMouse.x / iResolution.x : 0.);
@@ -97,15 +97,15 @@ vec4 mainImage(vec2 fragCoord)
 
     float hue = fract(hueOffset + minDistI / float(numSteps));
 //    float dist = length(curve(hue * tPeriod, float(tileCoord.x), float(tileCoord.y), d) * RADIUS - uv);
-    
-	float v = smoothstep(LINE_WIDTH * scale, 0.0, sqrt(minDist));	
+
+	float v = smoothstep(LINE_WIDTH * scale, 0.0, sqrt(minDist));
 	return vec4(hsv2rgb_smooth(hue, 1., v), 1.0);
 }
 
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    outputColor = mainImage(fragCoord); 
+    outputColor = mainImage(fragCoord);
 }
 
 

@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -55,7 +55,7 @@ vec4 qmul( in vec4 a, in vec4 b)
 {
     return vec4(
         a.x * b.x - a.y * b.y - a.z * b.z - a.w * b.w,
-        a.y * b.x + a.x * b.y + a.z * b.w - a.w * b.z, 
+        a.y * b.x + a.x * b.y + a.z * b.w - a.w * b.z,
         a.z * b.x + a.x * b.z + a.w * b.y - a.y * b.w,
         a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y );
 
@@ -86,7 +86,7 @@ float map( in vec3 p, out vec4 oTrap, in vec4 c )
         // Now we take the 2.0 out of the loop and do it at the end with an exp2
         md2 *= 4.0*mz2;
         // z  -> z^2 + c
-        z = qsqr(z) + c;  
+        z = qsqr(z) + c;
 
         trap = min( trap, vec4(abs(z.xyz),dot(z,z)) );
 
@@ -94,7 +94,7 @@ float map( in vec3 p, out vec4 oTrap, in vec4 c )
         if(mz2>4.0) break;
         n += 1.0;
     }
-    
+
     oTrap = trap;
 
     return 0.25*sqrt(mz2/md2)*log(mz2);  // d = 0.5·|z|·log|z|/|z'|
@@ -116,11 +116,11 @@ vec3 calcNormal( in vec3 p, in vec4 c )
         md2c *= mz2c; zc = qsqr(zc)+c; mz2c = qlength2(zc);
         md2d *= mz2d; zd = qsqr(zd)+c; mz2d = qlength2(zd);
     }
-    return normalize( e.xyy*sqrt(mz2a/md2a)*log2(mz2a) + 
-					  e.yyx*sqrt(mz2b/md2b)*log2(mz2b) + 
-					  e.yxy*sqrt(mz2c/md2c)*log2(mz2c) + 
+    return normalize( e.xyy*sqrt(mz2a/md2a)*log2(mz2a) +
+					  e.yyx*sqrt(mz2b/md2b)*log2(mz2b) +
+					  e.yxy*sqrt(mz2c/md2c)*log2(mz2c) +
 					  e.xxx*sqrt(mz2d/md2d)*log2(mz2d) );
-#else    
+#else
     const vec2 e = vec2(0.001,0.0);
     vec4 za=vec4(p+e.xyy,0.0); float mz2a=qlength2(za), md2a=1.0;
     vec4 zb=vec4(p-e.xyy,0.0); float mz2b=qlength2(zb), md2b=1.0;
@@ -143,9 +143,9 @@ vec3 calcNormal( in vec3 p, in vec4 c )
     float dd = sqrt(mz2d/md2d)*log2(mz2d);
     float de = sqrt(mz2e/md2e)*log2(mz2e);
     float df = sqrt(mz2f/md2f)*log2(mz2f);
-    
+
     return normalize( vec3(da-db,dc-dd,de-df) );
-#endif    
+#endif
 }
 #endif
 
@@ -162,12 +162,12 @@ vec3 calcNormal( in vec3 p, in vec4 c )
 
   	for(int i=0; i<numIterations; i++)
     {
-        za = qsqr(za) + c; 
-        zb = qsqr(zb) + c; 
-        zc = qsqr(zc) + c; 
-        zd = qsqr(zd) + c; 
-        ze = qsqr(ze) + c; 
-        zf = qsqr(zf) + c; 
+        za = qsqr(za) + c;
+        zb = qsqr(zb) + c;
+        zc = qsqr(zc) + c;
+        zd = qsqr(zd) + c;
+        ze = qsqr(ze) + c;
+        zf = qsqr(zf) + c;
     }
     return normalize( vec3(log2(qlength2(za))-log2(qlength2(zb)),
                            log2(qlength2(zc))-log2(qlength2(zd)),
@@ -182,22 +182,22 @@ vec3 calcNormal( in vec3 p, in vec4 c )
     vec4 z = vec4(p,0.0);
 
     // identity derivative
-    mat4x4 J = mat4x4(1,0,0,0,  
-                      0,1,0,0,  
-                      0,0,1,0,  
+    mat4x4 J = mat4x4(1,0,0,0,
+                      0,1,0,0,
+                      0,0,1,0,
                       0,0,0,1 );
 
   	for(int i=0; i<numIterations; i++)
     {
         // chain rule of jacobians (removed the 2 factor)
-        J = J*mat4x4(z.x, -z.y, -z.z, -z.w, 
+        J = J*mat4x4(z.x, -z.y, -z.z, -z.w,
                      z.y,  z.x,  0.0,  0.0,
-                     z.z,  0.0,  z.x,  0.0, 
+                     z.z,  0.0,  z.x,  0.0,
                      z.w,  0.0,  0.0,  z.x);
 
         // z -> z2 + c
-        z = qsqr(z) + c; 
-        
+        z = qsqr(z) + c;
+
         if(qlength2(z)>4.0) break;
     }
 
@@ -214,24 +214,24 @@ vec3 calcNormal( in vec3 p, in vec4 c )
     vec4 J0 = vec4(1,0,0,0);
     vec4 J1 = vec4(0,1,0,0);
     vec4 J2 = vec4(0,0,1,0);
-    
+
   	for(int i=0; i<numIterations; i++)
     {
         vec4 cz = qconj(z);
-        
+
         // chain rule of jacobians (removed the 2 factor)
         J0 = vec4( dot(J0,cz), dot(J0.xy,z.yx), dot(J0.xz,z.zx), dot(J0.xw,z.wx) );
         J1 = vec4( dot(J1,cz), dot(J1.xy,z.yx), dot(J1.xz,z.zx), dot(J1.xw,z.wx) );
         J2 = vec4( dot(J2,cz), dot(J2.xy,z.yx), dot(J2.xz,z.zx), dot(J2.xw,z.wx) );
 
         // z -> z2 + c
-        z = qsqr(z) + c; 
-        
+        z = qsqr(z) + c;
+
         if(qlength2(z)>4.0) break;
     }
-    
-	vec3 v = vec3( dot(J0,z), 
-                   dot(J1,z), 
+
+	vec3 v = vec3( dot(J0,z),
+                   dot(J1,z),
                    dot(J2,z) );
 
     return normalize( v );
@@ -278,7 +278,7 @@ float softshadow( in vec3 ro, in vec3 rd, float mint, float k, in vec4 c )
 vec3 render( in vec3 ro, in vec3 rd, in vec4 c )
 {
 	const vec3 sun = vec3(  0.577, 0.577,  0.577 );
-    
+
 	vec4 tra;
 	vec3 col;
     float t = intersect( ro, rd, tra, c );
@@ -291,12 +291,12 @@ vec3 render( in vec3 ro, in vec3 rd, in vec4 c )
 	{
         vec3 mate = vec3(1.0,0.8,0.7)*0.3;
 		//mate.x = 1.0-10.0*tra.x;
-        
+
         vec3 pos = ro + t*rd;
         vec3 nor = calcNormal( pos, c );
-        
+
 		float occ = clamp(2.5*tra.w-0.15,0.0,1.0);
-		
+
 
         col = vec3(0.0);
 
@@ -308,7 +308,7 @@ vec3 render( in vec3 ro, in vec3 rd, in vec4 c )
         float sha = occ;
         sha *= smoothstep( -0.1, 0.1, ref.y );
         float fre = 0.1 + 0.9*pow(1.0-co,5.0);
-            
+
 		col  = mate*0.3*vec3(0.8,0.9,1.0)*(0.6+0.4*nor.y)*occ;
 		col +=  2.0*0.3*vec3(0.8,0.9,1.0)*(0.6+0.4*nor.y)*sha*fre;
         }
@@ -332,7 +332,7 @@ vec3 render( in vec3 ro, in vec3 rd, in vec4 c )
 		float dif = clamp(0.5+0.5*dot(lig,nor), 0.0, 1.0 );
         col += mate* 1.5*vec3(0.14,0.14,0.14)*dif*occ;
         }
-        
+
         // fake SSS
         {
         float fre = clamp( 1.+dot(rd,nor), 0.0, 1.0 );
@@ -351,13 +351,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     // camera
 	float r = 1.5+0.15*cos(0.0+0.29*time);
-	vec3 ro = vec3(           r*cos(0.3+0.37*time), 
-					0.3 + 0.8*r*cos(1.0+0.33*time), 
+	vec3 ro = vec3(           r*cos(0.3+0.37*time),
+					0.3 + 0.8*r*cos(1.0+0.33*time),
 					          r*cos(2.2+0.31*time) );
 	vec3 ta = vec3(0.0,0.0,0.0);
     float cr = 0.1*cos(0.1*time);
-    
-    
+
+
     // render
     vec3 col = vec3(0.0);
     for( int j=0; j<AA; j++ )
@@ -374,10 +374,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         col += render( ro, rd, c );
     }
     col /= float(AA*AA);
-    
+
     vec2 uv = fragCoord.xy / iResolution.xy;
 	col *= 0.7 + 0.3*pow(16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y),0.25);
-    
+
 	fragColor = vec4( col, 1.0 );
 }
 //*********************************************************
@@ -389,7 +389,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

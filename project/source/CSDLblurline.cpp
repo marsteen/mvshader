@@ -9,7 +9,7 @@
 //
 //----------------------------------------------------------------------------
 
-#include <CSDLblurline.h>
+#include "CSDLblurline.h"
 #include <CGL_Context.h>
 
 using namespace std;
@@ -218,7 +218,7 @@ bool CSDLblurline::ParseKeys(int key, bool down)
         {
             mContext->KeyPress(' ', down);
         }
-        
+
     }
     else
     {
@@ -233,8 +233,8 @@ bool CSDLblurline::ParseKeys(int key, bool down)
                 }
                 break;
         }
-    }   
-    
+    }
+
 
     return r;
 }

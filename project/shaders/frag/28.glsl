@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -119,7 +119,7 @@ struct Context {
     vec2 start_pt;
     vec2 last_pt;
 };
-    
+
 // save current source color, stroke width and starting
 // point from active context.
 Context save();
@@ -150,8 +150,8 @@ float det(vec2 a, vec2 b) { return a.x*b.y-b.x*a.y; }
 //////////////////////////////////////////////////////////
 
 vec3 hue(float hue) {
-    return clamp( 
-        abs(mod(hue * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 
+    return clamp(
+        abs(mod(hue * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0,
         0.0, 1.0);
 }
 
@@ -167,7 +167,7 @@ vec4 hsl(float h, float s, float l, float a) {
 //////////////////////////////////////////////////////////
 
 #define DEFAULT_SHAPE_V 1e+20
-    
+
 Context _stack;
 
 void init (vec2 fragCoord) {
@@ -177,7 +177,7 @@ void init (vec2 fragCoord) {
     AAINV = 1.0 / AA;
 
     uv = fragCoord.xy / iResolution.xy;
-    
+
      position = (uv*2.0-1.0)*aspect;
     _stack = Context(
         position, 1.0,
@@ -265,9 +265,9 @@ void new_path() {
 }
 
 void debug_gradient() {
-    _color = mix(_color, 
-        hsl(_stack.shape * 6.0, 
-            1.0, (_stack.shape>=0.0)?0.5:0.3), 
+    _color = mix(_color,
+        hsl(_stack.shape * 6.0,
+            1.0, (_stack.shape>=0.0)?0.5:0.3),
         0.5);
 }
 
@@ -316,7 +316,7 @@ void set_source_rgba(vec4 c) {
     _stack.source = c;
 }
 
-void set_source_rgba(float r, float g, float b, float a) { 
+void set_source_rgba(float r, float g, float b, float a) {
     set_source_rgba(vec4(r,g,b,a)); }
 
 void set_source_rgb(vec3 c) {
@@ -358,7 +358,7 @@ void line_to(vec2 p) {
     vec2 ba = p - _stack.last_pt;
     float h = clamp(dot(pa, ba)/dot(ba,ba), 0.0, 1.0);
     add(length(pa - ba*h));
-    
+
     _stack.last_pt = p;
 }
 
@@ -397,9 +397,9 @@ void curve_to(float b1x, float b1y, float b2x, float b2y) {
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     init(fragCoord);
-    
+
     paint();
-    
+
     fragColor = vec4(_color.xyz, 1.0);
 }
 
@@ -460,21 +460,21 @@ void arrow(vec2 u, vec2 n) {
 
 void paint() {
 	vec2 ms = ((iMouse.xy/iResolution.xy)*2.0-1.0) * aspect;
-	
+
 	// clear screen
-	
+
 	set_source_rgb(vec3(0.0,0.0,0.5));
 	clear();
 
 	set_line_width_px(1.3);
-	
+
 	float d = map(vec3(position.x,0.0,position.y));
 	_stack.shape = d;
 	set_source_rgb(hsl(0.6, 1.0, 0.7));
 	stroke_preserve();
 	set_source_rgba(hsl(0.6, 1.0, 0.7,0.5));
 	fill();
-	
+
 	set_line_width_px(1.3);
 	for (int i = 0; i < 5; ++i) {
 		_stack.shape = d-float(i)*0.2;
@@ -486,12 +486,12 @@ void paint() {
 
 	vec3 ro = vec3(-1.5,0.0,0.0);
 	vec3 rd = normalize(vec3(ms.x, 0.0, ms.y) - ro);
-	
+
 	circle(ro.xz, 0.02);
 	fill();
 
 	float maxt = 5.0;
-	
+
 	float precis = 0.001;
 	float h = precis * 2.0;
 	float t = 0.0;
@@ -520,12 +520,12 @@ void paint() {
         }
         p0 = p;
 	}
-	
+
 	// arrow
 	vec3 p = (ro+rd*t);
 	vec2 n = grad2d(p);
 	vec2 o = vec2(n.y, -n.x);
-	set_source_rgb(vec3(1.0));	
+	set_source_rgb(vec3(1.0));
 	arrow(p.xz, n*0.1);
 	stroke();
 }
@@ -540,7 +540,7 @@ void paint() {
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

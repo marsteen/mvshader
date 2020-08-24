@@ -12,6 +12,7 @@
 //
 //***************************************************************************
 
+#include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <CGL_Shader.h>
@@ -22,11 +23,8 @@
 
 using namespace NGlobalLog;
 
-
 extern void checkGlError(const char* op, const char* name);
 extern bool checkGlError(const char* op);
-
-
 
 //---------------------------------------------------------------------------
 //
@@ -408,8 +406,67 @@ std::string CGL_Shader::LoadShaderFile(const std::string& ShaderFilename)
     return ShaderFileStr;
 }
 
-
+//---------------------------------------------------------------------------
 //
+// Klasse:  CGL_Shader
+// Methode: ShowProgramInfoLog
+//
+//
+//---------------------------------------------------------------------------
+
+static void ShowProgramInfoLog(GLuint program)
+{
+    GLint bufLength = 0;
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufLength);
+    if (bufLength > 0)
+    {
+        char* buf = (char*) malloc(bufLength);
+        if (buf)
+        {
+            glGetProgramInfoLog(program, bufLength, NULL, buf);
+            gdstr << "Programm info log: "  << buf;
+            gderr();
+            std::cout << buf << std::endl;
+            free(buf);
+        }
+    }
+    else
+    {
+        std::cout << "ShowProgramInfoLog buffer length=0" << std::endl;
+
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+// Klasse:  CGL_Shader
+// Methode: ShowShaderInfoLog
+//
+//
+//---------------------------------------------------------------------------
+
+static void ShowShaderInfoLog(GLuint shader)
+{
+    GLint bufLength = 0;
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &bufLength);
+    if (bufLength)
+    {
+        char* buf = (char*)malloc(bufLength);
+        if (buf)
+        {
+            glGetShaderInfoLog(shader, bufLength, NULL, buf);
+            gdstr << "Shader info log: "  << buf;
+            gderr();
+            std::cout << buf << std::endl;
+            free(buf);
+        }
+    }
+    else
+    {
+        std::cout << "ShowShaderInfoLog: buffer length=0" << std::endl;
+    }
+}
+
 
 //---------------------------------------------------------------------------
 //
@@ -428,6 +485,8 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
 
     GLuint shader = glCreateShader(shaderType);
 
+    ShowShaderInfoLog(shader);
+
     if (shader)
     {
         glShaderSource(shader, 1, &ShaderSource, NULL);
@@ -436,24 +495,10 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
         glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
         if (!compiled)
         {
-            GLint infoLen = 0;
-            glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
-            if (infoLen)
-            {
-                char* buf = (char*)malloc(infoLen);
-                if (buf)
-                {
-                    glGetShaderInfoLog(shader, infoLen, NULL, buf);
-                    //gdstr << "CGL_Shader::LoadShader: " << ShaderSource;
-                    //gderr();
-
-                    gdstr << "Could not compile shader: " << shaderType << " " << buf;
-                    gderr();
-                    free(buf);
-                }
-                glDeleteShader(shader);
-                shader = 0;
-            }
+            gdstr << "Could not compile shader: " << shaderType;
+            gderr();
+            glDeleteShader(shader);
+            shader = 0;
         }
         else
         {
@@ -461,9 +506,16 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
             gdlog();
         }
     }
+    else
+    {
+        gdstr << "***** glCreateShader failed!";
+        gdlog();
+        std::cout << "***** glCreateShader failed!" << std::endl;
+    }
+
     checkGlError("LoadShader", ShaderSource);
 
-    gdstr << "CGL_Shader::LoadShader OK";
+    gdstr << "CGL_Shader::LoadShader XXX OK";
     gdlog();
 
 
@@ -489,7 +541,7 @@ GLuint CGL_Shader::CreateProgram(const char* pVertexSource, const char* pFragmen
     if (pVertexSource == NULL)
     {
         gdstr << "Vertex Shader Source = NULL";
-        gdlog;
+        gdlog();
     }
 
 
@@ -527,21 +579,13 @@ GLuint CGL_Shader::CreateProgram(const char* pVertexSource, const char* pFragmen
         glLinkProgram(program);
         GLint linkStatus = GL_FALSE;
         glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
+
+        ShowProgramInfoLog(program);
+
         if (linkStatus != GL_TRUE)
         {
-            GLint bufLength = 0;
-            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufLength);
-            if (bufLength)
-            {
-                char* buf = (char*)malloc(bufLength);
-                if (buf)
-                {
-                    glGetProgramInfoLog(program, bufLength, NULL, buf);
-                    gdstr << "Could not link program: "  << buf;
-                    gderr();
-                    free(buf);
-                }
-            }
+            gdstr << "Could not link program!";
+            gderr();
             glDeleteProgram(program);
             program = 0;
         }

@@ -19,9 +19,9 @@
 #include <string>
 
 #include <GL/glew.h>
-#include <SDL2/SDL.h>
 #include <NStringTool.h>
 #include <CSdlApp.h>
+
 
 using namespace std;
 
@@ -402,6 +402,13 @@ bool CSdlApp::Init()
         r = false;
     }
     SDL_ShowCursor(false); // Mousecursor verstecken
+
+
+    /*cout << "GL_VERSION :" << glGetString(GL_VERSION) << endl;
+    cout << "GL_VENDOR  :" << glGetString(GL_VENDOR) << endl;
+    cout << "GL_RENDERER:" << glGetString(GL_RENDERER) << endl;
+    */
+
     return r;
 }
 
@@ -449,6 +456,11 @@ bool CSdlApp::InitScreen()
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
 
 
     if (mFullscreen)

@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -31,27 +31,27 @@ out vec4 outputColor;
 // Antialiasing level
 #define AA 1
 
-vec4 orb; 
+vec4 orb;
 
 float map( vec3 p, float s )
 {
 	float scale = 1.0;
 
-	orb = vec4(1000.0); 
-	
+	orb = vec4(1000.0);
+
 	for( int i=0; i<8;i++ )
 	{
 		p = -1.0 + 2.0*fract(0.5*p+0.5);
 
 		float r2 = dot(p,p);
-		
+
         orb = min( orb, vec4(abs(p),r2) );
-		
+
 		float k = s/r2;
 		p     *= k;
 		scale *= k;
 	}
-	
+
 	return 0.25*abs(p.y)/scale;
 }
 
@@ -62,7 +62,7 @@ float trace( in vec3 ro, in vec3 rd, float s )
     for( int i=0; i<512; i++ )
     {
 	    float precis = 0.001 * t;
-        
+
 	    float h = map( ro+rd*t, s );
         if( h<precis||t>maxd ) break;
         t += h;
@@ -77,15 +77,15 @@ vec3 calcNormal( in vec3 pos, in float t, in float s )
     float precis = 0.001 * t;
 
     vec2 e = vec2(1.0,-1.0)*precis;
-    return normalize( e.xyy*map( pos + e.xyy, s ) + 
-					  e.yyx*map( pos + e.yyx, s ) + 
-					  e.yxy*map( pos + e.yxy, s ) + 
+    return normalize( e.xyy*map( pos + e.xyy, s ) +
+					  e.yyx*map( pos + e.yyx, s ) +
+					  e.yxy*map( pos + e.yxy, s ) +
                       e.xxx*map( pos + e.xxx, s ) );
 }
 
 vec3 render( in vec3 ro, in vec3 rd, in float anim )
 {
-    // trace	
+    // trace
     vec3 col = vec3(0.0);
     float t = trace( ro, rd, anim );
     if( t>0.0 )
@@ -106,7 +106,7 @@ vec3 render( in vec3 ro, in vec3 rd, in float anim )
         brdf += 1.0*vec3(1.00,1.00,1.00)*key*ao;
         brdf += 1.0*vec3(0.40,0.40,0.40)*bac*ao;
 
-        // material		
+        // material
         vec3 rgb = vec3(1.0);
         rgb = mix( rgb, vec3(1.0,0.80,0.2), clamp(6.0*tra.y,0.0,1.0) );
         rgb = mix( rgb, vec3(1.0,0.55,0.0), pow(clamp(1.0-2.0*tra.z,0.0,1.0),8.0) );
@@ -122,7 +122,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     float time = iTime*0.25 + 0.01*iMouse.x;
     float anim = 1.1 + 0.5*smoothstep( -0.3, 0.3, cos(0.1*iTime) );
-    
+
     vec3 tot = vec3(0.0);
     #if AA>1
     for( int jj=0; jj<AA; jj++ )
@@ -146,10 +146,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
         tot += render( ro, rd, anim );
     }
-    
+
     tot = tot/float(AA*AA);
-    
-	fragColor = vec4( tot, 1.0 );	
+
+	fragColor = vec4( tot, 1.0 );
 
 }
 
@@ -170,7 +170,7 @@ void mainVR( out vec4 fragColor, in vec2 fragCoord, in vec3 fragRayOri, in vec3 
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

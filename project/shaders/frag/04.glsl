@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -15,7 +15,7 @@ out vec4 outputColor;
 
 // Tron light cycle - work in progress!
 // @simesgreen
-// 
+//
 // based on Carl Hoff's POVray model:
 // http://www.wwwmwww.com/Matt/cyclev4z.pov
 // http://www.tron-sector.com/forums/default.aspx?a=top&id=336281&pg=4
@@ -33,7 +33,7 @@ float _union(float a, float b)
 float _union(float a, float b, inout float m, float nm)
 {
     m = (b < a) ? nm : m;
-    return min(a, b);		
+    return min(a, b);
 }
 
 float intersect(float a, float b)
@@ -71,7 +71,7 @@ float sdPlane( vec3 p, vec4 n )
 }
 
 float plane(vec3 p, vec3 n, vec3 pointOnPlane)
-{	
+{
   return dot(p, n) - dot(pointOnPlane, n);
 }
 
@@ -110,9 +110,9 @@ float cylinder(vec3 p, vec3 a, vec3 b, float r)
     // project c onto ab, computing parameterized position d(t) = a + t(b-a)
     float t = dot(p - a, ab) / dot(ab, ab);
     vec3 c = a + t*ab;
-		
+
     float d = length(c - p) - r;
-    
+
     vec3 n = normalize(ab);
     d = intersect(d, plane(p, n, b));
     d = intersect(d, plane(p, -n, a));
@@ -127,7 +127,7 @@ float sdTorus( vec3 p, vec2 t )
 
 float torus(vec3 p, float r, float r2)
 {
-  return sdTorus(p, vec2(r, r2));	
+  return sdTorus(p, vec2(r, r2));
 }
 
 // http://www.povray.org/documentation/view/3.6.1/277/
@@ -159,7 +159,7 @@ float front_tire(vec3 p, float t)
 		d = difference(d, sphere(p - vec3(355,85,69.4092), 56.6367));
 		d = difference(d, sphere(p - vec3(355,85,-69.4092), 56.6367));
 	}
-	return d;	
+	return d;
 /*    return difference( difference(
             sphere(p - vec3(355,85,0), 85.0),
             sphere(p - vec3(355,85,69.4092), 56.6367) ),
@@ -176,7 +176,7 @@ float front_axle(vec3 p)
 
 float front_hub(vec3 p)
 {
-    return difference( 
+    return difference(
         box(p, vec3(304.803,34.803,-43.1795), vec3(405.197,135.197,43.1795)),
         _union( sphere(p - vec3(355,85,69.4092), 56.636),
                 sphere(p - vec3(355,85,-69.4092), 56.636)));
@@ -209,7 +209,7 @@ float rear_hub(vec3 p)
     //return box(p, vec3(-55.251,29.749,-1), vec3(55.251,140.251,1));
     return cylinder(p, vec3(0,85,-1.0), vec3(0,85,1), 60.0);
 }
-	       
+
 float upper_body(vec3 p, float t)
 {
     float d = 1e10;
@@ -221,10 +221,10 @@ float upper_body(vec3 p, float t)
     d = intersect(d, edge(p, vec2(434.548,145.401), vec2(434.548,229.721) ));
     d = intersect(d, edge(p, vec2(35.372,145.401), vec2(434.548,145.401) ));
     //d = intersect(d, edge(p, vec2(35.372,60), vec2(434.548,20) ));
-	
+
     //d = intersect(d, edge(p, vec2(6.02735,162.344), vec2(35.372,145.401) ));
-    d = intersect(d, edge(p, vec2(6.02735,229.721), vec2(6.02735,162.344) ));	
-	
+    d = intersect(d, edge(p, vec2(6.02735,229.721), vec2(6.02735,162.344) ));
+
     //d = torus(p.xzy - vec3(192.447,-160, 26.5).xzy, 367.221, 11.5);
     //d = torus(p.xzy - vec3(192.447,-160, -26.5).xzy, 367.221, 11.5);
 	}
@@ -236,7 +236,7 @@ float lower_body(vec3 p)
     float d;
     d = box(p, vec3(0,38.5,-22.5), vec3(278.689,145.401,22.5));
     //d = difference(d, cylinder(p, vec3(192.447,-160,26.5), vec3(192.447,-160,-26.5), 373.721));
-    d = difference(d, cylinder(p, vec3(0,85,26.501), vec3(0,85,-26.501), 28.5));	// axle hole	
+    d = difference(d, cylinder(p, vec3(0,85,26.501), vec3(0,85,-26.501), 28.5));	// axle hole
     return d;
 }
 
@@ -244,19 +244,19 @@ float window(vec3 p, float t)
 {
     float d = 1e10;
     d = sphere((p - vec3(238.0,145.4,0.0))/vec3(1.83,0.75,1.0), 77.5)*0.5;
-		
+
 	if (t > 13.0) {
     d = _union(d, cylinder(p, vec3(192.447,-160,17.5), vec3(192.447,-160.0,-17.5), 389.721+0.01));
     d = _union(d, cone(p, vec3(192.447,-160,-17.5), 389.721+0.01, vec3(192.447,-160,-22.5), 373.721+0.01) );
     d = _union(d, cone(p, vec3(192.447,-160,17.5), 389.721+0.01, vec3(192.447,-160,22.5), 373.721+0.01) );
-				
+
     d = intersect(d, edge(p, vec2(192.447,229.721), vec2(238,145.4)));
     d = intersect(d, edge(p, vec2(335.203,145.4), vec2(381.405,180.848)));
     //d = intersect(d, edge(p, vec2(381.405,229.721), vec2(192.447,229.721)));
-    d = intersect(d, edge(p, vec2(192.447,145.4), vec2(381.405,145.4) ));	
+    d = intersect(d, edge(p, vec2(192.447,145.4), vec2(381.405,145.4) ));
 //	d = edge(p, vec2(381.405,145.4), vec2(192.447,145.4));
 	}
-    return d;	
+    return d;
 }
 
 float jetwall(vec3 p)
@@ -276,34 +276,34 @@ float scene(vec3 p, out float m, float t)
     p += vec3(-4.0, 0.0, -4.0);
     p.xz = mod(p.xz, 8.0);
     p -= vec3(4.0, 0.0, 4.0);
-#endif	
-		
+#endif
+
     float d;
     m = 3.0;	// material
 
     p += vec3(2.0, 1.0, 0.0);
     p = p * 100.0;
 
-    d = sdPlane(p, vec4(0, 1, 0, 0)); 
+    d = sdPlane(p, vec4(0, 1, 0, 0));
 
     d = _union(d, front_tire(p,t), m, 0.0);
     if (t > 2.0) d = _union(d, front_axle(p), m, 2.0);
     if (t > 3.0) d = _union(d, front_hub(p), m, 1.0);
-	
+
     d = _union(d, rear_tire(p,t),m, 0.0);
     if (t > 6.0) d = _union(d, rear_axle(p), m, 2.0);
     if (t > 7.0) d = _union(d, rear_hub(p), m, 1.0);
-	
+
     if (t > 8.0) d = _union(d, upper_body(p,t), m, 0.0);
-    if (t > 10.0) d = _union(d, lower_body(p), m, 0.0);	
-	
+    if (t > 10.0) d = _union(d, lower_body(p), m, 0.0);
+
     if (t > 11.0) d = _union(d, cone(p, vec3(293.0,85.0,0.0), 60.0, vec3(219.0,85.0,0.0), 26.5), m, 2.0);
-	
+
     if (t > 12.0) d = _union(d, window(p,t), m, 1.0);
 
 	if (t > 14.0) d = _union(d, jetwall(p), m, 4.0);
-	
-	
+
+
     d /= 100.0;
 
     return d;
@@ -326,7 +326,7 @@ vec3 sceneNormal(in vec3 pos, in float t )
 // https://www.shadertoy.com/view/4djGz1
 
 vec3 sceneNormalEdge(vec3 p, out float edge, float t)
-{ 
+{
 	const float det = 0.02;
 	vec3 e = vec3(0.0,det,0.0);
 
@@ -335,7 +335,7 @@ vec3 sceneNormalEdge(vec3 p, out float edge, float t)
 	float d3=scene(p-e.xyx, m, t),d4=scene(p+e.xyx, m, t);
 	float d5=scene(p-e.xxy, m, t),d6=scene(p+e.xxy, m, t);
 	float d=scene(p, m, t);
-	
+
 	edge=abs(d-0.5*(d2+d1))+abs(d-0.5*(d4+d3))+abs(d-0.5*(d6+d5));//edge finder
 	//edge=min(1.0, pow(edge, 0.5)*20.0);
 	edge *= 100.0;
@@ -354,7 +354,7 @@ float ambientOcclusion(vec3 p, vec3 n, float t)
     float weight = 1.0;
     float m;
     for(int i=1; i<=steps; i++) {
-        float d = (float(i) / float(steps)) * delta; 
+        float d = (float(i) / float(steps)) * delta;
         a += weight*(d - scene(p + n*d, m, t));
         weight *= 0.5;
     }
@@ -401,7 +401,7 @@ vec3 shade(vec3 pos, vec3 n, vec3 eyePos, float m, float edge, float t)
     const float shininess = 20.0;
 
     if (m==1.0) {
-		color = vec3(0.05);		
+		color = vec3(0.05);
     } else if (m==2.0) {
 		color = vec3(1.0);
 	} else if (m==3.0) {
@@ -423,7 +423,7 @@ vec3 shade(vec3 pos, vec3 n, vec3 eyePos, float m, float edge, float t)
 		x = floor(x*15.0)/15.0;
 		color = mix(vec3(1.2), color, clamp(x, 0.0, 1.0));
 	}
-	
+
     //vec3 l = normalize(lightPos - pos);
 	const vec3 l = vec3(0.577, 0.577, -0.577);
 	//const vec3 l = vec3(0, 1, 0);
@@ -442,7 +442,7 @@ vec3 shade(vec3 pos, vec3 n, vec3 eyePos, float m, float edge, float t)
 
 	// add edges:
 	//color = mix(color, vec3(1.0), edge);
-	
+
     //float fresnel = pow(1.0 - dot(n, v), 5.0);
     //float ao = ambientOcclusion(pos, n);
 
@@ -471,7 +471,7 @@ float rand( vec2 n )
 vec4 mainImage(vec2 fragCoord )
 {
     float t = iTime*0.8;
-    
+
     vec2 pixel = -1.0 + 2.0 * fragCoord.xy / iResolution.xy;
 
     // compute ray origin and direction
@@ -487,10 +487,10 @@ vec4 mainImage(vec2 fragCoord )
 
     rd = rotateX(rd, rotx);
     ro = rotateX(ro, rotx);
-		
+
     rd = rotateY(rd, roty);
     ro = rotateY(ro, roty);
-		
+
     // trace ray
     bool hit;
     float m = 0.0;
@@ -523,7 +523,7 @@ vec4 mainImage(vec2 fragCoord )
         } else {
             rgb += background(rd) * vec3(fresnel);
         }
-#endif 
+#endif
 
      } else {
         rgb = background(rd);
@@ -537,7 +537,7 @@ vec4 mainImage(vec2 fragCoord )
 	//noise = exp(-noise*noise);
 	//noise = noise*0.2 + 0.8;
 	//rgb *= noise;
-	
+
     return vec4(rgb, 1.0);
 	//fragColor = vec4(vec3(noise), 1);
 }
@@ -545,5 +545,5 @@ vec4 mainImage(vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    outputColor = mainImage(fragCoord); 
+    outputColor = mainImage(fragCoord);
 }

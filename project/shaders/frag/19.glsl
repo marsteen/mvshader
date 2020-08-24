@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -83,7 +83,7 @@ void initIcosahedron() {//setup folding planes and vertex
     pca=vec3(0.,scospin,cospin);
     pbc=normalize(pbc); pca=normalize(pca);//for slightly better DE. In reality it's not necesary to apply normalization :)
 	pab=vec3(0,0,1);
-    
+
     facePlane = pca;
     uPlane = cross(vec3(1,0,0), facePlane);
     vPlane = vec3(1,0,0);
@@ -123,14 +123,14 @@ struct TriPoints {
     vec2 ca;
 };
 
-TriPoints closestTriPoints(vec2 p) {    
+TriPoints closestTriPoints(vec2 p) {
     vec2 pTri = cart2hex * p;
     vec2 pi = floor(pTri);
     vec2 pf = fract(pTri);
-    
+
     float split1 = step(pf.y, pf.x);
     float split2 = step(pf.x, pf.y);
-    
+
     vec2 a = vec2(split1, 1);
     vec2 b = vec2(1, split2);
     vec2 c = vec2(0, 0);
@@ -142,9 +142,9 @@ TriPoints closestTriPoints(vec2 p) {
     a = hex2cart * a;
     b = hex2cart * b;
     c = hex2cart * c;
-    
+
     vec2 center = (a + b + c) / 3.;
-    
+
 	vec2 ab = (a + b) / 2.;
     vec2 bc = (b + c) / 2.;
     vec2 ca = (c + a) / 2.;
@@ -194,12 +194,12 @@ vec3 faceToSphere(vec2 facePoint) {
 TriPoints3D geodesicTriPoints(vec3 p, float subdivisions) {
     // Get 2D cartesian coordiantes on that face
     vec2 uv = icosahedronFaceCoordinates(p);
-    
+
     // Get points on the nearest triangle tile
 	float uvScale = subdivisions / faceRadius / 2.;
     TriPoints points = closestTriPoints(uv * uvScale);
-    
-    // Project 2D triangle coordinates onto a sphere 
+
+    // Project 2D triangle coordinates onto a sphere
     vec3 a = faceToSphere(points.a / uvScale);
     vec3 b = faceToSphere(points.b / uvScale);
     vec3 c = faceToSphere(points.c / uvScale);
@@ -207,7 +207,7 @@ TriPoints3D geodesicTriPoints(vec3 p, float subdivisions) {
     vec3 ab = faceToSphere(points.ab / uvScale);
     vec3 bc = faceToSphere(points.bc / uvScale);
     vec3 ca = faceToSphere(points.ca / uvScale);
-    
+
     return TriPoints3D(a, b, c, center, ab, bc, ca);
 }
 
@@ -252,10 +252,10 @@ mat3 mouseRotation(bool enable, vec2 xy) {
         }
     }
     float rx, ry;
-    
+
     rx = (xy.y + .5) * PI;
     ry = (-xy.x) * 2. * PI;
-    
+
     return sphericalMatrix(rx, ry);
 }
 
@@ -271,7 +271,7 @@ mat3 cameraRotation() {
 
 
 // --------------------------------------------------------
-// Animation 
+// Animation
 // --------------------------------------------------------
 
 const float SCENE_DURATION = 6.;
@@ -284,9 +284,9 @@ struct HexSpec {
     float roundCorner;
 	float height;
     float thickness;
-    float gap;    
+    float gap;
 };
-    
+
 HexSpec newHexSpec(float subdivisions) {
 	return HexSpec(
         .05 / subdivisions,
@@ -296,16 +296,16 @@ HexSpec newHexSpec(float subdivisions) {
         .005
     );
 }
-    
+
 // Animation 1
-    
+
 float animSubdivisions1() {
 	return mix(2.4, 3.4, cos(time * PI) * .5 + .5);
 }
 
 HexSpec animHex1(vec3 hexCenter, float subdivisions) {
     HexSpec spec = newHexSpec(subdivisions);
-    
+
     float offset = time * 3. * PI;
     offset -= subdivisions;
     float blend = dot(hexCenter, pca);
@@ -325,10 +325,10 @@ float animSubdivisions2() {
 
 HexSpec animHex2(vec3 hexCenter, float subdivisions) {
     HexSpec spec = newHexSpec(subdivisions);
-    
+
     float blend = hexCenter.y;
     spec.height = mix(1.6, 2., sin(blend * 10. + time * PI) * .5 + .5);
-    
+
     spec.roundTop = .02 / subdivisions;
     spec.roundCorner = .09 / subdivisions;
     spec.thickness = spec.roundTop * 4.;
@@ -345,7 +345,7 @@ float animSubdivisions3() {
 
 HexSpec animHex3(vec3 hexCenter, float subdivisions) {
     HexSpec spec = newHexSpec(subdivisions);
-    
+
     float blend = acos(dot(hexCenter, pab)) * 10.;
     blend = cos(blend + time * PI) * .5 + .5;
     spec.gap = mix(.01, .4, blend) / subdivisions;
@@ -386,7 +386,7 @@ float transitionValues(float a, float b, float c) {
     result = mix(result, cd, max(scene - 1., 0.));
     return result;
 }
- 
+
 HexSpec transitionHexSpecs(HexSpec a, HexSpec b, HexSpec c) {
     float roundTop = transitionValues(a.roundTop, b.roundTop, c.roundTop);
     float roundCorner = transitionValues(a.roundCorner, b.roundCorner, c.roundCorner);
@@ -398,7 +398,7 @@ HexSpec transitionHexSpecs(HexSpec a, HexSpec b, HexSpec c) {
 
 
 // --------------------------------------------------------
-// Modelling 
+// Modelling
 // --------------------------------------------------------
 
 const vec3 FACE_COLOR = vec3(.9,.9,1.);
@@ -429,16 +429,16 @@ Model hexModel(
 
     float innerDist = length(p) - spec.height + spec.thickness;
     d = smax(d, -innerDist, spec.roundTop);
-    
+
     vec3 color;
 
     float faceBlend = (spec.height - length(p)) / spec.thickness;
     faceBlend = clamp(faceBlend, 0., 1.);
     color = mix(FACE_COLOR, BACK_COLOR, step(.5, faceBlend));
-    
-    vec3 edgeColor = spectrum(dot(hexCenter, pca) * 5. + length(p) + .8);    
+
+    vec3 edgeColor = spectrum(dot(hexCenter, pca) * 5. + length(p) + .8);
 	float edgeBlend = smoothstep(-.04, -.005, edgeDist);
-    color = mix(color, edgeColor, edgeBlend); 
+    color = mix(color, edgeColor, edgeBlend);
 
     return Model(d, color, edgeBlend);
 }
@@ -455,18 +455,18 @@ Model opU( Model m1, Model m2 ){
 Model geodesicModel(vec3 p) {
 
     pModIcosahedron(p);
-    
+
     float subdivisions = transitionValues(
         animSubdivisions1(),
         animSubdivisions2(),
         animSubdivisions3()
    	);
 	TriPoints3D points = geodesicTriPoints(p, subdivisions);
-        
+
 	vec3 edgeAB = normalize(cross(points.center, points.ab));
 	vec3 edgeBC = normalize(cross(points.center, points.bc));
     vec3 edgeCA = normalize(cross(points.center, points.ca));
-    
+
     Model model, part;
     HexSpec spec;
 
@@ -485,7 +485,7 @@ Model geodesicModel(vec3 p) {
     );
     part = hexModel(p, points.c, edgeBC, edgeCA, spec);
     model = opU(model, part);
-    
+
 	spec = transitionHexSpecs(
         animHex1(points.a, subdivisions),
         animHex2(points.a, subdivisions),
@@ -493,13 +493,13 @@ Model geodesicModel(vec3 p) {
     );
     part = hexModel(p, points.a, edgeCA, edgeAB, spec);
     model = opU(model, part);
-    
+
 	return model;
 }
 
 Model map( vec3 p ){
     mat3 m = modelRotation();
-    p *= m;  
+    p *= m;
     #ifndef LOOP
     	pR(p.xz, time * PI/16.);
     #endif
@@ -516,24 +516,24 @@ vec3 doLighting(Model model, vec3 pos, vec3 nor, vec3 ref, vec3 rd) {
     vec3 lightPos = normalize(vec3(.5,.5,-1.));
     vec3 backLightPos = normalize(vec3(-.5,-.3,1));
     vec3 ambientPos = vec3(0,1,0);
-    
+
     vec3  lig = lightPos;
     float amb = clamp((dot(nor, ambientPos) + 1.) / 2., 0., 1.);
     float dif = clamp( dot( nor, lig ), 0.0, 1.0 );
     float bac = pow(clamp(dot(nor, backLightPos), 0., 1.), 1.5);
     float fre = pow( clamp(1.0+dot(nor,rd),0.0,1.0), 2.0 );
-    
+
     vec3 lin = vec3(0.0);
     lin += 1.20 * dif * vec3(.9);
     lin += 0.80 * amb * vec3(.5, .7, .8);
     lin += 0.30 * bac * vec3(.25);
     lin += 0.20 * fre * vec3(1);
-    
+
     vec3 albedo = model.albedo;
-    vec3 col = mix(albedo * lin, albedo, model.glow);    
+    vec3 col = mix(albedo * lin, albedo, model.glow);
 
     return col;
-}   
+}
 
 
 // --------------------------------------------------------
@@ -574,12 +574,12 @@ vec3 calcNormal( in vec3 pos ){
         map(pos+eps.yyx).dist - map(pos-eps.yyx).dist );
     return normalize(nor);
 }
-    
+
 Hit raymarch(CastRay castRay){
 
     float currentDist = INTERSECTION_PRECISION * 2.0;
     Model model;
-    
+
     Ray ray = Ray(castRay.origin, castRay.direction, 0.);
 
     for( int i=0; i< NUM_OF_TRACE_STEPS ; i++ ){
@@ -590,12 +590,12 @@ Hit raymarch(CastRay castRay){
         currentDist = model.dist;
         ray.len += currentDist * FUDGE_FACTOR;
     }
-    
+
     bool isBackground = false;
     vec3 pos = vec3(0);
     vec3 normal = vec3(0);
     vec3 color = vec3(0);
-    
+
     if (ray.len > MAX_TRACE_DISTANCE) {
         isBackground = true;
     } else {
@@ -612,9 +612,9 @@ Hit raymarch(CastRay castRay){
 // --------------------------------------------------------
 
 void shadeSurface(inout Hit hit){
-    
+
     vec3 color = BACKGROUND_COLOR;
-    
+
     if (hit.isBackground) {
         hit.color = color;
         return;
@@ -624,7 +624,7 @@ void shadeSurface(inout Hit hit){
 
     #ifdef DEBUG
         color = hit.normal * 0.5 + 0.5;
-    #else 
+    #else
         color = doLighting(
             hit.model,
             hit.pos,
@@ -687,38 +687,38 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     #ifdef LOOP
         #if LOOP == 1
-            time = mod(time, 2.);   
+            time = mod(time, 2.);
         #endif
         #if LOOP == 2
-            time = mod(time, 4.);   
+            time = mod(time, 4.);
         #endif
         #if LOOP == 3
             time = mod(time, 2.);
     	#endif
     #endif
-    
+
     initIcosahedron();
-    
+
     vec2 p = (-iResolution.xy + 2.0*fragCoord.xy)/iResolution.y;
     vec2 m = iMouse.xy / iResolution.xy;
 
     vec3 camPos = vec3( 0., 0., 2.);
     vec3 camTar = vec3( 0. , 0. , 0. );
     float camRoll = 0.;
-    
+
     // camera movement
     doCamera(camPos, camTar, camRoll, iTime, m);
-    
+
     // camera matrix
     mat3 camMat = calcLookAtMatrix( camPos, camTar, camRoll );  // 0.0 is the camera roll
-    
+
     // create view ray
     vec3 rd = normalize( camMat * vec3(p.xy,2.0) ); // 2.0 is the lens length
-    
+
     Hit hit = raymarch(CastRay(camPos, rd));
 
     vec3 color = render(hit);
-    
+
     #ifndef DEBUG
         color = linearToScreen(color);
     #endif
@@ -735,7 +735,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

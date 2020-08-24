@@ -16,9 +16,10 @@
 #include <fstream>
 #include <CGL_Basic.h>
 #include <NGlobalLog.h>
-#include <CContextSphere.h>
 #include <MathDefines.h>
 #include <CRandom.h>
+#include "CContextSphere.h"
+
 
 using namespace std;
 using namespace NGlobalLog;
@@ -77,11 +78,11 @@ void CContextSphere::KeyPress(int key, bool down)
 
                 uScale = 0.25f;
                 break;
-                
+
             case ' ':
-            {                
+            {
                 if (++mAktShaderNr >= mFragShaderFileVec.size())
-                {   
+                {
                     mAktShaderNr = 0;
                 }
                 const std::string& newShaderFile = mFragShaderFileVec[mAktShaderNr];
@@ -89,7 +90,7 @@ void CContextSphere::KeyPress(int key, bool down)
                 mSphereShader->InitShader(mVertShaderFile, newShaderFile);
             }
             break;
-                
+
         }
     }
 }
@@ -107,7 +108,7 @@ void CContextSphere::KeyPress(int key, bool down)
 void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
 {
     mVertShaderFile = "../shaders/vert/00.glsl";
-    
+
     if (cmdlineparams != nullptr)
     {
         for (int i = 0; i < cmdlineparams->size(); i++)
@@ -255,19 +256,28 @@ void CContextSphere::Draw2D()
 
     mSphereShader->UseProgram();
 //    mSphereShader->SetUniformFloat("uAspect", mAspect);
-
     iTime += 1.0f / 30.0;
 
     const float vec4[] = { mouseXabs, mouseYabs, mouseZpos, 0.0 };
 
     mSphereShader->SetUniformVec4("iMouse", vec4);
+    checkGlError("SetUniformVec4");
+
     mSphereShader->SetUniformFloat("iTime", iTime);
+    checkGlError("SetUniformFloat");
+
     mSphereShader->SetUniformFloat("uScale", uScale);
+    checkGlError("SetUniformFloat");
+
     mSphereShader->SetUniformVec3("iResolution", mWidth, mHeight, 0.0f);
+    checkGlError("SetUniformVec3");
 
     CGL_Basic::DrawTextureQuad(mSphereShader, -1.0, -1.0f, 1.0f, 1.0f);
-
+    checkGlError("DrawTextureQuad");
 
     glUseProgram(0);
+    //
+
+
     //cout << "Draw2D() END" << endl;
 }

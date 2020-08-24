@@ -22,10 +22,14 @@
 #include <CGL_Shader.h>
 #include <cmath>
 
+
 extern void checkGlError(const char* func);
 
 using namespace std;
 using namespace NGlobalLog;
+
+
+
 
 // ---------------------------------------------------------------------------
 //
@@ -460,45 +464,47 @@ void CGL_Basic::DrawFrame(const CGL_Shader* glcon, const CRectT<float>& rc)
 
 void CGL_Basic::DrawTextureQuad(const CGL_Shader* glcon, float x1, float y1, float x2, float y2)
 {
-    SVertArray ar;
-    CVector3<float> v;
-    CVector2<float> t;
-
-    ar.MakeVerts(4);
-    ar.MakeTexts(4);
-
-    v.Set(x1, y1, 0);
-    t.Set(0.0f, 0.0f);
-    ar.AddVert(v);
-    ar.AddText(t);
+    static GLuint StaticVAOhandle;
+    static GLuint StaticVBOhandle;
 
 
-    v.Set(x2, y1, 0);
-    t.Set(1.0f, 0.0f);
-    ar.AddVert(v);
-    ar.AddText(t);
+    const char* IbytePtr = nullptr;
+    const float VboBuffer[] =
+    {
+        x1, y1, 0.0f,   0.0f, 0.0f,
+        x2, y1, 0.0f,   1.0f, 0.0f,
+        x2, y2, 0.0f,   1.0f, 1.0f,
+        x1, y2, 0.0f,   0.0f, 1.0f,
+    };
 
+    if (StaticVBOhandle == 0)
+    {
+        glGenVertexArrays(1, &StaticVAOhandle);
+        glGenBuffers(1,      &StaticVBOhandle);
+    }
 
-    v.Set(x2, y2, 0);
-    t.Set(1.0f, 1.0f);
-    ar.AddVert(v);
-    ar.AddText(t);
-
-    v.Set(x1, y2, 0);
-    t.Set(0.0f, 1.0f);
-    ar.AddVert(v);
-    ar.AddText(t);
-
-    glVertexAttribPointer(glcon->VertAttrib(), 3, GL_FLOAT, GL_FALSE, 0, ar.mVert->v());
-    glVertexAttribPointer(glcon->TextAttrib(), 2, GL_FLOAT, GL_FALSE, 0, ar.mText->v());
+    glBindVertexArray(StaticVAOhandle);
+    glBindBuffer(GL_ARRAY_BUFFER, StaticVBOhandle);
+    checkGlError("glBindBuffer");
+    glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(GLfloat), VboBuffer, GL_STATIC_DRAW);
+    checkGlError("glBufferData");
 
     glEnableVertexAttribArray(glcon->VertAttrib());
     glEnableVertexAttribArray(glcon->TextAttrib());
+    checkGlError("glEnableVertexAttribArray");
+
+    glVertexAttribPointer(glcon->VertAttrib(), 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, IbytePtr);
+    IbytePtr += sizeof(float) * 3;
+    glVertexAttribPointer(glcon->TextAttrib(), 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, IbytePtr);
+    checkGlError("glVertexAttribPointer");
+
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    checkGlError("glDrawArrays");
 
     glDisableVertexAttribArray(glcon->VertAttrib());
     glDisableVertexAttribArray(glcon->TextAttrib());
+
 
     //checkGlError("DrawTextureQuad");
 }
@@ -1123,6 +1129,8 @@ void CGL_Basic::DrawTextureQuad(const CGL_Shader* glcon, const CRectT<float>& vr
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
 
 
     glVertexAttribPointer(glcon->VertAttrib(), 3, GL_FLOAT, GL_FALSE, 0, ar.mVert->v());

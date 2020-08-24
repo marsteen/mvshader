@@ -627,8 +627,9 @@ bool CGL_Context::ReadTgaTexture(CGL_Texture* Texture, const char* TgaFile)
 
 void CGL_Context::UseProgram() const
 {
+    checkGlError("glUseProgram 0");
     glUseProgram(mProgram);
-    checkGlError("glUseProgram");
+    checkGlError("glUseProgram 1");
 }
 
 
@@ -820,7 +821,7 @@ GLuint CGL_Context::CreateProgram(const char* pVertexSource, const char* pFragme
     if (pVertexSource == NULL)
     {
         gdstr << "Vertex Shader Source = NULL";
-        gdlog;
+        gdlog();
     }
 
 

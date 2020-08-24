@@ -28,7 +28,7 @@ else
 endif
 
 
-INCPATH = -I./include -I./include/libpng -I./source -I./include/GLline
+INCPATH = -I. -I./source/include
 LDFLAGS =
 CCFLAGS = -O2 $(INCPATH)
 
@@ -37,23 +37,25 @@ ifeq ($(OS_SYS),Windows)
   LIBPATH  = -L../lib-extern/windows64
   LDFLAGS += $(LIBPATH) -lm -lSDL2 -lSDL2.dll -lglu32 -lopengl32 -lglew32 -lglew32.dll -lz -lwinmm -s
   TARGET_EXE = $(TARGET).exe
-  
+
 endif
 
 ifeq ($(OS_SYS),Linux)
   LIBPATH  = -L../lib-extern/linux64
-  LDFLAGS += $(LIBPATH) -lSDL2 -lGL -lGLU -lpng12 -ljpeg62 -lGLEW -lz -s 
+  LDFLAGS += $(LIBPATH) -lSDL2 -lGL -lGLU -lpng12 -ljpeg62 -lGLEW -lz -s
   INCPATH += -I/usr/include/GL
   CCFLAGS += -DGLEW_STATIC
 endif
 
 ifeq ($(OS_SYS),Darwin)
-  LIBPATH    = -L../lib-extern/mac  
+  LIBPATH    = -L./lib-extern/mac
   INCPATH   += -I/usr/include/GL -I/usr/local/include/GL
+  INCPATH   += -I/Library/Frameworks/SDL2.framework/Versions/A/Headers
   FRAMEWORKS = -framework IOKit \
                -framework Foundation \
-               -framework Cocoa   -framework CoreAudio -framework Carbon -framework OpenGL  -framework ForceFeedback  -framework AudioUnit 
-  LDFLAGS   += -lSDL2 $(FRAMEWORKS) -L../lib-extern/mac -lpng -ljpeg -lGLEW -lz  -liconv  -lfreetype
+               -framework Cocoa   -framework CoreAudio -framework Carbon -framework OpenGL  -framework ForceFeedback  -framework AudioUnit
+  LDFLAGS   += $(LIBPATH) $(FRAMEWORKS) -lSDL2 -lGLEW -liconv
+
 endif
 #
 #
@@ -111,7 +113,6 @@ endif
 ifeq ($(OS_SYS),Darwin)
 $(TARGET) : $(OBJECTS1) $(OBJECTS2)
 	$(C++) -s -o $(TARGET) $(OBJECTS1)  $(OBJECTS2) $(LDFLAGS)
-	./change_mac_libs.sh $(TARGET_EXE)
-	cp -v $(TARGET) ./bin/mac/$(TARGET_EXE).app/Contents/MacOS
+#	cp -v $(TARGET) ./bin/mac/$(TARGET_EXE).app/Contents/MacOS
 endif
 

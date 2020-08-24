@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -35,7 +35,7 @@ vec2 sdCylinder( in vec3 p )
 vec3 map( vec3 p )
 {
     float time = iTime*1.0;
-    
+
     vec2  id = floor( (p.xz+1.0)/2.0 );
     float ph = hash(id+113.1);
     float ve = hash(id);
@@ -46,13 +46,13 @@ vec3 map( vec3 p )
     vec3 p1 = p; p1.xz += 0.15*sincos(p.y-ve*time*ve+0.0);
     vec3 p2 = p; p2.xz += 0.15*sincos(p.y-ve*time*ve+2.0);
     vec3 p3 = p; p3.xz += 0.15*sincos(p.y-ve*time*ve+4.0);
-    
+
     vec2 h1 = sdCylinder( p1 );
     vec2 h2 = sdCylinder( p2 );
     vec2 h3 = sdCylinder( p3 );
 
-    return opU( opU( vec3(h1.x-0.15*(0.8+0.2*sin(200.0*h1.y)), ve + 0.000, h1.y), 
-                     vec3(h2.x-0.15*(0.8+0.2*sin(200.0*h2.y)), ve + 0.015, h2.y) ), 
+    return opU( opU( vec3(h1.x-0.15*(0.8+0.2*sin(200.0*h1.y)), ve + 0.000, h1.y),
+                     vec3(h2.x-0.15*(0.8+0.2*sin(200.0*h2.y)), ve + 0.015, h2.y) ),
                      vec3(h3.x-0.15*(0.8+0.2*sin(200.0*h3.y)), ve + 0.030, h3.y) );
 
 }
@@ -74,9 +74,9 @@ vec3 intersect( in vec3 ro, in vec3 rd, in float px, const float maxdist )
 vec3 calcNormal( in vec3 pos )
 {
     const vec2 e = vec2(1.0,-1.0)*0.003;
-    return normalize( e.xyy*map( pos + e.xyy ).x + 
-					  e.yyx*map( pos + e.yyx ).x + 
-					  e.yxy*map( pos + e.yxy ).x + 
+    return normalize( e.xyy*map( pos + e.xyy ).x +
+					  e.yyx*map( pos + e.yyx ).x +
+					  e.yxy*map( pos + e.yxy ).x +
 					  e.xxx*map( pos + e.xxx ).x );
 }
 
@@ -87,7 +87,7 @@ float calcOcc( in vec3 pos, in vec3 nor )
     for( int i=0; i<8; i++ )
     {
         vec3 dir = sin( float(i)*vec3(1.0,7.13,13.71)+vec3(0.0,2.0,4.0) );
-        dir = dir + 2.0*nor*max(0.0,-dot(nor,dir));            
+        dir = dir + 2.0*nor*max(0.0,-dot(nor,dir));
         float d = map( pos + h*dir ).x;
         ao += h-d;
     }
@@ -97,7 +97,7 @@ float calcOcc( in vec3 pos, in vec3 nor )
 vec3 render( in vec3 ro, in vec3 rd, in float px )
 {
     vec3 col = vec3(0.0);
-    
+
     const float maxdist = 32.0;
     vec3 res = intersect( ro, rd, px, maxdist );
     if( res.x < maxdist )
@@ -116,18 +116,18 @@ vec3 render( in vec3 ro, in vec3 rd, in float px )
 
         float fl = mod( (0.5+cos(2.0+res.y*47.0))*iTime + res.y*7.0, 4.0 )/4.0;
         col *= 2.5 - 1.5*smoothstep(0.02,0.04,abs(res.z-fl));
-        
+
         col *= exp( -0.1*res.x );
         col *= 1.0 - smoothstep( 20.0, 30.0, res.x );
     }
-    
+
     return pow( col, vec3(0.5,1.0,1.0) );
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{	
+{
     #define ZERO (min(iFrame,0))
-    
+
     vec3 tot = vec3(0.0);
 #if AA>1
     for( int m=ZERO; m<AA; m++ )
@@ -139,7 +139,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 #else
         vec2 p = (-iResolution.xy + 2.0*fragCoord)/iResolution.y;
 #endif
-    
+
         vec3  ro = vec3(0.6,2.4,1.2);
         vec3  ta = vec3(0.0,0.0,0.0);
         float fl = 3.0;
@@ -149,7 +149,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         vec3  rd = normalize( p.x*uu + p.y*vv + fl*ww );
 
         vec3 col = render( ro, rd, 1.0/(iResolution.y*fl) );
- 
+
         tot += col;
 #if AA>1
     }
@@ -158,7 +158,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     vec2 q = fragCoord.xy/iResolution.xy;
     tot *= pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.1 );
-    
+
 	fragColor = vec4( tot, 1.0 );
 }
 
@@ -167,7 +167,7 @@ void mainVR( out vec4 fragColor, in vec2 fragCoord, in vec3 fragRayOri, in vec3 
     vec3 ro = fragRayOri + vec3( 1.0, 0.0, 1.0 );
     vec3 rd = fragRayDir;
     vec3 col = render( ro, rd, 0.001 );
-    
+
 	fragColor = vec4( col, 1.0 );
 }
 
@@ -180,7 +180,7 @@ void mainVR( out vec4 fragColor, in vec2 fragCoord, in vec3 fragRayOri, in vec3 
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

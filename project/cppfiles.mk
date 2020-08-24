@@ -1,5 +1,5 @@
 
-LIBBASE = ./lib
+LIBBASE = ./source/lib
 
 CPPFILES = source/mainSdl.cpp \
            source/CSDLblurline.cpp \
@@ -21,6 +21,6 @@ CPPFILES = source/mainSdl.cpp \
            $(LIBBASE)/CBlockOperations.cpp \
            $(LIBBASE)/shader/shader_sphere_vert.cpp \
            $(LIBBASE)/shader/shader_sphere_frag.cpp
-           
-CFILES =  
-           
+
+CFILES =
+

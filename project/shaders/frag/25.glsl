@@ -1,4 +1,4 @@
-#version 300 es
+#version 410
 //
 // Fragment Shader
 //
@@ -47,13 +47,13 @@ float de(vec3 p) {
 
 vec3 normal(vec3 p) {
 	vec3 e = vec3(0.0,detail,0.0);
-	
+
 	return normalize(vec3(
 			de(p+e.yxx)-de(p-e.yxx),
 			de(p+e.xyx)-de(p-e.xyx),
 			de(p+e.xxy)-de(p-e.xxy)
 			)
-		);	
+		);
 }
 
 float light(in vec3 p, in vec3 dir) {
@@ -63,10 +63,10 @@ float light(in vec3 p, in vec3 dir) {
 	float diff=max(0.,dot(ldir,-n))+.1*max(0.,dot(normalize(dir),-n));
 	vec3 r = reflect(ldir,n);
 	float spec=max(0.,dot(dir,-r))*sh;
-	return diff+pow(spec,20.)*.7;	
+	return diff+pow(spec,20.)*.7;
 		}
 
-float raymarch(in vec3 from, in vec3 dir, in vec2 fragCoord) 
+float raymarch(in vec3 from, in vec3 dir, in vec2 fragCoord)
 {
 	vec2 uv = fragCoord.xy / iResolution.xy*2.-1.;
 	uv.y*=iResolution.y/iResolution.x;
@@ -81,14 +81,14 @@ float raymarch(in vec3 from, in vec3 dir, in vec2 fragCoord)
 		p=from+totdist*dir;
 		d=de(p);
 		if (d<detail || totdist>2.) break;
-		totdist+=d; 
+		totdist+=d;
 		st+=max(0.,.04-d);
 	}
 	vec2 li=uv*rot;
 	float backg=.45*pow(1.5-min(1.,length(li+vec2(0.,-.6))),1.5);
 	if (d<detail) {
-		col=light(p-detail*dir, dir); 
-	} else { 
+		col=light(p-detail*dir, dir);
+	} else {
 		col=backg;
 	}
 	col+=smoothstep(0.,1.,st)*.8*(.1+rab);
@@ -109,7 +109,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	vec3 dir=normalize(vec3(uv,1.));
 	rot=mat2(cos(t),sin(t),-sin(t),cos(t));
 	dir.xy=dir.xy*rot;
-	float col=raymarch(from,dir,fragCoord); 
+	float col=raymarch(from,dir,fragCoord);
 	col=pow(col,1.25)*clamp(60.-iTime,0.,1.);
 	fragColor = vec4(col);
 }
@@ -124,7 +124,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 void main()
 {
     vec2 fragCoord = vTextVary * iResolution.xy;
-    mainImage(outputColor, fragCoord); 
+    mainImage(outputColor, fragCoord);
 }
 
 

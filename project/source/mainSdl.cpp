@@ -15,10 +15,10 @@
 #include <cstdio>
 #include <cstdlib>
 #include <unistd.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <iostream>
 #include <NStringTool.h>
-#include <CSDLblurline.h>
+#include "CSDLblurline.h"
 
 const char* GlobalArg0;
 const char* GlobalWindowName = "SDLlissa";
