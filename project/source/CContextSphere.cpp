@@ -118,6 +118,7 @@ void CContextSphere::KeyPress(int key, bool down)
 
 void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
 {
+    cout << "ParseParams START" << endl;
     mVertShaderFile = "../shaders/vert/00.glsl";
 
     if (cmdlineparams != nullptr)
@@ -166,6 +167,7 @@ void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
     {
        cout << "fragment shaders:" << mFragShaderFileVec.size() << endl;
     }
+    cout << "ParseParams END" << endl;
 }
 
 
@@ -279,6 +281,7 @@ void CContextSphere::Timer()
 
 void CContextSphere::Draw2D()
 {
+     //cout << "Draw2D() START" << endl;
     const float red[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 

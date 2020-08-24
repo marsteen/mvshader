@@ -42,7 +42,7 @@ endif
 
 ifeq ($(OS_SYS),Linux)
   LIBPATH  = -L../lib-extern/linux64
-  LDFLAGS += $(LIBPATH) -lSDL2 -lGL -lGLU -lpng12 -ljpeg62 -lGLEW -lz -s
+  LDFLAGS += $(LIBPATH) -lSDL2 -lGL -lGLU -lGLEW -lz -s
   INCPATH += -I/usr/include/GL
   CCFLAGS += -DGLEW_STATIC
 endif

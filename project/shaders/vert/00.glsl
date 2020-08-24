@@ -2,6 +2,9 @@
 //
 // Vertex Shader
 //
+#ifdef GL_ES
+precision highp float;
+#endif
 
 in vec4  aVertAttrib;
 in vec2  aTextAttrib;
