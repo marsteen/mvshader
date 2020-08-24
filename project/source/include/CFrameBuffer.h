@@ -18,6 +18,7 @@
 
 
 #include <GLinclude.h>
+#include <CGL_Shader.h>
 
 class CFrameBuffer
 {
@@ -49,6 +50,7 @@ public:
     float Height() const { return mScale * mHeight; }
     float UnscaledWidth()  const { return mWidth; }
     float UnscaledHeight()  const { return mHeight; }
+    void BindTexture() const;
 
 
 protected:

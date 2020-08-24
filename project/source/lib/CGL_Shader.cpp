@@ -485,7 +485,6 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
 
     GLuint shader = glCreateShader(shaderType);
 
-    ShowShaderInfoLog(shader);
 
     if (shader)
     {
@@ -499,6 +498,7 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
             gderr();
             glDeleteShader(shader);
             shader = 0;
+            ShowShaderInfoLog(shader);
         }
         else
         {
@@ -515,7 +515,7 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
 
     checkGlError("LoadShader", ShaderSource);
 
-    gdstr << "CGL_Shader::LoadShader XXX OK";
+    gdstr << "CGL_Shader::LoadShader OK";
     gdlog();
 
 

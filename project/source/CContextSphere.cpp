@@ -18,7 +18,9 @@
 #include <NGlobalLog.h>
 #include <MathDefines.h>
 #include <CRandom.h>
+#include <CFrameBuffer.h>
 #include "CContextSphere.h"
+#include <NStringTool.h>
 
 
 using namespace std;
@@ -42,6 +44,8 @@ CGL_Context* CGL_Context::CreateContext()
 
 CContextSphere::CContextSphere() : CGL_Context()
 {
+    mFrameBuffer = nullptr;
+    mUseFrameBuffer = false;
     mAktShaderNr = 0;
 }
 
@@ -53,6 +57,12 @@ void CContextSphere::KeyPress(int key, bool down)
     if (down)
     {
         cout << "key=" << key << endl;
+
+        if (mFrameBuffer != nullptr)
+        {
+            mFrameBuffer->ClearBuffer();
+        }
+
         switch (key)
         {
             case 'a':
@@ -132,6 +142,20 @@ void CContextSphere::ParseParams(const std::vector<std::string>* cmdlineparams)
                     cout << "fragment shaderfile=" << (*cmdlineparams)[i+1] << endl;
                 }
             }
+            else
+            if (arg == "-fb")
+            {
+                if (i < cmdlineparams->size()-2)
+                {
+                    mUseFrameBuffer = true;
+                    mFbResW = NStringTool::Cast<int>((*cmdlineparams)[i+1]);
+                    mFbResH = NStringTool::Cast<int>((*cmdlineparams)[i+2]);
+                    cout << "Framebuffer width:  " << mFbResW << endl;
+                    cout << "            height: " << mFbResH << endl;
+                    i += 2;
+                }
+            }
+
         }
     }
     if (mFragShaderFileVec.size() == 0)
@@ -161,8 +185,12 @@ bool CContextSphere::Init(int w, int h, const std::vector<std::string>* cmdlinep
     ParseParams(cmdlineparams);
 
     mSphereShader = new CGL_Shader_Sphere;
-
     mSphereShader->InitShader(mVertShaderFile, mFragShaderFileVec[0]);
+
+
+    mTexturShader = new CGL_Shader_Sphere;
+    mTexturShader->InitShader("./shaders/vert/00.glsl", "./shaders/frag/texture-fragshader.glsl");
+
 
     //cout << "Width=" << mWidth << " Height=" << mHeight << endl;
 
@@ -253,7 +281,6 @@ void CContextSphere::Draw2D()
 {
     const float red[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mSphereShader->UseProgram();
 //    mSphereShader->SetUniformFloat("uAspect", mAspect);
@@ -273,9 +300,42 @@ void CContextSphere::Draw2D()
     mSphereShader->SetUniformVec3("iResolution", mWidth, mHeight, 0.0f);
     checkGlError("SetUniformVec3");
 
-    CGL_Basic::DrawTextureQuad(mSphereShader, -1.0, -1.0f, 1.0f, 1.0f);
-    checkGlError("DrawTextureQuad");
+    if (!mUseFrameBuffer)
+    {
+        CGL_Basic::DrawTextureQuad(mSphereShader, -1.0, -1.0f, 1.0f, 1.0f);
+    }
+    else
+    {
+        if (mFrameBuffer == nullptr)
+        {
+            mFrameBuffer = new CFrameBuffer;
+            mFrameBuffer->CreateFramebufferObject(mFbResW, mFbResH);
+        }
 
+        mFrameBuffer->DrawToFrameBuffer(true);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        mFrameBuffer->SetViewport();
+
+
+
+        CGL_Basic::DrawTextureQuad(mSphereShader, -1.0, -1.0f, 1.0f, 1.0f);
+        checkGlError("DrawTextureQuad");
+        mFrameBuffer->DrawToFrameBuffer(false);
+        mFrameBuffer->RestoreViewport();
+
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        mTexturShader->UseProgram();
+        mTexturShader->SetUniformFloat("uScale", 1.0);
+        mFrameBuffer->BindTexture();
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);    // GL_NEAREST oder GL_LINEAR
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);    // GL_NEAREST
+        CGL_Basic::DrawTextureQuad(mTexturShader, -1.0, -1.0f, 1.0f, 1.0f);
+        glDisable(GL_BLEND);
+    }
+
+    checkGlError("DrawTextureQuad");
     glUseProgram(0);
     //
 

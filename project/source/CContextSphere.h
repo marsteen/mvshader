@@ -39,9 +39,15 @@ protected:
     void ParseParams(const std::vector<std::string>* cmdlineparams);
 
     CGL_Shader_Sphere* mSphereShader;
+    CGL_Shader_Sphere* mTexturShader;
     std::string mVertShaderFile;
     std::vector<std::string> mFragShaderFileVec;
     int mAktShaderNr;
+
+    CFrameBuffer* mFrameBuffer;
+    int mFbResW;
+    int mFbResH;
+    bool mUseFrameBuffer;
 };
 
 #endif

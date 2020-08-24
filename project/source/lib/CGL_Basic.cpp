@@ -505,7 +505,7 @@ void CGL_Basic::DrawTextureQuad(const CGL_Shader* glcon, float x1, float y1, flo
     glDisableVertexAttribArray(glcon->VertAttrib());
     glDisableVertexAttribArray(glcon->TextAttrib());
 
-
+    checkGlError("DrawTextureQuad");
     //checkGlError("DrawTextureQuad");
 }
 
