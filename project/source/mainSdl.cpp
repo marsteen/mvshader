@@ -15,13 +15,19 @@
 #include <cstdio>
 #include <cstdlib>
 #include <unistd.h>
-#include <SDL.h>
+
 #include <iostream>
 #include <NStringTool.h>
 #include "CSDLblurline.h"
 
+#ifdef __APPLE__
+#include <SDL.h>
+#else
+#include <SDL2/SDL.h>
+#endif
+
 const char* GlobalArg0;
-const char* GlobalWindowName = "SDLlissa";
+const char* GlobalWindowName = "mvshader";
 
 
 using namespace std;

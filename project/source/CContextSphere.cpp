@@ -81,6 +81,7 @@ void CContextSphere::KeyPress(int key, bool down)
 
             case ' ':
             {
+                iTime = 0;
                 if (++mAktShaderNr >= mFragShaderFileVec.size())
                 {
                     mAktShaderNr = 0;
