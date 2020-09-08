@@ -402,6 +402,7 @@ bool CSdlApp::Init()
         r = false;
     }
     SDL_ShowCursor(false); // Mousecursor verstecken
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
 
     /*cout << "GL_VERSION :" << glGetString(GL_VERSION) << endl;
@@ -647,6 +648,8 @@ void CSdlApp::EventLoop()
                 int xrel = event.motion.xrel;
                 int yrel = event.motion.yrel;
                 ParseMouseRel(xrel, yrel);
+                
+                //cout << "xrel=" << xrel << " yrel=" << yrel << endl;
 
                 int xabs = event.motion.x;
                 int yabs = event.motion.y;

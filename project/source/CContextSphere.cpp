@@ -88,6 +88,13 @@ void CContextSphere::KeyPress(int key, bool down)
 
                 uScale = 0.25f;
                 break;
+                
+            case 'r':
+
+                mouseXabs = 104;
+                mouseYabs = 128; 
+                mouseZpos = 4.0f;                
+                break;
 
             case ' ':
             {
@@ -96,6 +103,11 @@ void CContextSphere::KeyPress(int key, bool down)
                 {
                     mAktShaderNr = 0;
                 }
+                // ,,,
+                
+                mouseXabs = 104;
+                mouseYabs = 128; 
+                mouseZpos = 4.0f;
                 const std::string& newShaderFile = mFragShaderFileVec[mAktShaderNr];
                 cout << "new shader:" << newShaderFile << endl;
                 mSphereShader->InitShader(mVertShaderFile, newShaderFile);
@@ -212,6 +224,9 @@ bool CContextSphere::Init(int w, int h, const std::vector<std::string>* cmdlinep
 void CContextSphere::MouseMove(int xrel, int yrel, bool lb, bool rb)
 {
     //cout << "xrel=" << xrel << " yrel=" << yrel << endl;
+    mouseXabs += xrel;
+    mouseYabs += yrel;
+    //cout << "mouseXabs=" << mouseXabs << " mouseYabs=" << mouseYabs << endl;
 }
 
 
@@ -228,8 +243,10 @@ void CContextSphere::MouseMoveAbs(int xabs, int yabs, bool lb, bool rb)
 {
     //cout << "xabs=" << xabs << " yabs=" << yabs << endl;
 
-    mouseXabs = xabs;
-    mouseYabs = mHeight - yabs;
+   // mouseXabs = xabs;
+    //mouseYabs = mHeight - yabs;
+    
+    
 }
 
 
