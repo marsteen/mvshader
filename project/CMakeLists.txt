@@ -38,12 +38,19 @@ endif()
 #
 # SDL2
 #
-find_package(SDL2 REQUIRED)
-if (SDL2_FOUND)
-    message("found SDL2")
-    include_directories($(SDL2_INCLUDE_DIRS))
-    link_libraries(${SDL2_LIBRARIES})
-endif()
+#find_package(SDL2 REQUIRED)
+#if (SDL2_FOUND)
+#    message("found SDL2")
+#    include_directories($(SDL2_INCLUDE_DIRS))
+#    link_libraries(${SDL2_LIBRARIES})
+#endif()
+
+include_directories(/Library/Frameworks/SDL2.framework/Versions/A/Headers /usr/local/include)
+link_directories(
+    /Library/Frameworks/SDL2.framework/Versions/A/Headers /usr/local/include
+    /usr/local/lib
+    ./lib-extern/mac
+    )
 
 
 
@@ -80,14 +87,26 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     # Linux
     #
     target_link_libraries(mvshader
-        SDL2 
+        SDL2
         GL
         GLEW)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     #
     # Mac OS
     #
-    # *TODO*
+    target_link_libraries(mvshader
+        "-framework OpenGL"
+        "-framework Cocoa"
+        "-framework IOKit"
+        "-framework Foundation"
+        "-framework CoreAudio"
+        "-framework Carbon"
+        "-framework ForceFeedback"
+        "-framework AudioUnit"
+        SDL2
+        GLEW
+        iconv
+        )
 endif()
 
 

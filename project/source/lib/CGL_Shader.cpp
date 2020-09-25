@@ -455,7 +455,7 @@ static void ShowShaderInfoLog(GLuint shader)
         if (buf)
         {
             glGetShaderInfoLog(shader, bufLength, NULL, buf);
-            gdstr << "Shader info log: "  << buf;
+            gdstr << "ShaderInfoLog: "  << buf;
             gderr();
             std::cout << buf << std::endl;
             free(buf);
@@ -463,6 +463,8 @@ static void ShowShaderInfoLog(GLuint shader)
     }
     else
     {
+        gdstr << "ShaderInfoLog: buffer length=0";
+        gderr();
         std::cout << "ShowShaderInfoLog: buffer length=0" << std::endl;
     }
 }
@@ -496,9 +498,10 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
         {
             gdstr << "Could not compile shader: " << shaderType;
             gderr();
+            ShowShaderInfoLog(shader);
             glDeleteShader(shader);
             shader = 0;
-            ShowShaderInfoLog(shader);
+
         }
         else
         {

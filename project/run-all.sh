@@ -33,4 +33,5 @@
   -fshader ./shaders/frag/31.glsl \
   -fshader ./shaders/frag/32.glsl \
   -fshader ./shaders/frag/33.glsl \
-  -fshader ./shaders/frag/34.glsl
+  -fshader ./shaders/frag/34.glsl \
+  -fshader ./shaders/frag/35.glsl
