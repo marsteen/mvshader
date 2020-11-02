@@ -46,13 +46,30 @@ float sdPlane( vec3 p )
 
 float sdSphere( vec3 p, float s )
 {
-    return length(p)-s;
+vec3 p2 = p * p;
+vec3 p3 = p * p2;
+vec3 p4 = p * p3;
+vec3 p5 = p * p4;
+vec3 p6 = p * p5;
+vec3 p8 = p2 * p6;
+
+return p8.x - 3.0 * p8.y - 3.0 * p8.z - 6.0 * p4.x * p4.y -
+       8.0 * p2.x * p6.y - 6.0 * p4.x * p4.z - 8.0 * p2.x * p6.z + 6.0 * p2.y * p6.z;
+
+
+    //return length(p)-s;
+    //return p.x * p.x + p.y * p.y + p.z * p.z - s;    
 }
+
+
+
+
 
 float sdBox( vec3 p, vec3 b )
 {
     vec3 d = abs(p) - b;
     return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
+    
 }
 
 float sdBoundingBox( vec3 p, vec3 b, float e )

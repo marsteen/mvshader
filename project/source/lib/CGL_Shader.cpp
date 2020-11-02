@@ -496,8 +496,7 @@ GLuint CGL_Shader::LoadShader(GLenum shaderType, const char* ShaderSource)
         glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
         if (!compiled)
         {
-            gdstr << "Could not compile shader: " << shaderType;
-            gderr();
+            cout << "Could not compile shader: " << shaderType << endl;
             ShowShaderInfoLog(shader);
             glDeleteShader(shader);
             shader = 0;

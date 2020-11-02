@@ -1,5 +1,5 @@
 #!/bin/sh
-./mvshader -fb 256 256 \
+./build/mvshader -fb 256 256 \
   -vshader ./shaders/vert/00.glsl \
   -fshader ./shaders/frag/01.glsl \
   -fshader ./shaders/frag/02.glsl \
